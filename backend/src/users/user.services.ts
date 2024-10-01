@@ -4,6 +4,7 @@ import { plainToInstance } from 'class-transformer';
 import { UserGetDto } from './dtos/user-get.dto';
 import { UserCreateDto } from './dtos/user-create.dto';
 import { UpdateUserDto } from './dtos/user-update.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -25,6 +26,25 @@ export class UserService {
 
         return plainToInstance(UserGetDto, data, { excludeExtraneousValues: true });
     }
+
+    async getByCriteria(criteria: Prisma.UserWhereInput): Promise<UserGetDto[]> {
+        const users = await this.prisma.user.findMany({
+            where: criteria,
+        });
+    
+        return plainToInstance(UserGetDto, users, { excludeExtraneousValues: true });
+    }
+
+    // comment ca marche ?
+    async getUsersWithPagination(skip: number, take: number, criteria: Prisma.UserWhereInput = {}): Promise<UserGetDto[]> {
+        const users = await this.prisma.user.findMany({
+            where: criteria,
+            skip,
+            take,
+        });
+        return plainToInstance(UserGetDto, users, { excludeExtraneousValues: true });
+    }
+    
 
     async create(data: UserCreateDto): Promise<UserGetDto> {
         const { firstname, lastname, email, password, roleId } = data;

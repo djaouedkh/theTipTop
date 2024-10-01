@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Query } from '@nestjs/common';
 import { UserService } from './user.services';
 import { UserGetDto } from './dtos/user-get.dto';
 import { UserCreateDto } from './dtos/user-create.dto';
 import { UpdateUserDto } from './dtos/user-update.dto';
+import { Prisma } from '@prisma/client';
 
 @Controller('users')
 export class UserController {
@@ -16,6 +17,11 @@ export class UserController {
     @Get(':id')
     async getById(@Param('id') id: string): Promise<UserGetDto> {
         return this.service.getById(Number(id));
+    }
+
+    @Get('search')
+    async getByCriteria(@Query() query: Prisma.UserWhereInput): Promise<UserGetDto[]> {
+        return this.service.getByCriteria(query);
     }
 
     @Post('create')
