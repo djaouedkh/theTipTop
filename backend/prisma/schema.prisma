@@ -24,16 +24,14 @@ model User {
 }
 
 
-// Table Rôle (Role)
 model Role {
   id    Int    @id @default(autoincrement()) @map("id")
   name  String @unique @map("name")
-  users User[] // Les utilisateurs peuvent avoir plusieurs rôles
+  users User[]
 
   @@map("role")
 }
 
-// Table Ticket (Code)
 model Ticket {
   id           Int      @id @default(autoincrement()) @map("id")
   ref          String   @unique @map("ref")
@@ -41,10 +39,10 @@ model Ticket {
   issuedDate   DateTime @default(now()) @map("issued_date")
   userId       Int?      @map("user_id")
   user         User?     @relation(fields: [userId], references: [id])
-  prizeId      Int     @map("prize_id") // Relation optionnelle avec Prize (si un prix est gagné)
+  prizeId      Int     @map("prize_id")
   prize        Prize   @relation(fields: [prizeId], references: [id])
-  eventId      Int     @map("event_id") // Relation optionnelle avec Event
-  event        Event   @relation(fields: [eventId], references: [id]) // Relation inverse ajoutée avec Event
+  contestId      Int     @map("contest_id")
+  event        Contest   @relation(fields: [contestId], references: [id])
 
   @@map("ticket")
 }
@@ -54,48 +52,45 @@ model Prize {
   id           Int       @id @default(autoincrement()) @map("id")
   name         String    @map("name")
   desc         String    @map("description")
-  type         String    @map("type") // Type de lot (infuseur, boîte de thé, etc.)
+  type         String    @map("type")
   price        Float     @map("price")
-  tickets      Ticket[]  // Tickets associés au lot
-  distributions PrizeDistribution[] // Suivi des lots distribués
+  tickets      Ticket[]
+  distributions PrizeDistribution[]
 
   @@map("prize")
 }
 
-// Table Distribution des lots (PrizeDistribution)
 model PrizeDistribution {
   id          Int      @id @default(autoincrement()) @map("id")
-  isClaimed   Boolean  @default(false) @map("is_claimed") // Statut de réclamation
+  isClaimed   Boolean  @default(false) @map("is_claimed")
   dateClaimed DateTime? @map("date_claimed")
-  prizeId     Int      @map("prize_id") // Le lot réclamé
+  prizeId     Int      @map("prize_id")
   prize       Prize    @relation(fields: [prizeId], references: [id])
-  userId      Int      @map("user_id") // L'utilisateur qui a réclamé
-  user        User     @relation(fields: [userId], references: [id]) // Relation avec User
-  storeId     Int?     @map("store_id") // Si le lot est réclamé en magasin
+  userId      Int      @map("user_id")
+  user        User     @relation(fields: [userId], references: [id])
+  storeId     Int?     @map("store_id")
   store       Store?   @relation(fields: [storeId], references: [id])
 
   @@map("prize_distribution")
 }
 
-// Table Magasin (Store)
 model Store {
   id          Int      @id @default(autoincrement()) @map("id")
   name        String   @map("name")
   address     String   @map("address")
   city        String   @map("city")
   postalCode  String   @map("postal_code")
-  distributions PrizeDistribution[] // Lots réclamés dans ce magasin
+  distributions PrizeDistribution[]
 
   @@map("store")
 }
 
-// Table Événement (Event)
-model Event {
+model Contest {
   id          Int      @id @default(autoincrement()) @map("id")
   name        String   @map("name")
   startDate   DateTime @map("start_date")
   endDate     DateTime @map("end_date")
-  tickets       Ticket[] // Relation avec les tickets pour cet événement
+  tickets       Ticket[]
 
-  @@map("event")
+  @@map("contest")
 }
