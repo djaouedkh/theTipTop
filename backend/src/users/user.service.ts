@@ -5,6 +5,8 @@ import { UserGetDto } from './dtos/user-get.dto';
 import { UserCreateDto } from './dtos/user-create.dto';
 import { UpdateUserDto } from './dtos/user-update.dto';
 import { Prisma } from '@prisma/client';
+import { PrizeDistributionGetDto } from '../prize-distributions/dtos/prize-distribution-get.dto';
+import { TicketGetDto } from '../tickets/dtos/ticket-get.dto';
 
 @Injectable()
 export class UserService {
@@ -90,4 +92,22 @@ export class UserService {
 
         return plainToInstance(UserGetDto, deleteData, { excludeExtraneousValues: true });
     }
+
+    // FEATURES METIERS
+
+    async getUserTickets(userId: number): Promise<TicketGetDto[]> {
+        const tickets = await this.prisma.ticket.findMany({
+            where: { userId }
+        });
+    
+        return plainToInstance(TicketGetDto, tickets, { excludeExtraneousValues: true });
+    }
+    
+    async getUserGains(userId: number): Promise<PrizeDistributionGetDto[]> {
+        const userGains = await this.prisma.prizeDistribution.findMany({
+            where: { userId, isClaimed: true }
+        });
+    
+        return plainToInstance(PrizeDistributionGetDto, userGains, { excludeExtraneousValues: true });
+    }    
 }
