@@ -1,4 +1,5 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { TicketGetDto } from '../../tickets/dtos/ticket-get.dto';
 
 export class ContestGetDto {
     @Expose()
@@ -12,4 +13,8 @@ export class ContestGetDto {
 
     @Expose()
     endDate: Date;
+
+    @Expose()
+    @Type(() => TicketGetDto)
+    tickets: TicketGetDto[];
 }

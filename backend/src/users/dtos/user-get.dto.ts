@@ -1,4 +1,6 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
+import { Prisma } from '@prisma/client';
+import { PrizeDistributionGetDto } from '../../prize-distributions/dtos/prize-distribution-get.dto';
 
 export class UserGetDto {
     @Expose()
@@ -18,4 +20,10 @@ export class UserGetDto {
 
     @Exclude()
     password?: string;
+
+    @Expose()
+    @Type(() => PrizeDistributionGetDto)
+    prizeDistributions: PrizeDistributionGetDto[]
 }
+
+export type UserSearchCriteria = Prisma.UserWhereInput;

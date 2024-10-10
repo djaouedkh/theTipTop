@@ -1,0 +1,31 @@
+<div class="ticket-list-container mx-auto p-6 max-w-4xl">
+    <h1 class="text-center text-4xl font-bold mb-6">Gestion des Tickets</h1>
+
+    <table class="table-auto w-full">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">ID</th>
+                <th class="px-4 py-2">Référence</th>
+                <th class="px-4 py-2">Status</th>
+                <th class="px-4 py-2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- <tr *ngFor="let ticket of tickets">
+                <td class="border px-4 py-2">{{ ticket.id }}</td>
+                <td class="border px-4 py-2">{{ ticket.ref }}</td>
+                <td class="border px-4 py-2">{{ ticket.status ? 'Validé' : 'Non validé' }}</td>
+                <td class="border px-4 py-2">
+                    <a [routerLink]="['/admin/tickets', ticket.id]" class="text-blue-500 hover:underline">Voir Détails</a>
+                </td> -->
+            <tr>
+                <td class="border px-4 py-2">144</td>
+                <td class="border px-4 py-2">eferzgfergerg</td>
+                <td class="border px-4 py-2">Validé</td>
+                <td class="border px-4 py-2">
+                    <a [routerLink]="['/admin/tickets', 144]" class="text-blue-500 hover:underline">Voir Détails</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

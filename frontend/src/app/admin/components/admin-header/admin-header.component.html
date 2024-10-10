@@ -1,0 +1,15 @@
+<header class="bg-blue-900 p-4 text-white flex justify-between items-center">
+    <div class="logo text-lg font-bold">
+        <a routerLink="/admin/dashboard">Admin Dashboard</a>
+    </div>
+    <nav>
+        <ul class="flex space-x-4">
+            <li><a routerLink="/admin/dashboard" class="hover:underline">Tableau de Bord</a></li>
+            <li><a routerLink="/admin/tickets" class="hover:underline">Tickets</a></li>
+            <li><a routerLink="/admin/prizes" class="hover:underline">Gains</a></li>
+            <li><a routerLink="/admin/users" class="hover:underline">Utilisateurs</a></li>
+            <li><a routerLink="/admin/stats" class="hover:underline">Statistiques</a></li>
+            <li><button class="hover:underline" (click)="logout()">Déconnexion</button></li>
+        </ul>
+    </nav>
+</header>

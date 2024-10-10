@@ -1,0 +1,38 @@
+<div class="login-container mx-auto p-6 max-w-md">
+    <h1 class="text-center text-4xl font-bold mb-6">Connexion</h1>
+    
+    <!-- Formulaire de connexion classique -->
+    <form (submit)="onSubmit(); $event.preventDefault()" class="mb-4">
+        <!-- <input 
+            [(ngModel)]="email"
+            name="email"
+            type="email"
+            class="border rounded p-2 text-lg w-full mb-4"
+            placeholder="Adresse email"
+            required
+        />
+        <input 
+            [(ngModel)]="password"
+            name="password"
+            type="password"
+            class="border rounded p-2 text-lg w-full mb-4"
+            placeholder="Mot de passe"
+            required
+        />
+        <button 
+            type="submit"
+            class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700 w-full">
+            Connexion
+        </button> -->
+    </form>
+
+    <!-- Connexion via Google et Facebook -->
+    <div class="text-center">
+        <button class="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-700 w-full mb-2">
+            Connexion avec Google
+        </button>
+        <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-800 w-full">
+            Connexion avec Facebook
+        </button>
+    </div>
+</div>

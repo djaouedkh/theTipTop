@@ -1,0 +1,45 @@
+<!-- src/app/admin/pages/stats-management/stats-management.component.html -->
+<div class="stats-management-container p-6 max-w-4xl mx-auto">
+    <h1 class="text-center text-4xl font-bold mb-6">Statistiques du Jeu-Concours</h1>
+
+    <!-- Statistique sur le nombre de tickets fournis -->
+    <div class="stat-item mb-4">
+        <h2 class="text-2xl font-semibold">Nombre total de tickets fournis</h2>
+        <!-- <p>{{ totalTickets }}</p> -->
+        <p>8</p>
+    </div>
+
+    <!-- Statistique sur le nombre de tickets utilisés -->
+    <div class="stat-item mb-4">
+        <h2 class="text-2xl font-semibold">Nombre de tickets utilisés</h2>
+        <!-- <p>{{ usedTickets }}</p> -->
+        <p>4</p>
+    </div>
+
+    <!-- Statistique sur le nombre de lots déjà gagnés -->
+    <div class="stat-item mb-4">
+        <h2 class="text-2xl font-semibold">Lots déjà gagnés</h2>
+        <ul>
+            <!-- <li *ngFor="let prize of prizes">
+                {{ prize.name }} : {{ prize.count }}
+            </li> -->
+            <li>
+                thé : 2
+            </li>
+        </ul>
+    </div>
+
+    <!-- Statistique sur les gagnants -->
+    <div class="stat-item mb-4">
+        <h2 class="text-2xl font-semibold">Statistiques des gagnants</h2>
+        <!-- <p>Nombre de gagnants : {{ winnersCount }}</p> -->
+        <p>Nombre de gagnants : 2</p>
+        <!-- Vous pouvez ajouter des détails sur les gagnants par âge, sexe, etc. -->
+    </div>
+
+    <button (click)="openEmailModal()">Envoyer un email</button>
+
+    <ng-container *ngIf="isEmailModalOpen">
+        <app-email-modal (close)="closeEmailModal()"></app-email-modal>
+    </ng-container>
+</div>

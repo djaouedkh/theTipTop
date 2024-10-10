@@ -1,4 +1,5 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { UserGetDto } from '../../users/dtos/user-get.dto';
 
 export class PrizeDistributionGetDto {
     @Expose()
@@ -18,4 +19,14 @@ export class PrizeDistributionGetDto {
 
     @Expose()
     dateClaimed?: Date;
+
+    @Expose()
+    @Type(() => UserGetDto)
+    user: UserGetDto;
+
+    @Expose()
+    prize: any;
+
+    @Expose()
+    store?: string;
 }

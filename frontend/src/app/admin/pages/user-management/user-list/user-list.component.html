@@ -1,0 +1,12 @@
+<div>
+    <h2>Liste des utilisateurs</h2>
+    <input type="text" [(ngModel)]="searchQuery" placeholder="Rechercher par nom">
+    <button (click)="onSearch()">Rechercher</button>
+
+    <ul>
+        <li *ngFor="let user of users">
+            <!-- <a [routerLink]="['/admin/users', user.id]">{{ user.firstname }} {{ user.lastname }}</a> -->
+            <a [routerLink]="['/admin/users', user.id]">{{ user.firstname }} {{ user.lastname }}</a>
+        </li>
+    </ul>
+</div>

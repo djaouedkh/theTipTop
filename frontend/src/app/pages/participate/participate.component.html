@@ -1,0 +1,39 @@
+<div class="participate-container mx-auto p-6 max-w-4xl">
+    <h1 class="text-center text-4xl font-bold mb-6">Entrez votre code de ticket</h1>
+
+    <form (submit)="onSubmit(); $event.preventDefault()" class="text-center mb-8">
+        <!-- <input 
+            [(ngModel)]="ticketCode"
+            name="ticketCode"
+            type="text"
+            class="border rounded p-2 text-lg w-full max-w-md mb-4"
+            placeholder="Code du ticket"
+            required
+        /> -->
+        <input 
+            name="ticketCode"
+            type="text"
+            class="border rounded p-2 text-lg w-full max-w-md mb-4"
+            placeholder="Code du ticket"
+            required
+        />
+        <button 
+            type="submit"
+            class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700">
+            Voir mon gain
+        </button>
+    </form>
+
+    <!-- Afficher le gain du ticket -->
+    <!-- <div *ngIf="ticketDetails" class="text-center mt-6"> -->
+    <div class="text-center mt-6">
+        <h2 class="text-2xl font-semibold">Félicitations ! Vous avez gagné :</h2>
+        <!-- <p class="text-xl">{{ ticketDetails.prize }}</p> -->
+        <p class="text-xl">Thé</p>
+    </div>
+
+    <!-- Afficher le message d'erreur -->
+    <div *ngIf="errorMessage" class="text-center mt-6 text-red-500">
+        <p>{{ errorMessage }}</p>
+    </div>
+</div>

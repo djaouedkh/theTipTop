@@ -1,0 +1,22 @@
+<div class="ticket-details-container mx-auto p-6 max-w-4xl">
+    <h1 class="text-center text-4xl font-bold mb-6">Détails du Ticket</h1>
+
+    <!-- <div *ngIf="ticket">
+        <p><strong>ID :</strong> {{ ticket.id }}</p>
+        <p><strong>Référence :</strong> {{ ticket.ref }}</p>
+        <p><strong>Status :</strong> {{ ticket.status ? 'Validé' : 'Non validé' }}</p>
+        <p><strong>Gagnant :</strong> {{ ticket.user?.firstname }} {{ ticket.user?.lastname }}</p>
+        <p><strong>Prix :</strong> {{ ticket.prize?.name }}</p>
+    </div> -->
+    <div>
+        <p><strong>ID :</strong>144</p>
+        <p><strong>Référence :</strong>htththgh</p>
+        <p><strong>Status :</strong>Non validé</p>
+        <p><strong>Gagnant :</strong>bbbbbbb</p>
+        <p><strong>Prix :</strong>dzdzdz</p>
+    </div>
+
+    <div *ngIf="!ticket" class="text-center text-red-500">
+        <p>Erreur lors du chargement des détails du ticket.</p>
+    </div>
+</div>

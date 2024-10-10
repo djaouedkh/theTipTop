@@ -1,0 +1,48 @@
+<!-- src/app/admin/components/modals/email-modal/email-modal.component.html -->
+<div class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div class="modal-content bg-white p-6 rounded-lg max-w-md w-full shadow-lg">
+        <h2 class="text-2xl font-semibold mb-4">Envoyer un email</h2>
+
+        <form (submit)="onSendEmail(); $event.preventDefault()">
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2">Objet :</label>
+                <input
+                    type="text"
+                    [(ngModel)]="emailSubject"
+                    name="subject"
+                    class="border rounded p-2 w-full"
+                    placeholder="Objet de l'email"
+                    required
+                />
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2">Message :</label>
+                <textarea
+                    [(ngModel)]="emailBody"
+                    name="body"
+                    class="border rounded p-2 w-full"
+                    rows="5"
+                    placeholder="Contenu de l'email"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="flex justify-end">
+                <button
+                    type="button"
+                    (click)="onClose()"
+                    class="px-4 py-2 bg-gray-300 rounded mr-2 hover:bg-gray-400"
+                >
+                    Annuler
+                </button>
+                <button
+                    type="submit"
+                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                >
+                    Envoyer
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
