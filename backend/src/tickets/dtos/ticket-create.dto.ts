@@ -9,6 +9,8 @@ export class TicketCreateDto {
     @IsBoolean()
     status: boolean;
 
+    // FK
+    
     @IsNotEmpty()
     @IsInt()
     contestId: number;

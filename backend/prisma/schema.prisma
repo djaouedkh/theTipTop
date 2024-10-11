@@ -42,7 +42,7 @@ model Ticket {
   prizeId      Int     @map("prize_id")
   prize        Prize   @relation(fields: [prizeId], references: [id])
   contestId      Int     @map("contest_id")
-  event        Contest   @relation(fields: [contestId], references: [id])
+  contest        Contest   @relation(fields: [contestId], references: [id])
 
   @@map("ticket")
 }

@@ -7,7 +7,7 @@ import { UserGainsComponent } from './pages/user-gains/user-gains.component';
 import { ErrorComponent } from './pages/error/error.component';
 
 const routes: Routes = [
-    // { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     { path: 'home', component: HomeComponent },
     { path: 'participate', component: ParticipateComponent },

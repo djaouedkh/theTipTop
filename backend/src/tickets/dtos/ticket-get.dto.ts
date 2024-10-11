@@ -2,6 +2,7 @@ import { Exclude, Expose, Type } from 'class-transformer';
 import { ContestGetDto } from '../../contests/dtos/contest-get.dto';
 import { UserGetDto } from '../../users/dtos/user-get.dto';
 import { PrizeDistributionGetDto } from '../../prize-distributions/dtos/prize-distribution-get.dto';
+import { PrizeGetDto } from '../../prizes/dtos/prize.dto';
 
 export class TicketGetDto {
     @Expose()
@@ -16,24 +17,23 @@ export class TicketGetDto {
     @Expose()
     issuedDate: Date;
 
+    // FK
+
     @Expose()
     contestId: number;
-
-    @Expose()
-    prizeId: number;
-
-    @Expose()
-    userId: number;
-
-    @Expose()
-    @Type(() => UserGetDto)
-    user: UserGetDto;
-
-    @Expose()
-    @Type(() => PrizeDistributionGetDto)
-    prize: PrizeDistributionGetDto;
-
     @Expose()
     @Type(() => ContestGetDto)
     contest: ContestGetDto;
+    
+    @Expose()
+    prizeId: number;
+    @Expose()
+    @Type(() => PrizeGetDto)
+    prize: PrizeGetDto;
+
+    @Expose()
+    userId: number;
+    @Expose()
+    @Type(() => UserGetDto)
+    user: UserGetDto;
 }

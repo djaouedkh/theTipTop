@@ -1,18 +1,10 @@
 import { Expose, Type } from 'class-transformer';
 import { UserGetDto } from '../../users/dtos/user-get.dto';
+import { PrizeGetDto } from '../../prizes/dtos/prize.dto';
 
 export class PrizeDistributionGetDto {
     @Expose()
     id: number;
-
-    @Expose()
-    userId: number;
-
-    @Expose()
-    prizeId: number;
-
-    @Expose()
-    storeId?: number;
 
     @Expose()
     isClaimed: boolean;
@@ -21,12 +13,20 @@ export class PrizeDistributionGetDto {
     dateClaimed?: Date;
 
     @Expose()
+    userId: number;
+    @Expose()
     @Type(() => UserGetDto)
     user: UserGetDto;
 
     @Expose()
-    prize: any;
+    prizeId: number;
+    @Expose()
+    @Type(() => PrizeGetDto)
+    prize: PrizeGetDto;
 
     @Expose()
-    store?: string;
+    storeId?: number;
+    @Expose()
+    @Type(() => UserGetDto)
+    store?: UserGetDto;
 }
