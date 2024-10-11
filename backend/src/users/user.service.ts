@@ -37,17 +37,6 @@ export class UserService {
         return plainToInstance(UserGetDto, users, { excludeExtraneousValues: true });
     }
 
-    // comment ca marche ?
-    async getUsersWithPagination(skip: number, take: number, criteria: Prisma.UserWhereInput = {}): Promise<UserGetDto[]> {
-        const users = await this.prisma.user.findMany({
-            where: criteria,
-            skip,
-            take,
-        });
-        return plainToInstance(UserGetDto, users, { excludeExtraneousValues: true });
-    }
-    
-
     async create(data: UserCreateDto): Promise<UserGetDto> {
         const { firstname, lastname, email, password, roleId } = data;
 

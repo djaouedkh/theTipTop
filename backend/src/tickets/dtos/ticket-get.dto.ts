@@ -2,7 +2,7 @@ import { Exclude, Expose, Type } from 'class-transformer';
 import { ContestGetDto } from '../../contests/dtos/contest-get.dto';
 import { UserGetDto } from '../../users/dtos/user-get.dto';
 import { PrizeDistributionGetDto } from '../../prize-distributions/dtos/prize-distribution-get.dto';
-import { PrizeGetDto } from '../../prizes/dtos/prize.dto';
+import { PrizeGetDto } from '../../prizes/dtos/prize-get.dto';
 
 export class TicketGetDto {
     @Expose()

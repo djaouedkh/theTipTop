@@ -1,7 +1,7 @@
 // src/app/pages/participate/participate.component.ts
 import { Component } from '@angular/core';
-// import { TicketService } from '../../core/services/ticket.service';
-// import { TicketGetDto } from '../../../../../backend/src/tickets/dtos/ticket-get.dto';
+import { TicketService } from '../../core/services/ticket.service';
+import { TicketGetDto } from '../../../../../backend/src/tickets/dtos/ticket-get.dto';
 
 @Component({
     selector: 'app-participate',
@@ -9,28 +9,32 @@ import { Component } from '@angular/core';
 })
 export class ParticipateComponent {
     ticketCode: string = '';
-    // ticketDetails: TicketGetDto | null = null;
+    ticketDetails: TicketGetDto | null = null;
     errorMessage: string | null = null;
 
-    // constructor(private ticketService: TicketService) {}
+    constructor(private ticketService: TicketService) {}
 
     onSubmit(): void {
-        const criteria = { ref: this.ticketCode };
+        // Réinitialiser les messages et résultats précédents
+        this.ticketDetails = null;
+        this.errorMessage = null;
+
+        // Appel au service pour vérifier le ticket
+        this.ticketService.getPrizeOfTicket(this.ticketCode).subscribe({
+            next: (ticket: TicketGetDto) => {
+                if (ticket && ticket.prize) {
+                    this.ticketDetails = ticket;
+                    this.errorMessage = null;
+                } else {
+                    this.errorMessage = "Code non valide ou non trouvé.";
+                    this.ticketDetails = null;
+                }
+            },
+            error: () => {
+                this.errorMessage = "Code non valide ou non trouvé.";
+                this.ticketDetails = null;
+            }
+        });
         
-        // this.ticketService.searchTickets(criteria).subscribe({
-        //     next: (tickets: TicketGetDto[]) => {
-        //         if (tickets.length > 0) {
-        //             this.ticketDetails = tickets[0];
-        //             this.errorMessage = null;
-        //         } else {
-        //             this.errorMessage = "Code non valide ou non trouvé.";
-        //             this.ticketDetails = null;
-        //         }
-        //     },
-        //     error: (err) => {
-        //         this.errorMessage = "Erreur lors de la recherche du ticket.";
-        //         this.ticketDetails = null;
-        //     }
-        // });
     }
 }

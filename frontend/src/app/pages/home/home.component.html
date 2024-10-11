@@ -6,7 +6,7 @@
         <h2 class="text-2xl font-semibold mb-4">Les Prix à Gagner :</h2>
         <ul class="list-disc ml-8">
             <li *ngFor="let prize of prizes">
-                <strong>{{ prize.name }}</strong> - Chance de gagner : {{ prize.chance }}
+                <strong>{{ prize.name }}</strong> - Valeur : {{ prize.price | currency:'EUR' }}
             </li>
         </ul>
     </div>

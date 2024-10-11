@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { UserGetDto } from '../../users/dtos/user-get.dto';
-import { PrizeGetDto } from '../../prizes/dtos/prize.dto';
+import { PrizeGetDto } from '../../prizes/dtos/prize-get.dto';
 
 export class PrizeDistributionGetDto {
     @Expose()

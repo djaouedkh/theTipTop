@@ -72,9 +72,37 @@ export class TicketService {
 
     // FEATURES METIERS
 
-    async validateTicket(ticketCode: string): Promise<boolean> {
+    // get prize of a ticket
+    async getPrizeOfTicket(ticketCode: string): Promise<TicketGetDto> {
         const ticket = await this.prisma.ticket.findUnique({
-            where: { ref: ticketCode }
+            where: { 
+                ref: ticketCode,
+                status: true
+            },
+            include: {
+                prize: true,
+                contest: true
+            }
+        });
+        if (!ticket) throw new Error('Ticket not found');
+
+        const currentDate = new Date();
+        // Vérifier si le concours est encore en cours ou si le ticket est dans la période de validité
+        const validUntil = new Date(ticket.contest.endDate);
+        validUntil.setDate(validUntil.getDate() + 30); // 30 jours après la fin du concours
+        if (currentDate > validUntil || currentDate < ticket.contest.startDate) {
+            throw new Error('Ticket is not within the valid period');
+        }
+
+        return plainToInstance(TicketGetDto, ticket, { excludeExtraneousValues: true });
+    }
+
+    private async _isRefValid(ticketCode: string): Promise<boolean> {
+        const ticket = await this.prisma.ticket.findUnique({
+            where: { 
+                ref: ticketCode,
+                status: false
+            }
         });
     
         return ticket ? !ticket.status : false;

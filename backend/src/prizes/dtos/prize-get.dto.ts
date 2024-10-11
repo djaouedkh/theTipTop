@@ -29,36 +29,3 @@ export class PrizeGetDto {
     @Type(() => PrizeDistributionGetDto)
     distributions: PrizeDistributionGetDto[];
 }
-
-export class PrizeCreateDto {
-    @IsString()
-    name: string;
-
-    @IsString()
-    description: string;
-
-    @IsString()
-    type: string;
-
-    @IsNumber()
-    price: number;
-}
-
-
-export class PrizeUpdateDto {
-    @IsOptional()
-    @IsString()
-    name?: string;
-
-    @IsOptional()
-    @IsString()
-    description?: string;
-
-    @IsOptional()
-    @IsString()
-    type?: string;
-
-    @IsOptional()
-    @IsNumber()
-    price?: number;
-}
