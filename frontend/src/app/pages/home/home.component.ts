@@ -18,10 +18,10 @@ export class HomeComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.loadPrizes();
+        this.getAllGains();
     }
 
-    loadPrizes(): void {        
+    getAllGains(): void {        
         this.gainService.getAll().subscribe({
             next: (data: GainGetDto[]) => {
                 this.gains = data;

@@ -40,10 +40,13 @@ export class TicketService {
         return plainToInstance(TicketGetDto, ticket, { excludeExtraneousValues: true });
     }
     async getAllByCriteria(criteria: TicketSearchDto, includeOptions?: TicketIncludeDto): Promise<TicketGetDto[]> {
+        console.log('criteria', criteria);
+        console.log('includeOptions', includeOptions);
         const tickets = await this.prisma.ticket.findMany({
             where: criteria,
             include: includeOptions || {},
         });
+        console.log('tickets', tickets);
         return plainToInstance(TicketGetDto, tickets, { excludeExtraneousValues: true });
     }
     
