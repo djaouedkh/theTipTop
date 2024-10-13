@@ -3,7 +3,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { plainToInstance } from 'class-transformer';
 import { ContestCreateDto } from './dtos/contest-create.dto';
 import { ContestUpdateDto } from './dtos/contest-update.dto';
-import { ContestGetDto } from './dtos/contest-get.dto';
+import { ContestGetDto, ContestIncludeDto, ContestSearchDto } from './dtos/contest-get.dto';
 import { Prisma } from '@prisma/client';
 import { UserGetDto } from '../users/dtos/user-get.dto';
 
@@ -30,12 +30,19 @@ export class ContestService {
         return plainToInstance(ContestGetDto, data, { excludeExtraneousValues: true });
     }
 
-    // Récupérer les concours en fonction des critères
-    async getByCriteria(criteria: Prisma.ContestWhereInput): Promise<ContestGetDto[]> {
-        const contests = await this.prisma.contest.findMany({
+    async getByCriteria(criteria: ContestSearchDto, includeOptions?: ContestIncludeDto): Promise<ContestGetDto> {
+        const data = await this.prisma.contest.findFirst({
             where: criteria,
+            include: includeOptions || {},
         });
-        return plainToInstance(ContestGetDto, contests, { excludeExtraneousValues: true });
+        return plainToInstance(ContestGetDto, data, { excludeExtraneousValues: true });
+    }
+    async getAllByCriteria(criteria: ContestSearchDto, includeOptions?: ContestIncludeDto): Promise<ContestGetDto[]> {
+        const allData = await this.prisma.contest.findMany({
+            where: criteria,
+            include: includeOptions || {},
+        });
+        return plainToInstance(ContestGetDto, allData, { excludeExtraneousValues: true });
     }
 
     // Créer un concours

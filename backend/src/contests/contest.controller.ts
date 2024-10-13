@@ -1,27 +1,37 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, Query } from '@nestjs/common';
 import { ContestService } from './contest.service';
-import { ContestGetDto } from './dtos/contest-get.dto';
+import { ContestGetDto, ContestIncludeDto, ContestSearchDto } from './dtos/contest-get.dto';
 import { ContestCreateDto } from './dtos/contest-create.dto';
 import { ContestUpdateDto } from './dtos/contest-update.dto';
-import { Prisma } from '@prisma/client';
+import { Contest, Prisma } from '@prisma/client';
 
 @Controller('contests')
 export class ContestController {
     constructor(private readonly service: ContestService) {}
 
-    @Get('')
+    @Get('all')
     async getAll(): Promise<ContestGetDto[]> {
         return this.service.getAll();
     }
 
-    @Get(':id')
+    @Get('by-id/:id')
     async getById(@Param('id') id: string): Promise<ContestGetDto> {
         return this.service.getById(Number(id));
     }
 
-    @Get('search')
-    async getByCriteria(@Query() query: Prisma.ContestWhereInput): Promise<ContestGetDto[]> {
-        return this.service.getByCriteria(query);
+    @Post('search')
+    async getByCriteria(
+        @Body('criteria') criteria: ContestSearchDto, 
+        @Body('includeOptions') includeOptions?: ContestIncludeDto
+    ): Promise<ContestGetDto> {
+        return this.service.getByCriteria(criteria, includeOptions);
+    }
+    @Post('searches')
+    async getAllByCriteria(
+        @Body('criteria') criteria: ContestSearchDto, 
+        @Body('includeOptions') includeOptions?: ContestIncludeDto
+    ): Promise<ContestGetDto[]> {
+        return this.service.getAllByCriteria(criteria, includeOptions);
     }
 
     @Post('create')

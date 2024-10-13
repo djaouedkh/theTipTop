@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, Query } from '@nestjs/common';
+import { GainDelivery, Prisma } from '@prisma/client';
 import { GainDeliveryCreateDto } from './dtos/gain-delivery-create.dto';
-import { GainDeliveryGetDto } from './dtos/gain-delivery-get.dto';
+import { GainDeliveryGetDto, GainDeliveryIncludeDto, GainDeliverySearchDto } from './dtos/gain-delivery-get.dto';
 import { GainDeliveryUpdateDto } from './dtos/gain-delivery-update.dto';
 import { GainDeliveryService } from './gain-delivery.service';
 
@@ -8,14 +9,29 @@ import { GainDeliveryService } from './gain-delivery.service';
 export class GainDeliveryController {
     constructor(private readonly service: GainDeliveryService) {}
 
-    @Get('')
+    @Get('all')
     async getAll(): Promise<GainDeliveryGetDto[]> {
         return this.service.getAll();
     }
 
-    @Get(':id')
+    @Get('by-id/:id')
     async getById(@Param('id') id: string): Promise<GainDeliveryGetDto> {
         return this.service.getById(Number(id));
+    }
+
+    @Post('search')
+    async getByCriteria(
+        @Body('criteria') criteria: GainDeliverySearchDto, 
+        @Body('includeOptions') includeOptions?: GainDeliveryIncludeDto
+    ): Promise<GainDeliveryGetDto> {
+        return this.service.getByCriteria(criteria, includeOptions);
+    }
+    @Post('searches')
+    async getAllByCriteria(
+        @Body('criteria') criteria: GainDeliverySearchDto, 
+        @Body('includeOptions') includeOptions?: GainDeliveryIncludeDto
+    ): Promise<GainDeliveryGetDto[]> {
+        return this.service.getAllByCriteria(criteria, includeOptions);
     }
 
     @Post('create')

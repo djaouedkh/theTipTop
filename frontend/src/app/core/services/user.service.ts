@@ -1,47 +1,43 @@
-// core/services/user.service.ts
-
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
-// DTOs importés depuis le back-end
-import { UserGetDto } from '../../../../../backend/src/users/dtos/user-get.dto';
+import { UserGetDto, UserIncludeDto, UserSearchDto } from '../../../../../backend/src/users/dtos/user-get.dto';
 import { UserCreateDto } from '../../../../../backend/src/users/dtos/user-create.dto';
 import { UpdateUserDto } from '../../../../../backend/src/users/dtos/user-update.dto';
-import { UserSearchDto } from '../../../../../backend/src/users/dtos/user-get.dto';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UserService {
+    private readonly baseUrl = 'users';
+
     constructor(private apiService: ApiService) {}
 
-    // Récupérer tous les utilisateurs
-    getAllUsers(): Observable<UserGetDto[]> {
-        return this.apiService.get<UserGetDto[]>('users');
+    getAll(): Observable<UserGetDto[]> {
+        return this.apiService.get<UserGetDto[]>(`${this.baseUrl}/all`);
     }
 
-    // Récupérer un utilisateur par son ID
-    getUserById(id: number): Observable<UserGetDto> {
-        return this.apiService.get<UserGetDto>(`users/${id}`);
+    getById(id: number): Observable<UserGetDto> {
+        return this.apiService.get<UserGetDto>(`${this.baseUrl}/by-id/${id}`);
     }
 
-    // Récupérer les utilisateurs par critères de recherche
-    searchUsers(criteria: UserSearchDto): Observable<UserGetDto[]> {
-        return this.apiService.get<UserGetDto[]>(`users/search`, criteria);
+    search(criteria: UserSearchDto, includeOptions?: UserIncludeDto): Observable<UserGetDto[]> {
+        return this.apiService.post<UserGetDto[]>(`${this.baseUrl}/search`, { criteria, includeOptions });
     }
 
-    // Créer un nouvel utilisateur
-    createUser(data: UserCreateDto): Observable<UserGetDto> {
-        return this.apiService.post<UserGetDto>('users/create', data);
+    searches(criteria: UserSearchDto, includeOptions?: UserIncludeDto): Observable<UserGetDto[]> {
+        return this.apiService.post<UserGetDto[]>(`${this.baseUrl}/searches`, { criteria, includeOptions });
     }
 
-    // Mettre à jour un utilisateur existant
-    updateUser(id: number, data: UpdateUserDto): Observable<UserGetDto> {
-        return this.apiService.put<UserGetDto>(`users/${id}`, data);
+    create(data: UserCreateDto): Observable<UserGetDto> {
+        return this.apiService.post<UserGetDto>(`${this.baseUrl}/create`, data);
     }
 
-    // Supprimer un utilisateur
-    deleteUser(id: number): Observable<UserGetDto> {
-        return this.apiService.delete<UserGetDto>(`users/${id}`);
+    update(id: number, data: UpdateUserDto): Observable<UserGetDto> {
+        return this.apiService.put<UserGetDto>(`${this.baseUrl}/${id}`, data);
+    }
+
+    delete(id: number): Observable<UserGetDto> {
+        return this.apiService.delete<UserGetDto>(`${this.baseUrl}/${id}`);
     }
 }

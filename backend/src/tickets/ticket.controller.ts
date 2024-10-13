@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, Query } from '@nestjs/common';
 import { TicketService } from './ticket.service';
-import { TicketGetDto } from './dtos/ticket-get.dto';
+import { TicketGetDto, TicketIncludeDto, TicketSearchDto } from './dtos/ticket-get.dto';
 import { TicketCreateDto } from './dtos/ticket-create.dto';
 import { TicketUpdateDto } from './dtos/ticket-update.dto';
 import { Prisma } from '@prisma/client';
@@ -9,25 +9,31 @@ import { Prisma } from '@prisma/client';
 export class TicketController {
     constructor(private readonly service: TicketService) {}
 
-    @Get('')
+    @Get('all')
     async getAll(): Promise<TicketGetDto[]> {
         return this.service.getAll();
     }
 
-    @Get(':id')
+    @Get('by-id/:id')
     async getById(@Param('id') id: string): Promise<TicketGetDto> {
         return this.service.getById(Number(id));
     }
 
-    @Get('search')
-    async getByCriteria(@Query() query: Prisma.TicketWhereInput): Promise<TicketGetDto> {
-        return this.service.getByCriteria(query);
+    @Post('search')
+    async getByCriteria(
+        @Body('criteria') criteria: TicketSearchDto, 
+        @Body('includeOptions') includeOptions?: TicketIncludeDto
+    ): Promise<TicketGetDto> {
+        return this.service.getByCriteria(criteria, includeOptions);
+    }
+    @Post('searches')
+    async getAllByCriteria(
+        @Body('criteria') criteria: TicketSearchDto, 
+        @Body('includeOptions') includeOptions?: TicketIncludeDto
+    ): Promise<TicketGetDto[]> {
+        return this.service.getAllByCriteria(criteria, includeOptions);
     }
 
-    @Get('searches')
-    async getAllByCriteria(@Query() query: Prisma.TicketWhereInput): Promise<TicketGetDto[]> {
-        return this.service.getAllByCriteria(query);
-    }
 
     @Post('create')
     async create(@Body() data: TicketCreateDto): Promise<TicketGetDto> {

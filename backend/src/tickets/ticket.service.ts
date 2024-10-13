@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { plainToInstance } from 'class-transformer';
-import { TicketGetDto } from './dtos/ticket-get.dto';
+import { TicketGetDto, TicketIncludeDto, TicketSearchDto } from './dtos/ticket-get.dto';
 import { TicketCreateDto } from './dtos/ticket-create.dto';
 import { TicketUpdateDto } from './dtos/ticket-update.dto';
 import { Prisma } from '@prisma/client';
@@ -32,27 +32,18 @@ export class TicketService {
         return plainToInstance(TicketGetDto, ticket, { excludeExtraneousValues: true });
     }
 
-    // async getByCriteria(criteria: Prisma.TicketWhereInput): Promise<TicketGetDto[]> {
-    //     const tickets = await this.prisma.ticket.findMany({
-    //         where: criteria,
-    //     });
-    
-    //     return plainToInstance(TicketGetDto, tickets, { excludeExtraneousValues: true });
-    // }
-    async getByCriteria(criteria: Prisma.TicketWhereInput, includeOptions?: Prisma.TicketInclude): Promise<TicketGetDto> {
+    async getByCriteria(criteria: TicketSearchDto, includeOptions?: TicketIncludeDto): Promise<TicketGetDto> {
         const ticket = await this.prisma.ticket.findFirst({
             where: criteria,
             include: includeOptions || {},
         });
-
         return plainToInstance(TicketGetDto, ticket, { excludeExtraneousValues: true });
     }
-    async getAllByCriteria(criteria: Prisma.TicketWhereInput, includeOptions?: Prisma.TicketInclude): Promise<TicketGetDto[]> {
+    async getAllByCriteria(criteria: TicketSearchDto, includeOptions?: TicketIncludeDto): Promise<TicketGetDto[]> {
         const tickets = await this.prisma.ticket.findMany({
             where: criteria,
             include: includeOptions || {},
         });
-        
         return plainToInstance(TicketGetDto, tickets, { excludeExtraneousValues: true });
     }
     

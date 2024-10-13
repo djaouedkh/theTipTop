@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { plainToInstance } from 'class-transformer';
+import { Prisma } from '@prisma/client';
 import { TicketService } from '../tickets/ticket.service';
 import { GainDeliveryCreateDto } from './dtos/gain-delivery-create.dto';
-import { GainDeliveryGetDto } from './dtos/gain-delivery-get.dto';
+import { GainDeliveryGetDto, GainDeliveryIncludeDto, GainDeliverySearchDto } from './dtos/gain-delivery-get.dto';
 import { GainDeliveryUpdateDto } from './dtos/gain-delivery-update.dto';
 
 @Injectable()
@@ -30,6 +31,21 @@ export class GainDeliveryService {
         }
 
         return plainToInstance(GainDeliveryGetDto, data, { excludeExtraneousValues: true });
+    }
+
+    async getByCriteria(criteria: GainDeliverySearchDto, includeOptions?: GainDeliveryIncludeDto): Promise<GainDeliveryGetDto> {
+        const data = await this.prisma.gainDelivery.findFirst({
+            where: criteria,
+            include: includeOptions || {},
+        });
+        return plainToInstance(GainDeliveryGetDto, data, { excludeExtraneousValues: true });
+    }
+    async getAllByCriteria(criteria: GainDeliverySearchDto, includeOptions?: GainDeliveryIncludeDto): Promise<GainDeliveryGetDto[]> {
+        const allData = await this.prisma.gainDelivery.findMany({
+            where: criteria,
+            include: includeOptions || {},
+        });
+        return plainToInstance(GainDeliveryGetDto, allData, { excludeExtraneousValues: true });
     }
 
     // Créer une distribution

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { plainToInstance } from 'class-transformer';
-import { UserGetDto } from './dtos/user-get.dto';
+import { UserGetDto, UserIncludeDto, UserSearchDto } from './dtos/user-get.dto';
 import { UserCreateDto } from './dtos/user-create.dto';
 import { UpdateUserDto } from './dtos/user-update.dto';
 import { Prisma } from '@prisma/client';
@@ -27,12 +27,19 @@ export class UserService {
         return plainToInstance(UserGetDto, data, { excludeExtraneousValues: true });
     }
 
-    async getByCriteria(criteria: Prisma.UserWhereInput): Promise<UserGetDto[]> {
-        const users = await this.prisma.user.findMany({
+    async getByCriteria(criteria: UserSearchDto, includeOptions?: UserIncludeDto): Promise<UserGetDto> {
+        const data = await this.prisma.user.findFirst({
             where: criteria,
+            include: includeOptions || {},
         });
-    
-        return plainToInstance(UserGetDto, users, { excludeExtraneousValues: true });
+        return plainToInstance(UserGetDto, data, { excludeExtraneousValues: true });
+    }
+    async getAllByCriteria(criteria: UserSearchDto, includeOptions?: UserIncludeDto): Promise<UserGetDto[]> {
+        const allData = await this.prisma.user.findMany({
+            where: criteria,
+            include: includeOptions || {},
+        });
+        return plainToInstance(UserGetDto, allData, { excludeExtraneousValues: true });
     }
 
     async create(data: UserCreateDto): Promise<UserGetDto> {

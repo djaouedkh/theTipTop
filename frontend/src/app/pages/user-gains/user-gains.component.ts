@@ -1,31 +1,34 @@
-// src/app/pages/user-gains/user-gains.component.ts
 import { Component, OnInit } from '@angular/core';
-// import { UserService } from '../../core/services/user.service';
-// import { PrizeDistributionGetDto } from '../../../../../backend/src/prize-distributions/dtos/prize-distribution-get.dto';
+import { TicketService } from '../../core/services/ticket.service';
+import { TicketGetDto, TicketIncludeDto, TicketSearchDto } from '../../../../../backend/src/tickets/dtos/ticket-get.dto';
 
 @Component({
     selector: 'app-user-gains',
     templateUrl: './user-gains.component.html'
 })
 export class UserGainsComponent implements OnInit {
-    // userGains: PrizeDistributionGetDto[] = [];
+    userGains: TicketGetDto[] = [];
     errorMessage: string | null = null;
 
-    // constructor(private userService: UserService) {}
+    constructor(private ticketService: TicketService) {}
 
     ngOnInit(): void {
-        // const email = 'value@example.com'; // Remplace par la méthode pour obtenir l'email de l'utilisateur connecté
-        // this.userService.getUserGains(email).subscribe({
-        // next: (user) => {
-        //     if (user && user.prizeDistributions) {
-        //     this.userGains = user.prizeDistributions;
-        //     } else {
-        //     this.errorMessage = 'Aucun gain trouvé pour cet utilisateur.';
-        //     }
-        // },
-        // error: () => {
-        //     this.errorMessage = "Erreur lors de la récupération des gains.";
-        // }
-        // });
+        // Récupérer l'id de l'utilisateur connecté
+        const userId = 1; // à remplacer par la logique de récupération de l'utilisateur
+
+        // Critères de recherche et options d'inclusion
+        const criteria: TicketSearchDto = { userId };
+        const includeOptions: TicketIncludeDto = { gain: true };
+
+        // Appeler le service pour récupérer les gains de l'utilisateur
+        this.ticketService.searches(criteria, includeOptions).subscribe({
+            next: (gains) => {
+                console.log(gains);
+                this.userGains = gains;
+            },
+            error: () => {
+                this.errorMessage = "Une erreur est survenue lors du chargement des gains.";
+            }
+        });
     }
 }

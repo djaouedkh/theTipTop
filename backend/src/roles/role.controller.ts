@@ -6,12 +6,12 @@ import { RoleGetDto, RoleCreateDto, RoleUpdateDto } from './dtos/role.dto';
 export class RoleController {
     constructor(private readonly service: RoleService) {}
 
-    @Get('')
+    @Get('all')
     async getAll(): Promise<RoleGetDto[]> {
         return this.service.getAll();
     }
 
-    @Get(':id')
+    @Get('by-id/:id')
     async getById(@Param('id') id: string): Promise<RoleGetDto> {
         return this.service.getById(Number(id));
     }

@@ -6,12 +6,12 @@ import { StoreGetDto, StoreCreateDto, StoreUpdateDto } from './dtos/store.dto';
 export class StoreController {
     constructor(private readonly service: StoreService) {}
 
-    @Get('')
+    @Get('all')
     async getAll(): Promise<StoreGetDto[]> {
         return this.service.getAll();
     }
 
-    @Get(':id')
+    @Get('by-id/:id')
     async getById(@Param('id') id: string): Promise<StoreGetDto> {
         return this.service.getById(Number(id));
     }

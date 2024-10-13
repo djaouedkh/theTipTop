@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { UserModule } from './users/user.module';
 import { PrismaService } from '../prisma/prisma.service';
 import { TicketModule } from './tickets/ticket.module';
@@ -8,6 +8,7 @@ import { RoleModule } from './roles/role.module';
 import { ContestModule } from './contests/contest.module';
 import { GainDeliveryModule } from './gain-deliveries/gain-delivery.module';
 import { UseCaseModule } from './use-cases/use-case.module';
+import { ParseIntMiddleware } from './middlewares/parse-int.middleware';
 
 @Module({
   imports: [
@@ -22,4 +23,8 @@ import { UseCaseModule } from './use-cases/use-case.module';
   ],
   providers: [PrismaService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ParseIntMiddleware).forRoutes('*');
+  }
+}

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
-import { TicketGetDto } from '../../../../../backend/src/tickets/dtos/ticket-get.dto';
+import { TicketGetDto, TicketIncludeDto, TicketSearchDto } from '../../../../../backend/src/tickets/dtos/ticket-get.dto';
 import { TicketCreateDto } from '../../../../../backend/src/tickets/dtos/ticket-create.dto';
 import { TicketUpdateDto } from '../../../../../backend/src/tickets/dtos/ticket-update.dto';
 
@@ -9,39 +9,35 @@ import { TicketUpdateDto } from '../../../../../backend/src/tickets/dtos/ticket-
     providedIn: 'root',
 })
 export class TicketService {
+    private readonly baseUrl = 'tickets';
+
     constructor(private apiService: ApiService) {}
 
-    // Récupérer tous les tickets
     getAll(): Observable<TicketGetDto[]> {
-        return this.apiService.get<TicketGetDto[]>('tickets');
+        return this.apiService.get<TicketGetDto[]>(`${this.baseUrl}/all`);
     }
 
-    // Récupérer un ticket par son ID
     getById(id: number): Observable<TicketGetDto> {
-        return this.apiService.get<TicketGetDto>(`tickets/${id}`);
+        return this.apiService.get<TicketGetDto>(`${this.baseUrl}/by-id/${id}`);
     }
 
-    // Récupérer les tickets par critères de recherche
-    search(criteria: any): Observable<TicketGetDto[]> {
-        return this.apiService.get<TicketGetDto[]>(`tickets/search`, criteria);
+    search(criteria: TicketSearchDto, includeOptions?: TicketIncludeDto): Observable<TicketGetDto[]> {
+        return this.apiService.post<TicketGetDto[]>(`${this.baseUrl}/search`, { criteria, includeOptions });
     }
 
-    getGainOfTicket(ticketCode: string): Observable<TicketGetDto> { 
-        return this.apiService.get<TicketGetDto>(`tickets/by-ref/${ticketCode}`);
+    searches(criteria: TicketSearchDto, includeOptions?: TicketIncludeDto): Observable<TicketGetDto[]> {
+        return this.apiService.post<TicketGetDto[]>(`${this.baseUrl}/searches`, { criteria, includeOptions });
     }
 
-    // Créer un nouveau ticket
     create(data: TicketCreateDto): Observable<TicketGetDto> {
-        return this.apiService.post<TicketGetDto>('tickets/create', data);
+        return this.apiService.post<TicketGetDto>(`${this.baseUrl}/create`, data);
     }
 
-    // Mettre à jour un ticket existant
     update(id: number, data: TicketUpdateDto): Observable<TicketGetDto> {
-        return this.apiService.put<TicketGetDto>(`tickets/${id}`, data);
+        return this.apiService.put<TicketGetDto>(`${this.baseUrl}/${id}`, data);
     }
 
-    // Supprimer un ticket
     delete(id: number): Observable<TicketGetDto> {
-        return this.apiService.delete<TicketGetDto>(`tickets/${id}`);
+        return this.apiService.delete<TicketGetDto>(`${this.baseUrl}/${id}`);
     }
 }

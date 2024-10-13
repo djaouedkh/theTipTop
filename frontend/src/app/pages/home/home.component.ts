@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GainService } from '../../core/services/gain.service';
-import { GainGetDto } from '../../../../../backend/src/gains/dtos/gain-get.dto';
+import { GainGetDto, GainSearchDto } from '../../../../../backend/src/gains/dtos/gain-get.dto';
 
 @Component({
     selector: 'app-home',
@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
         this.loadPrizes();
     }
 
-    loadPrizes(): void {
+    loadPrizes(): void {        
         this.gainService.getAll().subscribe({
             next: (data: GainGetDto[]) => {
                 this.gains = data;

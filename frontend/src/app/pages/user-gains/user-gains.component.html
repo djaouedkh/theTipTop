@@ -1,18 +1,22 @@
 <div class="user-gains-container mx-auto p-6 max-w-4xl">
     <h1 class="text-center text-4xl font-bold mb-6">Mes Gains</h1>
 
-    <!-- <div *ngIf="userGains.length === 0" class="text-center text-lg"> -->
-    <div class="text-center text-lg">
+    <!-- Message si aucun gain trouvé -->
+    <div *ngIf="userGains.length === 0 && !errorMessage" class="text-center text-lg">
         <p>Aucun gain trouvé pour cet utilisateur.</p>
     </div>
 
-    <!-- <div *ngFor="let gain of userGains" class="gain-item p-4 border mb-4 rounded"> -->
-    <div class="gain-item p-4 border mb-4 rounded">
-        <!-- <h2 class="text-2xl font-semibold">{{ gain.prizeName }}</h2> -->
-        <h2 class="text-2xl font-semibold">Thé matcha</h2>
-        <!-- <p>Date de gain : {{ gain.date | date }}</p>
-        <p>Status : {{ gain.isClaimed ? 'Réclamé' : 'Non réclamé' }}</p> -->
-        <p>Date de gain : XXXXXX</p>
-        <p>Status : Non réclamé</p>
+    <!-- Message d'erreur si une erreur survient -->
+    <div *ngIf="errorMessage" class="text-center text-lg text-red-500">
+        <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- Afficher les gains de l'utilisateur -->
+    <div *ngFor="let ticket of userGains" class="gain-item p-4 border mb-4 rounded">
+        <h2 class="text-2xl font-semibold">{{ ticket.gain.name }}</h2>
+        <p class="text-lg">{{ ticket.gain.desc }}</p>
+        <p>Status : <span [ngClass]="{'text-green-500': ticket.isDelivered, 'text-red-500': !ticket.isDelivered}">
+            {{ ticket.isDelivered ? 'Réclamé' : 'Non réclamé' }}
+        </span></p>
     </div>
 </div>

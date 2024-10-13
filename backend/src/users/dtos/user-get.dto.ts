@@ -1,4 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
+import { Prisma } from '@prisma/client';
 import { RoleGetDto } from '../../roles/dtos/role.dto';
 import { TicketGetDto } from '../../tickets/dtos/ticket-get.dto';
 import { IsOptional, IsInt, IsString, IsEmail, Min } from 'class-validator';
@@ -40,39 +41,7 @@ export class UserGetDto {
     tickets: TicketGetDto[];
 }
 
-export class UserSearchDto {
-    @IsOptional()
-    @IsInt()
-    @Type(() => Number)
-    id?: number;
-
-    @IsOptional()
-    @IsString()
-    firstname?: string;
-
-    @IsOptional()
-    @IsString()
-    lastname?: string;
-
-    @IsOptional()
-    @IsEmail()
-    email?: string;
-
-    @IsOptional()
-    @IsString()
-    gender?: string;
-
-    @IsOptional()
-    @IsInt()
-    @Min(1)
-    age?: number;
-
-    @IsOptional()
-    @IsInt()
-    @Min(1)
-    roleId?: number;
-
-    @IsOptional()
-    @IsString()
-    createdAt?: string;
-}
+// SEARCH
+export type UserSearchDto = Prisma.UserWhereInput;
+// INCLUDE FOR SEARCH
+export type UserIncludeDto = Prisma.UserInclude;
