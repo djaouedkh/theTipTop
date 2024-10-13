@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { UserGetDto } from '../../../../../backend/src/users/dtos/user-get.dto';
 import { UserCreateDto } from '../../../../../backend/src/users/dtos/user-create.dto';
 import { UpdateUserDto } from '../../../../../backend/src/users/dtos/user-update.dto';
-import { UserSearchCriteria } from '../../../../../backend/src/users/dtos/user-get.dto';
+import { UserSearchDto } from '../../../../../backend/src/users/dtos/user-get.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -26,7 +26,7 @@ export class UserService {
     }
 
     // Récupérer les utilisateurs par critères de recherche
-    searchUsers(criteria: UserSearchCriteria): Observable<UserGetDto[]> {
+    searchUsers(criteria: UserSearchDto): Observable<UserGetDto[]> {
         return this.apiService.get<UserGetDto[]>(`users/search`, criteria);
     }
 

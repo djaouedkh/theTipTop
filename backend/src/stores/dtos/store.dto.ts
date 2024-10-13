@@ -1,7 +1,7 @@
 // store-get.dto.ts
 import { Expose, Type } from 'class-transformer';
 import { IsOptional, IsString, MinLength } from 'class-validator';
-import { PrizeDistributionGetDto } from '../../prize-distributions/dtos/prize-distribution-get.dto';
+import { GainDeliveryGetDto } from '../../gain-deliveries/dtos/gain-delivery-get.dto';
 
 export class StoreGetDto {
     @Expose()
@@ -20,8 +20,8 @@ export class StoreGetDto {
     postalCode: string;
 
     @Expose()
-    @Type(() => PrizeDistributionGetDto)
-    distributions: PrizeDistributionGetDto[];
+    @Type(() => GainDeliveryGetDto)
+    gainDeliveries: GainDeliveryGetDto[];
 }
 
 export class StoreCreateDto {

@@ -1,13 +1,10 @@
 import { IsOptional, IsBoolean, IsInt, IsDate } from 'class-validator';
 
-export class PrizeDistributionUpdateDto {
-    @IsBoolean()
-    @IsOptional()
-    isClaimed?: boolean;
+export class GainDeliveryUpdateDto {
 
     @IsDate()
     @IsOptional()
-    dateClaimed?: Date;
+    deliveryDate?: Date;
 
     @IsInt()
     @IsOptional()

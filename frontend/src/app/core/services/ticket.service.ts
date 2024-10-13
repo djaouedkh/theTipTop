@@ -26,7 +26,7 @@ export class TicketService {
         return this.apiService.get<TicketGetDto[]>(`tickets/search`, criteria);
     }
 
-    getPrizeOfTicket(ticketCode: string): Observable<TicketGetDto> { 
+    getGainOfTicket(ticketCode: string): Observable<TicketGetDto> { 
         return this.apiService.get<TicketGetDto>(`tickets/by-ref/${ticketCode}`);
     }
 

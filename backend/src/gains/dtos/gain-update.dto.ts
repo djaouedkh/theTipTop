@@ -1,6 +1,6 @@
 import { IsOptional, IsString, IsNumber } from "class-validator";
 
-export class PrizeUpdateDto {
+export class GainUpdateDto {
     @IsOptional()
     @IsString()
     name?: string;
@@ -8,10 +8,6 @@ export class PrizeUpdateDto {
     @IsOptional()
     @IsString()
     description?: string;
-
-    @IsOptional()
-    @IsString()
-    type?: string;
 
     @IsOptional()
     @IsNumber()

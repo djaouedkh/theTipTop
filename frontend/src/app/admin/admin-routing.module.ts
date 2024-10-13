@@ -3,8 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { TicketListComponent } from './pages/ticket-management/ticket-list/ticket-list.component';
 import { TicketDetailsComponent } from './pages/ticket-management/ticket-details/ticket-details.component';
-import { PrizeListComponent } from './pages/prize-management/prize-list/prize-list.component';
-import { PrizeDetailsComponent } from './pages/prize-management/prize-details/prize-details.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
 import { UserListComponent } from './pages/user-management/user-list/user-list.component';
 import { UserDetailsComponent } from './pages/user-management/user-details/user-details.component';
@@ -14,8 +12,6 @@ const adminRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
     { path: 'tickets', component: TicketListComponent },
     { path: 'tickets/:id', component: TicketDetailsComponent },
-    { path: 'prizes', component: PrizeListComponent },
-    { path: 'prizes/:id', component: PrizeDetailsComponent },
     { path: 'users', component: UserManagementComponent,
         children: [
             { path: '', component: UserListComponent },

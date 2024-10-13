@@ -17,14 +17,19 @@
         </button>
     </form>
 
-    <!-- Afficher le gain du ticket s'il est valide -->
-    <div *ngIf="ticketDetails" class="text-center mt-6">
-        <h2 class="text-2xl font-semibold">Félicitations ! Vous avez gagné :</h2>
-        <p class="text-xl">{{ ticketDetails.prize?.name }}</p>
-    </div>
+    <!-- Afficher le gain du ticket s'il est gagnant -->
+    <!-- Vérifie que playResult et gain ne sont pas null/undefined -->
+<!-- Vérifie que playResult est bien un gagnant et que gain n'est pas null -->
+<div *ngIf="playResult?.isWinner && playResult?.gain" class="text-center mt-6">
+    <h2 class="text-2xl font-semibold">Félicitations ! Vous avez gagné :</h2>
+    <p class="text-xl">{{ playResult?.gain?.name }}</p>
+    <p class="text-lg">{{ playResult?.gain?.desc }}</p>
+</div>
 
 
-    <!-- Afficher le message d'erreur -->
+
+
+    <!-- Afficher le message d'erreur si le ticket n'est pas gagnant ou si une erreur survient -->
     <div *ngIf="errorMessage" class="text-center mt-6 text-red-500">
         <p>{{ errorMessage }}</p>
     </div>

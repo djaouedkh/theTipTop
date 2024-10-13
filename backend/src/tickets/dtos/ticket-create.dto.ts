@@ -3,11 +3,7 @@ import { IsNotEmpty, IsInt, IsBoolean, IsString } from 'class-validator';
 export class TicketCreateDto {
     @IsNotEmpty()
     @IsString()
-    ref: string;
-
-    @IsNotEmpty()
-    @IsBoolean()
-    status: boolean;
+    code: string;
 
     // FK
     
@@ -17,9 +13,5 @@ export class TicketCreateDto {
 
     @IsInt()
     @IsNotEmpty()
-    prizeId: number;
-
-    @IsInt()
-    @IsNotEmpty()
-    userId: number;
+    gainId: number;
 }

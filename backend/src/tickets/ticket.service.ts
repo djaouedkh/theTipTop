@@ -5,10 +5,15 @@ import { TicketGetDto } from './dtos/ticket-get.dto';
 import { TicketCreateDto } from './dtos/ticket-create.dto';
 import { TicketUpdateDto } from './dtos/ticket-update.dto';
 import { Prisma } from '@prisma/client';
+import { GainService } from '../gains/gain.service';
+import { GainGetDto } from '../gains/dtos/gain-get.dto';
 
 @Injectable()
 export class TicketService {
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService,
+        private gainService: GainService,
+    ) {}
 
     async getAll(): Promise<TicketGetDto[]> {
         const allTickets = await this.prisma.ticket.findMany();
@@ -27,24 +32,39 @@ export class TicketService {
         return plainToInstance(TicketGetDto, ticket, { excludeExtraneousValues: true });
     }
 
-    async getByCriteria(criteria: Prisma.TicketWhereInput): Promise<TicketGetDto[]> {
+    // async getByCriteria(criteria: Prisma.TicketWhereInput): Promise<TicketGetDto[]> {
+    //     const tickets = await this.prisma.ticket.findMany({
+    //         where: criteria,
+    //     });
+    
+    //     return plainToInstance(TicketGetDto, tickets, { excludeExtraneousValues: true });
+    // }
+    async getByCriteria(criteria: Prisma.TicketWhereInput, includeOptions?: Prisma.TicketInclude): Promise<TicketGetDto> {
+        const ticket = await this.prisma.ticket.findFirst({
+            where: criteria,
+            include: includeOptions || {},
+        });
+
+        return plainToInstance(TicketGetDto, ticket, { excludeExtraneousValues: true });
+    }
+    async getAllByCriteria(criteria: Prisma.TicketWhereInput, includeOptions?: Prisma.TicketInclude): Promise<TicketGetDto[]> {
         const tickets = await this.prisma.ticket.findMany({
             where: criteria,
+            include: includeOptions || {},
         });
-    
+        
         return plainToInstance(TicketGetDto, tickets, { excludeExtraneousValues: true });
     }
+    
 
     async create(data: TicketCreateDto): Promise<TicketGetDto> {
-        const { ref, status, contestId, prizeId, userId } = data;
+        const { code, contestId, gainId } = data;
 
         const newTicket = this.prisma.ticket.create({
             data: {
-                ref,
-                status,
+                code,
                 contestId,
-                prizeId,
-                userId,
+                gainId,
             },
         });
 
@@ -69,51 +89,5 @@ export class TicketService {
 
         return plainToInstance(TicketGetDto, deleteTicket, { excludeExtraneousValues: true });
     }
-
-    // FEATURES METIERS
-
-    // get prize of a ticket
-    async getPrizeOfTicket(ticketCode: string): Promise<TicketGetDto> {
-        const ticket = await this.prisma.ticket.findUnique({
-            where: { 
-                ref: ticketCode,
-                status: true
-            },
-            include: {
-                prize: true,
-                contest: true
-            }
-        });
-        if (!ticket) throw new Error('Ticket not found');
-
-        const currentDate = new Date();
-        // Vérifier si le concours est encore en cours ou si le ticket est dans la période de validité
-        const validUntil = new Date(ticket.contest.endDate);
-        validUntil.setDate(validUntil.getDate() + 30); // 30 jours après la fin du concours
-        if (currentDate > validUntil || currentDate < ticket.contest.startDate) {
-            throw new Error('Ticket is not within the valid period');
-        }
-
-        return plainToInstance(TicketGetDto, ticket, { excludeExtraneousValues: true });
-    }
-
-    private async _isRefValid(ticketCode: string): Promise<boolean> {
-        const ticket = await this.prisma.ticket.findUnique({
-            where: { 
-                ref: ticketCode,
-                status: false
-            }
-        });
-    
-        return ticket ? !ticket.status : false;
-    }
-
-    async markTicketAsClaimed(ticketCode: string): Promise<void> {
-        await this.prisma.ticket.update({
-            where: { ref: ticketCode },
-            data: { status: true }
-        });
-    }
-    
     
 }

@@ -1,6 +1,4 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { Prisma } from '@prisma/client';
-import { PrizeDistributionGetDto } from '../../prize-distributions/dtos/prize-distribution-get.dto';
 import { RoleGetDto } from '../../roles/dtos/role.dto';
 import { TicketGetDto } from '../../tickets/dtos/ticket-get.dto';
 import { IsOptional, IsInt, IsString, IsEmail, Min } from 'class-validator';
@@ -19,6 +17,12 @@ export class UserGetDto {
     email: string;
 
     @Expose()
+    gender: string;
+
+    @Expose()
+    age: number;
+
+    @Expose()
     createdAt: Date;
 
     @Exclude()
@@ -30,10 +34,6 @@ export class UserGetDto {
     @Expose()
     @Type(() => RoleGetDto)
     role: RoleGetDto;
-
-    @Expose()
-    @Type(() => PrizeDistributionGetDto)
-    prizeDistributions: PrizeDistributionGetDto[]
 
     @Expose()
     @Type(() => TicketGetDto)
@@ -57,6 +57,15 @@ export class UserSearchDto {
     @IsOptional()
     @IsEmail()
     email?: string;
+
+    @IsOptional()
+    @IsString()
+    gender?: string;
+
+    @IsOptional()
+    @IsInt()
+    @Min(1)
+    age?: number;
 
     @IsOptional()
     @IsInt()

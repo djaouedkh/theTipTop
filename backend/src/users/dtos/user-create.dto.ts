@@ -19,6 +19,14 @@ export class UserCreateDto {
     @MinLength(6)
     password: string;
 
+    @IsNotEmpty()
+    @IsString()
+    gender: string;
+
+    @IsNotEmpty()
+    @IsInt()
+    age: number;
+
     @IsInt()
     @IsNotEmpty()
     roleId: number;

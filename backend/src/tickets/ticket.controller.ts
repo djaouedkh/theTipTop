@@ -16,19 +16,17 @@ export class TicketController {
 
     @Get(':id')
     async getById(@Param('id') id: string): Promise<TicketGetDto> {
-        console.log('1');
         return this.service.getById(Number(id));
     }
 
     @Get('search')
-    async getByCriteria(@Query() query: Prisma.TicketWhereInput): Promise<TicketGetDto[]> {
+    async getByCriteria(@Query() query: Prisma.TicketWhereInput): Promise<TicketGetDto> {
         return this.service.getByCriteria(query);
     }
 
-    // appeler getPrizeOfTicket qui aura un paramètre ref
-    @Get('by-ref/:ref')
-    async getPrizeOfTicket(@Param('ref') ref: string): Promise<TicketGetDto> {
-        return this.service.getPrizeOfTicket(ref);
+    @Get('searches')
+    async getAllByCriteria(@Query() query: Prisma.TicketWhereInput): Promise<TicketGetDto[]> {
+        return this.service.getAllByCriteria(query);
     }
 
     @Post('create')

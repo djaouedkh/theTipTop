@@ -1,7 +1,7 @@
 // src/app/pages/participate/participate.component.ts
 import { Component } from '@angular/core';
-import { TicketService } from '../../core/services/ticket.service';
-import { TicketGetDto } from '../../../../../backend/src/tickets/dtos/ticket-get.dto';
+import { ParticipateService } from '../../core/services/use-cases/participate.service';
+import { PlayToTheGameDto } from '../../../../../backend/src/use-cases/participate/dtos/play-to-the-game.dto';
 
 @Component({
     selector: 'app-participate',
@@ -9,32 +9,29 @@ import { TicketGetDto } from '../../../../../backend/src/tickets/dtos/ticket-get
 })
 export class ParticipateComponent {
     ticketCode: string = '';
-    ticketDetails: TicketGetDto | null = null;
+    playResult: PlayToTheGameDto | null = null;
     errorMessage: string | null = null;
 
-    constructor(private ticketService: TicketService) {}
+    constructor(private participateService: ParticipateService) {}
 
     onSubmit(): void {
         // Réinitialiser les messages et résultats précédents
-        this.ticketDetails = null;
+        this.playResult = null;
         this.errorMessage = null;
 
-        // Appel au service pour vérifier le ticket
-        this.ticketService.getPrizeOfTicket(this.ticketCode).subscribe({
-            next: (ticket: TicketGetDto) => {
-                if (ticket && ticket.prize) {
-                    this.ticketDetails = ticket;
-                    this.errorMessage = null;
+        // Appel au service pour jouer au jeu
+        this.participateService.playToTheGame(this.ticketCode).subscribe({
+            next: (result: PlayToTheGameDto) => {
+                console.log(result);
+                if (result.isWinner) {
+                    this.playResult = result;
                 } else {
-                    this.errorMessage = "Code non valide ou non trouvé.";
-                    this.ticketDetails = null;
+                    this.errorMessage = "Malheureusement, vous n'avez pas gagné de gain pour ce code ou le ticket n'est plus valide.";
                 }
             },
             error: () => {
-                this.errorMessage = "Code non valide ou non trouvé.";
-                this.ticketDetails = null;
+                this.errorMessage = "Une erreur est survenue lors de la vérification du code. Veuillez réessayer.";
             }
         });
-        
     }
 }

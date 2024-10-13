@@ -76,48 +76,59 @@ export class ContestService {
 
     // FEATURES METIERS
 
-    async generateCodes(numCodes: number): Promise<void> {
-        const codes = [];
-        for (let i = 0; i < numCodes; i++) {
-            const code = this.generateUniqueCode(); // Génère un code unique
-            codes.push({
-                ref: code,
-                status: false, // Par défaut, un ticket est non utilisé
-                contestId: 1 // ID du concours en cours
-            });
+    _isExpiredContest(contest: ContestGetDto): boolean {
+        const currentDate = new Date();
+        // Vérifier si le concours est encore en cours ou si le ticket est dans la période de validité
+        const validUntil = new Date(contest.endDate);
+        validUntil.setDate(validUntil.getDate() + 30); // 30 jours après la fin du concours
+        if (currentDate > validUntil || currentDate < contest.startDate) {
+            return false;
         }
-        await this.prisma.ticket.createMany({ data: codes });
+        return true;
     }
 
-    async drawWinner(contestId: number): Promise<UserGetDto> {
-        const winningTicket = await this.prisma.ticket.findFirst({
-            where: { contestId, status: true },
-            orderBy: { issuedDate: 'asc' } // Tirer au sort en fonction de la date d'émission
-        });
+    // async generateCodes(numCodes: number): Promise<void> {
+    //     const codes = [];
+    //     for (let i = 0; i < numCodes; i++) {
+    //         const code = this.generateUniqueCode(); // Génère un code unique
+    //         codes.push({
+    //             ref: code,
+    //             status: false, // Par défaut, un ticket est non utilisé
+    //             contestId: 1 // ID du concours en cours
+    //         });
+    //     }
+    //     await this.prisma.ticket.createMany({ data: codes });
+    // }
+
+    // async drawWinner(contestId: number): Promise<UserGetDto> {
+    //     const winningTicket = await this.prisma.ticket.findFirst({
+    //         where: { contestId, status: true },
+    //         orderBy: { issuedDate: 'asc' } // Tirer au sort en fonction de la date d'émission
+    //     });
     
-        if (!winningTicket) throw new Error('No valid ticket found for this contest.');
+    //     if (!winningTicket) throw new Error('No valid ticket found for this contest.');
     
-        const winner = await this.prisma.user.findUnique({
-            where: { id: winningTicket.userId }
-        });
+    //     const winner = await this.prisma.user.findUnique({
+    //         where: { id: winningTicket.userId }
+    //     });
     
-        return plainToInstance(UserGetDto, winner, { excludeExtraneousValues: true });
-    }
+    //     return plainToInstance(UserGetDto, winner, { excludeExtraneousValues: true });
+    // }
     
-    async getContestStats(contestId: number): Promise<any> {
-        const totalTickets = await this.prisma.ticket.count({ where: { contestId } });
-        const usedTickets = await this.prisma.ticket.count({ where: { contestId, status: true } });
-        const remainingTickets = totalTickets - usedTickets;
+    // async getContestStats(contestId: number): Promise<any> {
+    //     const totalTickets = await this.prisma.ticket.count({ where: { contestId } });
+    //     const usedTickets = await this.prisma.ticket.count({ where: { contestId, status: true } });
+    //     const remainingTickets = totalTickets - usedTickets;
     
-        return {
-            totalTickets,
-            usedTickets,
-            remainingTickets
-        };
-    }   
+    //     return {
+    //         totalTickets,
+    //         usedTickets,
+    //         remainingTickets
+    //     };
+    // }   
     
-    generateUniqueCode(): string {
-        // Génère un code aléatoire de 10 caractères (chiffres et lettres)
-        return Math.random().toString(36).substring(2, 12).toUpperCase();
-    }
+    // generateUniqueCode(): string {
+    //     // Génère un code aléatoire de 10 caractères (chiffres et lettres)
+    //     return Math.random().toString(36).substring(2, 12).toUpperCase();
+    // }
 }

@@ -4,7 +4,6 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { TicketListComponent } from './pages/ticket-management/ticket-list/ticket-list.component';
 import { TicketDetailsComponent } from './pages/ticket-management/ticket-details/ticket-details.component';
-import { PrizeListComponent } from './pages/prize-management/prize-list/prize-list.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
 import { UserListComponent } from './pages/user-management/user-list/user-list.component';
 import { UserDetailsComponent } from './pages/user-management/user-details/user-details.component';
@@ -20,7 +19,6 @@ import { AdminHeaderComponent } from './components/admin-header/admin-header.com
         DashboardComponent,
         TicketListComponent,
         TicketDetailsComponent,
-        PrizeListComponent,
         UserManagementComponent,
         UserListComponent,
         UserDetailsComponent,

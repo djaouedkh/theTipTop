@@ -1,14 +1,11 @@
 import { IsString, IsNumber } from "class-validator";
 
-export class PrizeCreateDto {
+export class GainCreateDto {
     @IsString()
     name: string;
 
     @IsString()
     description: string;
-
-    @IsString()
-    type: string;
 
     @IsNumber()
     price: number;

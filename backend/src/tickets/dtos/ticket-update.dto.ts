@@ -3,11 +3,11 @@ import { IsOptional, IsBoolean, IsInt, IsString } from 'class-validator';
 export class TicketUpdateDto {
     @IsString()
     @IsOptional()
-    ref?: string;
+    code?: string;
 
     @IsBoolean()
     @IsOptional()
-    status?: boolean;
+    isDelivered?: boolean;
 
     @IsInt()
     @IsOptional()
@@ -15,7 +15,7 @@ export class TicketUpdateDto {
 
     @IsInt()
     @IsOptional()
-    prizeId?: number;
+    gainId?: number;
 
     @IsInt()
     @IsOptional()
