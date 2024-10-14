@@ -1,6 +1,5 @@
-// src/app/admin/pages/stats-management/stats-management.component.ts
 import { Component, OnInit } from '@angular/core';
-// import { StatsService } from '../../../core/services/stats.service';
+import { StatsService } from '../../../core/services/use-cases/stats.service';
 
 @Component({
     selector: 'app-stats-management',
@@ -18,25 +17,9 @@ export class StatsManagementComponent implements OnInit {
     ]; // Exemple de données
     winnersCount = 200000; // Exemple de données
 
-    // constructor(private statsService: StatsService) {}
+    constructor(private statsService: StatsService) {}
 
     ngOnInit(): void {
-        // Charger les statistiques réelles via statsService (à implémenter plus tard)
-        // this.statsService.getStats().subscribe(stats => {
-        //     this.totalTickets = stats.totalTickets;
-        //     this.usedTickets = stats.usedTickets;
-        //     this.prizes = stats.prizes;
-        //     this.winnersCount = stats.winnersCount;
-        // });
-    }
-
-    isEmailModalOpen = false;
-
-    openEmailModal() {
-        this.isEmailModalOpen = true;
-    }
-
-    closeEmailModal() {
-        this.isEmailModalOpen = false;
+        
     }
 }

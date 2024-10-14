@@ -5,11 +5,13 @@ import { UseCaseController } from './use-case.controller';
 import { TicketService } from '../tickets/ticket.service';
 import { GainService } from '../gains/gain.service';
 import { ContestService } from '../contests/contest.service';
+import { StatsService } from './stats/stats.service';
 
 @Module({
     controllers: [UseCaseController],
     providers: [
         ParticipateService,
+        StatsService,
         TicketService,
         GainService,
         ContestService,

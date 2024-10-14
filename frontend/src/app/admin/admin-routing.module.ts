@@ -9,6 +9,8 @@ import { UserDetailsComponent } from './pages/user-management/user-details/user-
 import { StatsManagementComponent } from './pages/stats-management/stats-management.component';
 
 const adminRoutes: Routes = [
+    // si rien rediriger vers dashboard
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: 'dashboard', component: DashboardComponent },
     { path: 'tickets', component: TicketListComponent },
     { path: 'tickets/:id', component: TicketDetailsComponent },

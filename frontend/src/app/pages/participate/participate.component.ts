@@ -22,7 +22,6 @@ export class ParticipateComponent {
         // Appel au service pour jouer au jeu
         this.participateService.playToTheGame(this.ticketCode).subscribe({
             next: (result: PlayToTheGameDto) => {
-                console.log(result);
                 if (result.isWinner) {
                     this.playResult = result;
                 } else {
