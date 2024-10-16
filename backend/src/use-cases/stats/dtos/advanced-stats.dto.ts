@@ -1,11 +1,14 @@
+import { AgeGroupCount } from "../enums/age-group.enum";
+import { Gender } from "../enums/gender.enum";
+import { GlobalStatsDto } from "./global-stats.dto";
+
+export type GenderCount = {
+    [key in Gender]: number;
+};
+
 export class AdvancedStatsDto {
-    totalTickets: number;
-    ticketsUsed: number;
-    ticketsNotUsed: number;
-    claimedGains: number;
-    unclaimedGains: number;
-    totalParticipants: number;
-    participantsByGender: { male: number; female: number; other: number };
-    participantsByAgeGroup: { [key: string]: number }; // Ex: {'18-25': 500, '26-35': 300}
+    globalStats: GlobalStatsDto;
+    participantsByGender: GenderCount;
+    participantsByAgeGroup: AgeGroupCount; // Ex: {'18-25': 500, '26-35': 300}
     gainsDistribution: { [gainName: string]: number }; // Clé dynamique pour chaque type de gain
 }

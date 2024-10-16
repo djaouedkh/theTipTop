@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 import { StatsManagementComponent } from './pages/stats-management/stats-management.component';
 import { EmailModalComponent } from './components/email-modal/email-modal.component';
 import { AdminHeaderComponent } from './components/admin-header/admin-header.component';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 @NgModule({
     declarations: [
@@ -30,7 +31,8 @@ import { AdminHeaderComponent } from './components/admin-header/admin-header.com
         CommonModule,
         AdminRoutingModule,
         RouterModule,
-        FormsModule
+        FormsModule,
+        HighchartsChartModule,
     ],
     exports: [
         AdminHeaderComponent

@@ -1,0 +1,43 @@
+<div class="container mx-auto p-6 max-w-6xl">
+    <h1 class="text-4xl font-bold mb-6 text-center">Statistiques du Jeu-Concours</h1>
+  
+    <!-- Filtres -->
+    <div class="mb-6 flex justify-center space-x-4">
+      <button *ngIf="!selectedGender" mat-raised-button color="primary" (click)="filterByGender(Gender.Male)">Hommes</button>
+      <button *ngIf="!selectedGender" mat-raised-button color="accent" (click)="filterByGender(Gender.Female)">Femmes</button>
+      <button *ngIf="selectedGender" mat-raised-button color="warn" (click)="resetFilters()">Réinitialiser les filtres</button>
+    </div>
+  
+    <!-- Vérification de l'existence de stats et globalStats -->
+    <ng-container *ngIf="stats?.globalStats as globalStats">
+      <!-- Statistiques générales -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div class="p-4 bg-blue-500 text-white rounded-lg shadow-lg text-center">
+          <h2 class="text-lg font-semibold">Total Tickets</h2>
+          <p class="text-3xl font-bold">{{ globalStats.totalTickets }}</p>
+        </div>
+        <div class="p-4 bg-green-500 text-white rounded-lg shadow-lg text-center">
+          <h2 class="text-lg font-semibold">Tickets Utilisés</h2>
+          <p class="text-3xl font-bold">{{ globalStats.ticketsPlayed }}</p>
+        </div>
+        <div class="p-4 bg-yellow-500 text-white rounded-lg shadow-lg text-center">
+          <h2 class="text-lg font-semibold">Gains Réclamés</h2>
+          <p class="text-3xl font-bold">{{ globalStats.claimedGains }}</p>
+        </div>
+      </div>
+    </ng-container>
+    
+    <!-- Graphiques -->
+    <div class="mb-8" *ngIf="genderChartOptions.series">
+      <highcharts-chart [Highcharts]="Highcharts" [options]="genderChartOptions" style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+    </div>
+    
+    <div class="mb-8" *ngIf="ageGroupChartOptions.series">
+      <highcharts-chart [Highcharts]="Highcharts" [options]="ageGroupChartOptions" style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+    </div>
+    
+    <div class="mb-8" *ngIf="gainDistributionChartOptions.series">
+      <highcharts-chart [Highcharts]="Highcharts" [options]="gainDistributionChartOptions" style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+    </div>
+  </div>
+  

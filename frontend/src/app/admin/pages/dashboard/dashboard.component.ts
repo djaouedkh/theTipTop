@@ -11,7 +11,14 @@ import { StatsService } from '../../../core/services/use-cases/stats.service';
     templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
-    public stats: GlobalStatsDto;
+    public stats: GlobalStatsDto = {
+        totalTickets: 0,
+        ticketsPlayed: 0,
+        ticketsNotPlayed: 0,
+        totalParticipants: 0,
+        claimedGains: 0,
+        unclaimedGains: 0
+    }
 
     tickets: TicketGetDto[] = [];
 
