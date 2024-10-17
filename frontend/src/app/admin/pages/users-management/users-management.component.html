@@ -1,53 +1,51 @@
 <div class="container mx-auto p-6 max-w-6xl">
   <h1 class="text-4xl font-bold mb-6 text-center">Gestion des Utilisateurs</h1>
 
-  <!-- Liste des concours -->
-  <div class="mb-6">
-    <label for="contestSelect">Sélectionner un concours :</label>
-    <select id="contestSelect" class="border p-2" (change)="selectContest($event)">
-      <option value="none" selected>-- Aucun --</option>
-      <option *ngFor="let contest of contests" [value]="contest.id">{{ contest.name }}</option>
-    </select>
+  <!-- Message si le concours est expiré -->
+  <div *ngIf="!isContestValid" class="text-center text-lg text-red-500">
+    <p>Ce concours est expiré et vous ne pouvez plus accéder aux tickets.</p>
   </div>
 
-  <!-- Liste des utilisateurs -->
-  <div class="mb-6" *ngIf="selectedContest">
-    <label for="userSelect">Sélectionner un utilisateur :</label>
-    <select id="userSelect" class="border p-2" (change)="selectUser($event)">
-      <option value="none" selected>-- Aucun --</option>
-      <option *ngFor="let user of users" [value]="user.id">{{ user.firstname }} {{ user.lastname }}</option>
-    </select>
-  </div>
+  <!-- Liste des utilisateurs si le concours est valide -->
+  <div *ngIf="isContestValid">
+    <div class="mb-6">
+      <label for="userSelect">Sélectionner un utilisateur :</label>
+      <select id="userSelect" class="border p-2" (change)="selectUser($event)">
+        <option value="none" selected>-- Aucun --</option>
+        <option *ngFor="let user of users" [value]="user.id">{{ user.firstname }} {{ user.lastname }}</option>
+      </select>
+    </div>
 
-  <!-- Tickets de l'utilisateur sélectionné -->
-  <div *ngIf="selectedUser">
-    <h2 class="text-3xl font-semibold mb-4">Tickets de {{ selectedUser.firstname }} {{ selectedUser.lastname }}</h2>
+    <!-- Tickets de l'utilisateur sélectionné -->
+    <div *ngIf="selectedUser">
+      <h2 class="text-3xl font-semibold mb-4">Tickets de {{ selectedUser.firstname }} {{ selectedUser.lastname }}</h2>
 
-    <table class="w-full border-collapse bg-white shadow-lg">
-      <thead>
-        <tr>
-          <th class="border p-2">Code</th>
-          <th class="border p-2">Gain</th>
-          <th class="border p-2">Statut</th>
-          <th class="border p-2">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let ticket of userTickets" [ngClass]="ticket.isDelivered ? 'bg-gray-200' : ''">
-          <td class="border p-2">{{ ticket.code }}</td>
-          <td class="border p-2">{{ ticket.gain?.name || 'N/A' }}</td>
-          <td class="border p-2">{{ ticket.isDelivered ? 'Livré' : 'Non livré' }}</td>
-          <td class="border p-2">
-            <button
-              *ngIf="!ticket.isDelivered"
-              class="bg-green-500 text-white p-2 rounded"
-              (click)="markAsDelivered(ticket.id)"
-            >
-              Marquer comme livré
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <table class="w-full border-collapse bg-white shadow-lg">
+        <thead>
+          <tr>
+            <th class="border p-2">Code</th>
+            <th class="border p-2">Gain</th>
+            <th class="border p-2">Statut</th>
+            <th class="border p-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ticket of userTickets" [ngClass]="ticket.isDelivered ? 'bg-gray-200' : ''">
+            <td class="border p-2">{{ ticket.code }}</td>
+            <td class="border p-2">{{ ticket.gain.name || 'N/A' }}</td>
+            <td class="border p-2">{{ ticket.isDelivered ? 'Livré' : 'Non livré' }}</td>
+            <td class="border p-2">
+              <button
+                *ngIf="!ticket.isDelivered"
+                class="bg-green-500 text-white p-2 rounded"
+                (click)="markAsDelivered(ticket.id)"
+              >
+                Marquer comme livré
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

@@ -83,16 +83,18 @@ export class ContestService {
 
     // FEATURES METIERS
 
-    isExpiredContest(contest: ContestGetDto): boolean {
+    async isValid(contest?: ContestGetDto): Promise<boolean> {
+        if (!contest) {
+            contest = await this.prisma.contest.findFirst();
+        }
         const currentDate = new Date();
-        // Vérifier si le concours est encore en cours ou si le ticket est dans la période de validité
         const validUntil = new Date(contest.endDate);
         validUntil.setDate(validUntil.getDate() + 30); // 30 jours après la fin du concours
-        if (currentDate > validUntil || currentDate < contest.startDate) {
-            return false;
-        }
-        return true;
+    
+        // La validité est basée sur si la date actuelle est comprise entre la date de début et la date de fin + 30 jours
+        return currentDate >= new Date(contest.startDate) && currentDate <= validUntil;
     }
+    
 
     async getAllValid(): Promise<ContestGetDto[]> {
         const currentDate = new Date();

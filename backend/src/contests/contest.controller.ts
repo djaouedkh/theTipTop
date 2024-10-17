@@ -24,6 +24,11 @@ export class ContestController {
         return this.service.getAllValid();
     }
 
+    @Get('/is-valid')
+    async isValid(): Promise<boolean> {
+        return this.service.isValid();
+    }
+
     @Post('search')
     async getByCriteria(
         @Body('criteria') criteria: ContestSearchDto, 

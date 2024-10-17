@@ -17,7 +17,7 @@ export class ContestGetDto {
 
     @Expose()
     @Type(() => TicketGetDto)
-    tickets: TicketGetDto[];
+    tickets?: TicketGetDto[];
 }
 
 // SEARCH

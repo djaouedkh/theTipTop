@@ -25,6 +25,10 @@ export class ContestService {
         return this.apiService.get<ContestGetDto[]>(`${this.baseUrl}/all-valid`);
     }
 
+    isValid(): Observable<boolean> {
+        return this.apiService.get<boolean>(`${this.baseUrl}/is-valid`);
+    }
+
     search(criteria: ContestSearchDto, includeOptions?: ContestIncludeDto): Observable<ContestGetDto[]> {
         return this.apiService.post<ContestGetDto[]>(`${this.baseUrl}/search`, { criteria, includeOptions });
     }

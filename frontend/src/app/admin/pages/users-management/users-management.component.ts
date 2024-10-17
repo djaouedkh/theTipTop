@@ -4,18 +4,16 @@ import { TicketService } from '../../../core/services/ticket.service';
 import { ContestService } from '../../../core/services/contest.service';
 import { UserGetDto } from '../../../../../../backend/src/users/dtos/user-get.dto';
 import { TicketGetDto, TicketIncludeDto, TicketSearchDto } from '../../../../../../backend/src/tickets/dtos/ticket-get.dto';
-import { ContestGetDto } from '../../../../../../backend/src/contests/dtos/contest-get.dto';
 
 @Component({
   selector: 'app-users-management',
   templateUrl: './users-management.component.html',
 })
 export class UsersManagementComponent implements OnInit {
-  contests: ContestGetDto[] = [];
   users: UserGetDto[] = [];
   userTickets: TicketGetDto[] = [];
-  selectedContest: number | null = null;
   selectedUser: UserGetDto | null = null;
+  isContestValid = false;
 
   constructor(
     private userService: UserService,
@@ -24,14 +22,16 @@ export class UsersManagementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadContests();
+    this.checkContestValidity();
     this.loadUsers();
   }
 
-  loadContests(): void {
-    this.contestService.getAllValid().subscribe({
-      next: (data) => (this.contests = data),
-      error: (err) => console.error("Erreur lors du chargement des concours : ", err),
+  checkContestValidity(): void {
+    this.contestService.isValid().subscribe({
+      next: (isValid) => {
+        this.isContestValid = isValid;
+      },
+      error: (err) => console.error("Erreur lors de la vérification de la validité du concours : ", err),
     });
   }
 
@@ -42,39 +42,25 @@ export class UsersManagementComponent implements OnInit {
     });
   }
 
-  selectContest(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    const contestId = selectElement.value === 'none' ? null : Number(selectElement.value);
-
-    this.selectedContest = contestId;
-    
-    // Si un utilisateur est déjà sélectionné, met à jour les tickets avec le nouveau concours
-    if (this.selectedUser && contestId !== null) {
-      this.loadUserTickets(this.selectedUser.id, contestId);
-    } else {
-      this.userTickets = [];
-    }
-  }
-
   selectUser(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const userId = selectElement.value === 'none' ? null : Number(selectElement.value);
 
     if (userId === null) {
       this.selectedUser = null;
-      this.userTickets = []; // Vide les tickets si aucun utilisateur sélectionné
+      this.userTickets = [];
     } else {
       const user = this.users.find(u => u.id === userId) || null;
       this.selectedUser = user;
       
-      if (user && this.selectedContest) {
-        this.loadUserTickets(user.id, this.selectedContest);
+      if (user) {
+        this.loadUserTickets(user.id);
       }
     }
   }
 
-  loadUserTickets(userId: number, contestId: number): void {
-    const criteria: TicketSearchDto = { userId, contestId };
+  loadUserTickets(userId: number): void {
+    const criteria: TicketSearchDto = { userId };
     const includeOptions: TicketIncludeDto = { gain: true };
     
     this.ticketService.searches(criteria, includeOptions).subscribe({
@@ -88,8 +74,8 @@ export class UsersManagementComponent implements OnInit {
   markAsDelivered(ticketId: number): void {
     this.ticketService.update(ticketId, { isDelivered: true }).subscribe({
       next: () => {
-        if (this.selectedUser && this.selectedContest) {
-          this.loadUserTickets(this.selectedUser.id, this.selectedContest);
+        if (this.selectedUser) {
+          this.loadUserTickets(this.selectedUser.id);
         }
       },
       error: (err) => console.error("Erreur lors de la mise à jour du ticket : ", err),
