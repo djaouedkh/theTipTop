@@ -19,6 +19,7 @@ model User {
   roleId            Int                @map("role_id")
   role              Role               @relation(fields: [roleId], references: [id])
   tickets           Ticket[]
+  lotteryGames      LotteryGame[]
   
   @@map("user")
 }
@@ -88,4 +89,14 @@ model Contest {
   tickets       Ticket[]
 
   @@map("contest")
+}
+
+model LotteryGame {
+  id          Int      @id @default(autoincrement()) @map("id")
+  name        String   @map("name")
+  playDate    DateTime? @map("play_date")
+  userId      Int?      @map("user_id")
+  user        User?     @relation(fields: [userId], references: [id])
+
+  @@map("lottery_game")
 }

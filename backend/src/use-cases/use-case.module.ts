@@ -6,6 +6,7 @@ import { TicketService } from '../tickets/ticket.service';
 import { GainService } from '../gains/gain.service';
 import { ContestService } from '../contests/contest.service';
 import { StatsService } from './stats/stats.service';
+import { LotteryGameService } from './lottery-game/lottery-game.service';
 
 @Module({
     controllers: [UseCaseController],
@@ -15,6 +16,7 @@ import { StatsService } from './stats/stats.service';
         TicketService,
         GainService,
         ContestService,
+        LotteryGameService,
         PrismaService,
     ],
 })
