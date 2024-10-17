@@ -23,7 +23,7 @@ export class ParticipateService {
         if (!ticket) return { isWinner: false}
 
         // check is expired contest
-        const isExpiredContest = this.contestService._isExpiredContest(ticket.contest);
+        const isExpiredContest = this.contestService.isExpiredContest(ticket.contest);
         if (!isExpiredContest) return { isWinner: false }
 
         // associate ticket to user

@@ -19,6 +19,11 @@ export class ContestController {
         return this.service.getById(Number(id));
     }
 
+    @Get('/all-valid')
+    async getAllValid(): Promise<ContestGetDto[]> {
+        return this.service.getAllValid();
+    }
+
     @Post('search')
     async getByCriteria(
         @Body('criteria') criteria: ContestSearchDto, 

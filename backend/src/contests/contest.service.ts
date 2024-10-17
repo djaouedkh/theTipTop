@@ -83,7 +83,7 @@ export class ContestService {
 
     // FEATURES METIERS
 
-    _isExpiredContest(contest: ContestGetDto): boolean {
+    isExpiredContest(contest: ContestGetDto): boolean {
         const currentDate = new Date();
         // Vérifier si le concours est encore en cours ou si le ticket est dans la période de validité
         const validUntil = new Date(contest.endDate);
@@ -94,48 +94,18 @@ export class ContestService {
         return true;
     }
 
-    // async generateCodes(numCodes: number): Promise<void> {
-    //     const codes = [];
-    //     for (let i = 0; i < numCodes; i++) {
-    //         const code = this.generateUniqueCode(); // Génère un code unique
-    //         codes.push({
-    //             ref: code,
-    //             status: false, // Par défaut, un ticket est non utilisé
-    //             contestId: 1 // ID du concours en cours
-    //         });
-    //     }
-    //     await this.prisma.ticket.createMany({ data: codes });
-    // }
-
-    // async drawWinner(contestId: number): Promise<UserGetDto> {
-    //     const winningTicket = await this.prisma.ticket.findFirst({
-    //         where: { contestId, status: true },
-    //         orderBy: { issuedDate: 'asc' } // Tirer au sort en fonction de la date d'émission
-    //     });
-    
-    //     if (!winningTicket) throw new Error('No valid ticket found for this contest.');
-    
-    //     const winner = await this.prisma.user.findUnique({
-    //         where: { id: winningTicket.userId }
-    //     });
-    
-    //     return plainToInstance(UserGetDto, winner, { excludeExtraneousValues: true });
-    // }
-    
-    // async getContestStats(contestId: number): Promise<any> {
-    //     const totalTickets = await this.prisma.ticket.count({ where: { contestId } });
-    //     const usedTickets = await this.prisma.ticket.count({ where: { contestId, status: true } });
-    //     const remainingTickets = totalTickets - usedTickets;
-    
-    //     return {
-    //         totalTickets,
-    //         usedTickets,
-    //         remainingTickets
-    //     };
-    // }   
-    
-    // generateUniqueCode(): string {
-    //     // Génère un code aléatoire de 10 caractères (chiffres et lettres)
-    //     return Math.random().toString(36).substring(2, 12).toUpperCase();
-    // }
+    async getAllValid(): Promise<ContestGetDto[]> {
+        const currentDate = new Date();
+        const validContests = await this.prisma.contest.findMany({
+            where: {
+                startDate: {
+                    lte: currentDate, // Le concours a commencé
+                },
+                endDate: {
+                    gte: new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000), // La date actuelle est dans les 30 jours après la fin
+                },
+            },
+        });
+        return plainToInstance(ContestGetDto, validContests, { excludeExtraneousValues: true });
+    }
 }

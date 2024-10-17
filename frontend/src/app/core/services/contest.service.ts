@@ -21,6 +21,10 @@ export class ContestService {
         return this.apiService.get<ContestGetDto>(`${this.baseUrl}/by-id/${id}`);
     }
 
+    getAllValid(): Observable<ContestGetDto[]> {
+        return this.apiService.get<ContestGetDto[]>(`${this.baseUrl}/all-valid`);
+    }
+
     search(criteria: ContestSearchDto, includeOptions?: ContestIncludeDto): Observable<ContestGetDto[]> {
         return this.apiService.post<ContestGetDto[]>(`${this.baseUrl}/search`, { criteria, includeOptions });
     }
