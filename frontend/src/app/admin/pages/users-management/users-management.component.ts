@@ -25,6 +25,7 @@ export class UsersManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadContests();
+    this.loadUsers();
   }
 
   loadContests(): void {
@@ -34,28 +35,25 @@ export class UsersManagementComponent implements OnInit {
     });
   }
 
-  selectContest(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    const contestId = selectElement.value === 'none' ? null : Number(selectElement.value);
-    
-    if (contestId === null) {
-      this.selectedContest = null;
-      this.selectedUser = null;
-      this.users = [];
-      this.userTickets = [];
-    } else {
-      this.selectedContest = contestId;
-      this.loadUsers(); // Charge les utilisateurs en fonction du concours sélectionné
-      this.selectedUser = null; // Réinitialise l’utilisateur
-      this.userTickets = []; // Vide les tickets
-    }
-  }
-
   loadUsers(): void {
     this.userService.getAll().subscribe({
       next: (data) => (this.users = data),
       error: (err) => console.error("Erreur lors du chargement des utilisateurs : ", err),
     });
+  }
+
+  selectContest(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const contestId = selectElement.value === 'none' ? null : Number(selectElement.value);
+
+    this.selectedContest = contestId;
+    
+    // Si un utilisateur est déjà sélectionné, met à jour les tickets avec le nouveau concours
+    if (this.selectedUser && contestId !== null) {
+      this.loadUserTickets(this.selectedUser.id, contestId);
+    } else {
+      this.userTickets = [];
+    }
   }
 
   selectUser(event: Event): void {
@@ -70,7 +68,6 @@ export class UsersManagementComponent implements OnInit {
       this.selectedUser = user;
       
       if (user && this.selectedContest) {
-        // Charge les tickets en fonction de l'utilisateur et du concours
         this.loadUserTickets(user.id, this.selectedContest);
       }
     }
@@ -78,7 +75,7 @@ export class UsersManagementComponent implements OnInit {
 
   loadUserTickets(userId: number, contestId: number): void {
     const criteria: TicketSearchDto = { userId, contestId };
-    const includeOptions: TicketIncludeDto = { gain: true }; // Inclure les données de gain
+    const includeOptions: TicketIncludeDto = { gain: true };
     
     this.ticketService.searches(criteria, includeOptions).subscribe({
       next: (data: TicketGetDto[]) => {
