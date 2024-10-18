@@ -1,14 +1,16 @@
 <div class="container mx-auto p-6 max-w-6xl text-center">
   <h1 class="text-4xl font-bold mb-6">Jeu de Loterie</h1>
-  
-  <!-- Afficher le nom du jeu -->
+
   <h2 class="text-2xl mb-4">Gros lot - Un an de thé d'une valeur de 360€</h2>
 
-  <!-- Vérification du gagnant -->
-  <div *ngIf="winner; else noWinner">
-    <h2 class="text-3xl font-semibold mb-6">Le gagnant est : {{ winner.firstname }} {{ winner.lastname }}</h2>
+  <!-- Si un gagnant existe déjà -->
+  <div *ngIf="lotteryGame?.userId; else noWinner">
+    <h2 class="text-3xl font-semibold mb-6">
+      Le gagnant est : {{ lotteryGame?.user?.firstname }} {{ lotteryGame?.user?.lastname }}
+    </h2>
   </div>
 
+  <!-- Si aucun gagnant n'a encore été tiré -->
   <ng-template #noWinner>
     <button 
       *ngIf="!isLoading"
@@ -18,9 +20,9 @@
     </button>
 
     <!-- Effet de tirage en cours -->
-    <div *ngIf="isLoading" class="spinner mt-6">
+    <div *ngIf="isLoading" class="flex justify-center items-center mt-6">
       <p class="text-xl">Tirage au sort en cours...</p>
-      <!-- Ajouter ici un effet visuel de loterie -->
+      <div class="ml-4 h-12 w-12 border-4 border-t-blue-500 border-gray-300 rounded-full animate-spin"></div>
     </div>
   </ng-template>
 

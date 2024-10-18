@@ -7,14 +7,12 @@ import { GlobalStatsDto } from './stats/dtos/global-stats.dto';
 import { AdvancedStatsDto } from './stats/dtos/advanced-stats.dto';
 import { Gender } from './stats/enums/gender.enum';
 import { AgeGroup } from './stats/enums/age-group.enum';
-import { LotteryGameService } from './lottery-game/lottery-game.service';
 
 @Controller('')
 export class UseCaseController {
     constructor(
         private readonly participateService: ParticipateService,
         private readonly statsService: StatsService,
-        private readonly lotteryGameService: LotteryGameService,
     ) {}
 
     // PARTICIPATE
@@ -52,22 +50,5 @@ export class UseCaseController {
     @Get('stats/count-gains-distribution')
     async getAllCountGainsDistribution(): Promise<{ [gainName: string]: number }> {
         return this.statsService.getAllCountGainsDistribution();
-    }
-
-    // LOTTERY GAME
-    @Get('lottery-game/winner')
-    async getWinner() {
-        const winner = await this.lotteryGameService.getWinner();
-        return winner ? winner : { message: "Aucun gagnant pour le moment" };
-    }
-
-    @Post('lottery-game/draw')
-    async drawWinner() {
-        try {
-            const winner = await this.lotteryGameService.drawWinner();
-            return { winner };
-        } catch (error) {
-            return { error: error.message };
-        }
     }
 }

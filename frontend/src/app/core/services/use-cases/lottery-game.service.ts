@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Observable } from 'rxjs';
 import { UserGetDto } from '../../../../../../backend/src/users/dtos/user-get.dto';
+import { LotteryGameGetDto } from '../../../../../../backend/src/lottery-games/dtos/lottery-game-get.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -11,11 +12,11 @@ export class LotteryGameService {
 
     constructor(private apiService: ApiService) {}
 
-    getWinner(): Observable<UserGetDto> {
-        return this.apiService.get<UserGetDto>(`${this.baseUrl}/winner`);
+    get(): Observable<LotteryGameGetDto> {
+        return this.apiService.get<LotteryGameGetDto>(`${this.baseUrl}/get`);
     }
 
-    drawWinner(): Observable<{ winner: UserGetDto }> {
-        return this.apiService.post<{ winner: UserGetDto }>(`${this.baseUrl}/draw`, {});
+    play(): Observable<LotteryGameGetDto> {
+        return this.apiService.post<LotteryGameGetDto>(`${this.baseUrl}/play`, {});
     }
 }
