@@ -134,17 +134,10 @@ export class TicketService {
             });
         }
     
-        console.log('nbr de tickets', ticketsToGenerate.length);
-        console.log('ticket pour le gain 1', ticketsToGenerate.filter(ticket => ticket.gainId === 1).length);
-        console.log('ticket pour le gain 2', ticketsToGenerate.filter(ticket => ticket.gainId === 2).length);
-        console.log('ticket pour le gain 3', ticketsToGenerate.filter(ticket => ticket.gainId === 3).length);
-        console.log('ticket pour le gain 4', ticketsToGenerate.filter(ticket => ticket.gainId === 4).length);
-        console.log('ticket pour le gain 5', ticketsToGenerate.filter(ticket => ticket.gainId === 5).length);
-    
         // Insérer les tickets en base de données
-        // await this.prisma.ticket.createMany({
-        //     data: ticketsToGenerate,
-        // });
+        await this.prisma.ticket.createMany({
+            data: ticketsToGenerate,
+        });
     }
     
     // Méthode pour générer un code unique pour chaque ticket

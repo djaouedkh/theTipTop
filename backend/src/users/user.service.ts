@@ -5,6 +5,9 @@ import { UserGetDto, UserIncludeDto, UserSearchDto } from './dtos/user-get.dto';
 import { UserCreateDto } from './dtos/user-create.dto';
 import { UpdateUserDto } from './dtos/user-update.dto';
 import { Prisma } from '@prisma/client';
+import { UserFilterDto } from './dtos/user-filter.dto';
+import { AgeGroup } from '../use-cases/stats/enums/age-group.enum';
+import { Gender } from '../use-cases/stats/enums/gender.enum';
 
 @Injectable()
 export class UserService {
@@ -91,19 +94,51 @@ export class UserService {
 
     // FEATURES METIERS
 
-    // async getUserTickets(userId: number): Promise<TicketGetDto[]> {
-    //     const tickets = await this.prisma.ticket.findMany({
-    //         where: { userId }
-    //     });
+    async filterUsers(filters: UserFilterDto): Promise<UserGetDto[]> {
+        console.log('filters', filters);
+        const whereConditions: Prisma.UserWhereInput = {};
     
-    //     return plainToInstance(TicketGetDto, tickets, { excludeExtraneousValues: true });
-    // }
-    
-    // async getUserGains(userId: number): Promise<PrizeDistributionGetDto[]> {
-    //     const userGains = await this.prisma.prizeDistribution.findMany({
-    //         where: { userId, isClaimed: true }
-    //     });
-    
-    //     return plainToInstance(PrizeDistributionGetDto, userGains, { excludeExtraneousValues: true });
-    // }    
+        // Appliquer les filtres uniquement si les valeurs sont présentes
+        if (filters.ageGroup && Object.values(AgeGroup).includes(filters.ageGroup)) {
+            const ageRanges = {
+                [AgeGroup.YoungAdult]: { min: 18, max: 25 },
+                [AgeGroup.Adult]: { min: 26, max: 35 },
+                [AgeGroup.MiddleAged]: { min: 36, max: 45 },
+                [AgeGroup.Senior]: { min: 46, max: 55 },
+                [AgeGroup.Elder]: { min: 56, max: 150 },
+            };
+            const { min, max } = ageRanges[filters.ageGroup];
+            whereConditions.age = { gte: min, lte: max };
+        }
+        
+        if (filters.gender && Object.values(Gender).includes(filters.gender)) {
+            whereConditions.gender = filters.gender;
+        }
+
+        // Vérifier si les filtres 3 et 4 sont appliqués en même temps et lancer une erreur
+        if (filters.hasUnclaimedTickets && filters.hasNeverParticipated) {
+            throw new Error("Les filtres 'user ayant au moins un ticket non réclamé' et 'user n'ayant jamais participé' ne peuvent pas être combinés.");
+        }
+        
+        if (filters.hasUnclaimedTickets) {
+            whereConditions.tickets = {
+                some: {
+                    isDelivered: false,
+                },
+            };
+        }
+        
+        if (filters.hasNeverParticipated) {
+            whereConditions.tickets = {
+                none: {},
+            };
+        }
+        
+        // Exécuter la requête avec les filtres appliqués (ou sans restriction si les filtres sont absents)
+        const users = await this.prisma.user.findMany({
+            where: whereConditions,
+        });
+        
+        return plainToInstance(UserGetDto, users, { excludeExtraneousValues: true });
+    }
 }

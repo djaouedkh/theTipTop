@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { UserGetDto, UserIncludeDto, UserSearchDto } from '../../../../../backend/src/users/dtos/user-get.dto';
 import { UserCreateDto } from '../../../../../backend/src/users/dtos/user-create.dto';
 import { UpdateUserDto } from '../../../../../backend/src/users/dtos/user-update.dto';
+import { UserFilterDto } from '../../../../../backend/src/users/dtos/user-filter.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -39,5 +40,9 @@ export class UserService {
 
     delete(id: number): Observable<UserGetDto> {
         return this.apiService.delete<UserGetDto>(`${this.baseUrl}/${id}`);
+    }
+
+    filter(selectedFilters: UserFilterDto): Observable<UserGetDto[]> {
+        return this.apiService.post<UserGetDto[]>(`${this.baseUrl}/filter`, selectedFilters);
     }
 }

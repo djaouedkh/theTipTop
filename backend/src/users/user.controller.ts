@@ -4,6 +4,7 @@ import { UserGetDto, UserIncludeDto, UserSearchDto } from './dtos/user-get.dto';
 import { UserCreateDto } from './dtos/user-create.dto';
 import { UpdateUserDto } from './dtos/user-update.dto';
 import { Prisma } from '@prisma/client';
+import { UserFilterDto } from './dtos/user-filter.dto';
 
 @Controller('users')
 export class UserController {
@@ -46,5 +47,11 @@ export class UserController {
     @Delete(':id')
     async delete(@Param('id') id: string): Promise<UserGetDto> {
         return this.service.delete(Number(id));
+    }
+
+    // LOGIC JOB
+    @Post('filter')
+    async filterUsers(@Body() filters: UserFilterDto): Promise<UserGetDto[]> {
+        return this.service.filterUsers(filters);
     }
 }

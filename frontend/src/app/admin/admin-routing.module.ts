@@ -4,6 +4,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { UsersManagementComponent } from './pages/users-management/users-management.component';
 import { StatsManagementComponent } from './pages/stats-management/stats-management.component';
 import { LotteryGameComponent } from './pages/lottery-game/lottery-game.component';
+import { EmailsComponent } from './pages/emails/emails.component';
 
 const adminRoutes: Routes = [
     // si rien rediriger vers dashboard
@@ -12,6 +13,7 @@ const adminRoutes: Routes = [
     { path: 'users', component: UsersManagementComponent },
     { path: 'stats', component: StatsManagementComponent },
     { path: 'lottery-game', component: LotteryGameComponent },
+    { path: 'emails', component: EmailsComponent },
 ];
 
 @NgModule({
