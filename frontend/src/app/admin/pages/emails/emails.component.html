@@ -1,46 +1,60 @@
 <div class="container mx-auto p-6 max-w-6xl">
-    <h1 class="text-4xl font-bold mb-6">Email Marketing - Filtrer les Utilisateurs</h1>
+  <h1 class="text-4xl font-bold mb-6">Email Marketing - Filtrer les Utilisateurs</h1>
+
+  <!-- Filtre par groupe d'âge -->
+  <div class="mb-6">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Filtrer par groupe d'âge :</label>
+    <select class="border p-2 w-full" [(ngModel)]="selectedFilters.ageGroup">
+      <option value="" selected [value]="null">Tout</option>
+      <option *ngFor="let group of ageGroups" [value]="group">{{ group }}</option>
+    </select>
+  </div>
+
+  <!-- Filtre par genre -->
+  <div class="mb-6">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Filtrer par genre :</label>
+    <select class="border p-2 w-full" [(ngModel)]="selectedFilters.gender">
+      <option value="" selected [value]="null">Tout</option>
+      <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
+    </select>
+  </div>
+
+  <!-- Filtre par statut des tickets -->
+  <div class="mb-6">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Tickets non réclamés ou jamais participé :</label>
+    <select class="border p-2 w-full" [(ngModel)]="selectedFilterOption">
+      <option value="" selected [value]="null">Tout</option>
+      <option [value]="'hasUnclaimedTickets'">Tickets non réclamés</option>
+      <option [value]="'hasNeverParticipated'">Jamais participé</option>
+    </select>
+  </div>
+
+  <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4" (click)="filterUsers()">Filtrer</button>
+
+  <!-- Boutons pour sélectionner ou désélectionner tous les utilisateurs -->
+  <div class="mb-6 flex gap-4">
+    <button class="bg-gray-500 text-white font-bold py-2 px-4 rounded" (click)="selectAllUsers(true)">Tout cocher</button>
+    <button class="bg-gray-500 text-white font-bold py-2 px-4 rounded" (click)="selectAllUsers(false)">Tout décocher</button>
+  </div>
   
-    <div class="mb-6">
-      <label class="block text-gray-700 text-sm font-bold mb-2">Filtrer par groupe d'âge :</label>
-      <select class="border p-2 w-full" [(ngModel)]="selectedFilters.ageGroup">
-        <option value="" selected [value]="null">Tout</option>
-        <option *ngFor="let group of ageGroups" [value]="group">{{ group }}</option>
-      </select>
-    </div>
-  
-    <div class="mb-6">
-      <label class="block text-gray-700 text-sm font-bold mb-2">Filtrer par genre :</label>
-      <select class="border p-2 w-full" [(ngModel)]="selectedFilters.gender">
-        <option value="" selected [value]="null">Tout</option>
-        <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
-      </select>
-    </div>
-  
-    <div class="mb-6">
-      <label class="block text-gray-700 text-sm font-bold mb-2">Tickets non réclamés ou jamais participé :</label>
-      <select class="border p-2 w-full" [(ngModel)]="selectedFilterOption">
-        <option value="" selected [value]="null">Tout</option>
-        <option [value]="'hasUnclaimedTickets'">Tickets non réclamés</option>
-        <option [value]="'hasNeverParticipated'">Jamais participé</option>
-      </select>
-    </div>
-    
-  
-    <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" (click)="filterUsers()">Filtrer</button>
-  
-    <!-- Afficher les utilisateurs filtrés -->
-    <div *ngIf="isLoading" class="mt-6">Chargement...</div>
-    <div *ngIf="!isLoading && users.length > 0" class="mt-6">
-      <h2 class="text-2xl font-bold mb-4">Utilisateurs filtrés</h2>
-      <ul>
-        <li *ngFor="let user of users" class="border p-2 mb-2">
-          {{ user.firstname }} {{ user.lastname }} - {{ user.email }}
-        </li>
-      </ul>
-    </div>
-  
+  <!-- Bouton pour envoyer les emails -->
+  <div class="mb-6 flex gap-4">
+    <button class="bg-green-500 text-white font-bold py-2 px-4 rounded mb-4" (click)="navigateToEmailSend()">Envoyer un email</button>
+    <!-- Affichage d'un message d'erreur si aucun utilisateur n'est sélectionné -->
+    <p *ngIf="emailErrorMessage" class="text-red-500 mt-4">{{ emailErrorMessage }}</p>
     <!-- Affichage d'un message d'erreur -->
     <p *ngIf="errorMessage" class="text-red-500 mt-4">{{ errorMessage }}</p>
   </div>
-  
+
+  <!-- Afficher les utilisateurs filtrés avec les cases à cocher -->
+  <div *ngIf="isLoading" class="mt-6">Chargement...</div>
+  <div *ngIf="!isLoading && users.length > 0" class="mt-6">
+    <h2 class="text-2xl font-bold mb-4">Utilisateurs filtrés</h2>
+    <ul>
+      <li *ngFor="let user of users; let i = index" class="border p-2 mb-2 flex items-center">
+        <input type="checkbox" [(ngModel)]="selectedUsers[i]" class="mr-2" /> 
+        {{ user.firstname }} {{ user.lastname }} - {{ user.email }}
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,13 +1,14 @@
 import { Expose, Type } from 'class-transformer';
 import { IsOptional, IsString, MinLength } from 'class-validator';
 import { UserGetDto } from '../../users/dtos/user-get.dto';
+import { RoleType } from '../types/role.type';
 
 export class RoleGetDto {
     @Expose()
     id: number;
 
     @Expose()
-    name: string;
+    name: RoleType;
 
     @Expose()
     @Type(() => UserGetDto)
@@ -17,12 +18,12 @@ export class RoleGetDto {
 export class RoleCreateDto {
     @IsString()
     @MinLength(2)
-    name: string;
+    name: RoleType;
 }
 
 export class RoleUpdateDto {
     @IsOptional()
     @IsString()
     @MinLength(2)
-    name?: string;
+    name?: RoleType;
 }

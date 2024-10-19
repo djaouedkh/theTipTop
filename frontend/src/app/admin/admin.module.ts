@@ -11,6 +11,7 @@ import { AdminHeaderComponent } from './components/admin-header/admin-header.com
 import { HighchartsChartModule } from 'highcharts-angular';
 import { LotteryGameComponent } from './pages/lottery-game/lottery-game.component';
 import { EmailsComponent } from './pages/emails/emails.component';
+import { EmailSendComponent } from './pages/emails/email-send/email-send.component';
 
 @NgModule({
     declarations: [
@@ -21,6 +22,7 @@ import { EmailsComponent } from './pages/emails/emails.component';
         UsersManagementComponent,
         LotteryGameComponent,
         EmailsComponent,
+        EmailSendComponent,
         // Ajoutez d'autres composants si nécessaire
     ],
     imports: [

@@ -1,0 +1,26 @@
+<div class="container mx-auto p-6 max-w-6xl">
+  <h1 class="text-4xl font-bold mb-6">Envoyer un Email</h1>
+
+  <div class="mb-6">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Objet :</label>
+    <input type="text" class="border p-2 w-full" [(ngModel)]="subject" placeholder="Objet de l'email" />
+  </div>
+
+  <div class="mb-6">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Contenu de l'email :</label>
+    <textarea class="border p-2 w-full" [(ngModel)]="body" placeholder="Contenu de l'email"></textarea>
+  </div>
+
+  <div class="mb-6">
+    <h2 class="text-2xl font-bold">Destinataires :</h2>
+    <ul>
+      <!-- Utiliser le pipe async pour souscrire à l'Observable users$ -->
+      <li *ngFor="let user of users$ | async; let i = index" class="border p-2 mb-2">
+        {{ user.firstname }} {{ user.lastname }} - {{ user.email }}
+        <button (click)="removeUser(i)" class="text-red-500">Supprimer</button>
+      </li>
+    </ul>
+  </div>
+
+  <button class="bg-green-500 text-white font-bold py-2 px-4 rounded" (click)="sendEmail()">Envoyer</button>
+</div>
