@@ -14,7 +14,7 @@ export class UserGainsComponent implements OnInit {
 
     ngOnInit(): void {
         // Récupérer l'id de l'utilisateur connecté
-        const userId = 1; // à remplacer par la logique de récupération de l'utilisateur
+        const userId = 1; // TODO: Remplacer par l'id de l'utilisateur connecté
 
         // Critères de recherche et options d'inclusion
         const criteria: TicketSearchDto = { userId };

@@ -7,6 +7,7 @@ import { TicketUpdateDto } from './dtos/ticket-update.dto';
 import { Prisma } from '@prisma/client';
 import { GainService } from '../gains/gain.service';
 import { GainGetDto } from '../gains/dtos/gain-get.dto';
+import { GainTypes } from '../gains/enums/gain-types.enum';
 
 @Injectable()
 export class TicketService {
@@ -79,6 +80,76 @@ export class TicketService {
         });
 
         return plainToInstance(TicketGetDto, deleteTicket, { excludeExtraneousValues: true });
+    }
+    
+    // JOB LOGIC
+    async generateTickets(nbrGenTickets: number): Promise<void> {
+        const gainMap = await this.gainService.associateIdsWithGainTypes();
+        
+        // Pourcentages fixes des gains
+        const percentages = {
+            [GainTypes.INFUSEUR_THE]: 0.6,
+            [GainTypes.BOITE_THE_DETOX]: 0.2,
+            [GainTypes.BOITE_THE_SIGNATURE]: 0.1,
+            [GainTypes.COFFRET_DECOUVERTE_39]: 0.06,
+            [GainTypes.COFFRET_DECOUVERTE_69]: 0.04,
+        };
+    
+        const ticketsToGenerate = [];
+        let totalTicketsGenerated = 0;
+    
+        // Calculer le nombre de tickets pour chaque gain avec précision
+        const gainTypes = Object.keys(percentages);
+        let remainingTickets = nbrGenTickets;
+    
+        for (let i = 0; i < gainTypes.length - 1; i++) {
+            const gainType = gainTypes[i] as GainTypes;
+            const percentage = percentages[gainType];
+            const numberOfTicketsForGain = Math.round(percentage * nbrGenTickets); // Arrondi standard pour éviter de perdre des tickets
+            const gainId = gainMap[gainType];
+    
+            for (let j = 0; j < numberOfTicketsForGain; j++) {
+                ticketsToGenerate.push({
+                    code: this.generateTicketCode(),
+                    gainId,
+                    contestId: 1,
+                    isDelivered: false,
+                });
+            }
+    
+            totalTicketsGenerated += numberOfTicketsForGain;
+            remainingTickets -= numberOfTicketsForGain;
+        }
+    
+        // Le dernier gain prend tous les tickets restants
+        const lastGainType = gainTypes[gainTypes.length - 1] as GainTypes;
+        const lastGainId = gainMap[lastGainType];
+        
+        for (let k = 0; k < remainingTickets; k++) {
+            ticketsToGenerate.push({
+                code: this.generateTicketCode(),
+                gainId: lastGainId,
+                contestId: 1,
+                isDelivered: false,
+            });
+        }
+    
+        console.log('nbr de tickets', ticketsToGenerate.length);
+        console.log('ticket pour le gain 1', ticketsToGenerate.filter(ticket => ticket.gainId === 1).length);
+        console.log('ticket pour le gain 2', ticketsToGenerate.filter(ticket => ticket.gainId === 2).length);
+        console.log('ticket pour le gain 3', ticketsToGenerate.filter(ticket => ticket.gainId === 3).length);
+        console.log('ticket pour le gain 4', ticketsToGenerate.filter(ticket => ticket.gainId === 4).length);
+        console.log('ticket pour le gain 5', ticketsToGenerate.filter(ticket => ticket.gainId === 5).length);
+    
+        // Insérer les tickets en base de données
+        // await this.prisma.ticket.createMany({
+        //     data: ticketsToGenerate,
+        // });
+    }
+    
+    // Méthode pour générer un code unique pour chaque ticket
+    private generateTicketCode(): string {
+        return Math.random().toString(36).substring(2, 10).toUpperCase();
     }
     
 }

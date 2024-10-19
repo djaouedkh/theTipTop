@@ -49,4 +49,10 @@ export class TicketController {
     async delete(@Param('id') id: string): Promise<TicketGetDto> {
         return this.service.delete(Number(id));
     }
+
+    // JOB LOGIC
+    @Post('generate')
+    async generateTickets(@Body('ticketCount') ticketCount: number) {
+        return this.service.generateTickets(ticketCount);
+    }
 }

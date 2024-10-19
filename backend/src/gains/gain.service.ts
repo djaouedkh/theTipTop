@@ -5,6 +5,7 @@ import { Prisma } from '@prisma/client';
 import { GainCreateDto } from './dtos/gain-create.dto';
 import { GainGetDto, GainIncludeDto, GainSearchDto } from './dtos/gain-get.dto';
 import { GainUpdateDto } from './dtos/gain-update.dto';
+import { GainTypes } from './enums/gain-types.enum';
 
 @Injectable()
 export class GainService {
@@ -83,5 +84,15 @@ export class GainService {
     }
 
     // LOGIQUE MÉTIER
-
+    async associateIdsWithGainTypes(): Promise<Record<GainTypes, number>> {
+        const gains = await this.prisma.gain.findMany();
+        const gainMap: Record<GainTypes, number> = {
+            [GainTypes.INFUSEUR_THE]: gains.find(g => g.name === GainTypes.INFUSEUR_THE)?.id,
+            [GainTypes.BOITE_THE_DETOX]: gains.find(g => g.name === GainTypes.BOITE_THE_DETOX)?.id,
+            [GainTypes.BOITE_THE_SIGNATURE]: gains.find(g => g.name === GainTypes.BOITE_THE_SIGNATURE)?.id,
+            [GainTypes.COFFRET_DECOUVERTE_39]: gains.find(g => g.name === GainTypes.COFFRET_DECOUVERTE_39)?.id,
+            [GainTypes.COFFRET_DECOUVERTE_69]: gains.find(g => g.name === GainTypes.COFFRET_DECOUVERTE_69)?.id,
+        };
+        return gainMap;
+    }
 }
