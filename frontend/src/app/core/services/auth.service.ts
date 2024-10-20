@@ -31,27 +31,27 @@ export class AuthService {
     // Connexion via formulaire classique
     login(email: string, password: string): Observable<any> {
         return this.apiService.post('auth/login', { email, password }).pipe(
-        tap((response: any) => {
-            this.storeUser(response.token);
-        })
+            tap((response: any) => {
+                this.storeUser(response.token);
+            })
         );
     }
 
     // Connexion via Google
-    loginWithGoogle(token: string): Observable<any> {
-        return this.apiService.post('auth/google-login', { token }).pipe(
-        tap((response: any) => {
-            this.storeUser(response.token);
-        })
+    loginWithGoogle(): Observable<any> {
+        return this.apiService.post('auth/google', {}).pipe(
+            tap((response: any) => {
+                // stock the user
+            })
         );
     }
 
     // Connexion via Facebook
-    loginWithFacebook(token: string): Observable<any> {
-        return this.apiService.post('auth/facebook-login', { token }).pipe(
-        tap((response: any) => {
-            this.storeUser(response.token);
-        })
+    loginWithFacebook(): Observable<any> {
+        return this.apiService.post('auth/facebook', {}).pipe(
+            tap((response: any) => {
+                // stock the user
+            })
         );
     }
 

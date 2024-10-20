@@ -6,7 +6,7 @@ import { HeaderComponent } from './core/components/header/header.component';
 import { FooterComponent } from './core/components/footer/footer.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ParticipateComponent } from './pages/participate/participate.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { UserGainsComponent } from './pages/user-gains/user-gains.component';
@@ -18,7 +18,7 @@ import { StoreModule, MetaReducer } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { emailReducer } from './core/stores/emails/email.reducer';
-// import { userReducer } from './core/stores/users/user.reducer';
+import { userReducer } from './core/stores/users/user.reducer';
 import { storageMetaReducer } from './core/stores/storage.metareducer';
 
 // Définition des meta-reducers
@@ -30,13 +30,14 @@ export const metaReducers: MetaReducer<any>[] = [storageMetaReducer];
         CommonModule,
         AppRoutingModule,
         FormsModule,
+        ReactiveFormsModule,
         HttpClientModule,
         AdminModule,
 
         StoreModule.forRoot(
             {
                 emailState: emailReducer,
-                // userState: userReducer,
+                userState: userReducer,
             },
             { metaReducers }
         ),
