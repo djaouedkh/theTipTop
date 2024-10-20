@@ -1,50 +1,79 @@
-<div class="container mx-auto max-w-lg p-6">
-    <h1 class="text-4xl font-bold mb-6">Connexion</h1>
+<div class="container mx-auto p-6 max-w-lg">
+    <h1 class="text-4xl font-bold mb-6">{{ isLoginMode ? 'Connexion' : 'Inscription' }}</h1>
   
-    <!-- Affichage des erreurs -->
-    <div *ngIf="errorMessage" class="bg-red-100 text-red-700 p-4 rounded mb-6">
-      {{ errorMessage }}
-    </div>
-  
-    <!-- Formulaire de connexion classique -->
-    <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <!-- Formulaire de connexion -->
+    <form *ngIf="isLoginMode" [formGroup]="loginForm" (ngSubmit)="login()">
       <div class="mb-4">
-        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email :</label>
-        <input
-          type="email"
-          id="email"
-          formControlName="email"
-          class="border p-2 w-full"
-          placeholder="Votre adresse email"
-          [ngClass]="{ 'border-red-500': loginForm.get('email')?.invalid && loginForm.get('email')?.touched }"
-        />
-        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-red-500 text-sm">
-          Email invalide.
-        </div>
+        <label for="email" class="block text-sm font-bold mb-2">Email</label>
+        <input type="email" id="email" formControlName="email" class="border p-2 w-full" [ngClass]="{ 'border-red-500': isInvalid('email', loginForm) }" />
+        <p *ngIf="isInvalid('email', loginForm)" class="text-red-500 text-xs">L'email est requis et doit être valide.</p>
       </div>
   
       <div class="mb-4">
-        <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Mot de passe :</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          class="border p-2 w-full"
-          placeholder="Votre mot de passe"
-          [ngClass]="{ 'border-red-500': loginForm.get('password')?.invalid && loginForm.get('password')?.touched }"
-        />
-        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-500 text-sm">
-          Mot de passe requis.
-        </div>
+        <label for="password" class="block text-sm font-bold mb-2">Mot de passe</label>
+        <input type="password" id="password" formControlName="password" class="border p-2 w-full" [ngClass]="{ 'border-red-500': isInvalid('password', loginForm) }" />
+        <p *ngIf="isInvalid('password', loginForm)" class="text-red-500 text-xs">Le mot de passe est requis (min 6 caractères).</p>
       </div>
   
-      <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded w-full" [disabled]="loginForm.invalid">Se connecter</button>
+      <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded w-full" [disabled]="loginForm.invalid">Se connecter</button>
     </form>
   
-    <!-- Boutons pour connexion via Google et Facebook -->
-    <div class="mt-6 flex justify-between">
-      <button (click)="loginWithGoogle()" class="bg-red-500 text-white py-2 px-4 rounded w-full mr-2">Connexion via Google</button>
-      <button (click)="loginWithFacebook()" class="bg-blue-600 text-white py-2 px-4 rounded w-full">Connexion via Facebook</button>
+    <!-- Formulaire d'inscription -->
+    <form *ngIf="!isLoginMode" [formGroup]="registerForm" (ngSubmit)="register()">
+      <div class="mb-4">
+        <label for="firstname" class="block text-sm font-bold mb-2">Prénom</label>
+        <input type="text" id="firstname" formControlName="firstname" class="border p-2 w-full" [ngClass]="{ 'border-red-500': isInvalid('firstname', registerForm) }" />
+        <p *ngIf="isInvalid('firstname', registerForm)" class="text-red-500 text-xs">Le prénom est requis (min 2 caractères).</p>
+      </div>
+  
+      <div class="mb-4">
+        <label for="lastname" class="block text-sm font-bold mb-2">Nom</label>
+        <input type="text" id="lastname" formControlName="lastname" class="border p-2 w-full" [ngClass]="{ 'border-red-500': isInvalid('lastname', registerForm) }" />
+        <p *ngIf="isInvalid('lastname', registerForm)" class="text-red-500 text-xs">Le nom est requis (min 2 caractères).</p>
+      </div>
+  
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-bold mb-2">Email</label>
+        <input type="email" id="email" formControlName="email" class="border p-2 w-full" [ngClass]="{ 'border-red-500': isInvalid('email', registerForm) }" />
+        <p *ngIf="isInvalid('email', registerForm)" class="text-red-500 text-xs">L'email est requis et doit être valide.</p>
+      </div>
+  
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-bold mb-2">Mot de passe</label>
+        <input type="password" id="password" formControlName="password" class="border p-2 w-full" [ngClass]="{ 'border-red-500': isInvalid('password', registerForm) }" />
+        <p *ngIf="isInvalid('password', registerForm)" class="text-red-500 text-xs">Le mot de passe est requis (min 6 caractères).</p>
+      </div>
+  
+      <div class="mb-4">
+        <label for="confirmPassword" class="block text-sm font-bold mb-2">Confirmer le mot de passe</label>
+        <input type="password" id="confirmPassword" formControlName="confirmPassword" class="border p-2 w-full" [ngClass]="{ 'border-red-500': isInvalid('confirmPassword', registerForm) }" />
+        <p *ngIf="registerForm.get('password')?.value !== registerForm.get('confirmPassword')?.value && registerForm.get('confirmPassword')?.touched" class="text-red-500 text-xs">Les mots de passe ne correspondent pas.</p>
+      </div>
+  
+      <div class="mb-4">
+        <label for="gender" class="block text-sm font-bold mb-2">Genre</label>
+        <select id="gender" formControlName="gender" class="border p-2 w-full" [ngClass]="{ 'border-red-500': isInvalid('gender', registerForm) }">
+          <option value="" disabled selected>Choisissez votre genre</option>
+          <option value="Homme">Homme</option>
+          <option value="Femme">Femme</option>
+        </select>
+        <p *ngIf="isInvalid('gender', registerForm)" class="text-red-500 text-xs">Le genre est requis.</p>
     </div>
+
+    <div class="mb-4">
+      <label for="age" class="block text-sm font-bold mb-2">Âge</label>
+      <input type="number" id="age" formControlName="age" class="border p-2 w-full" [ngClass]="{ 'border-red-500': isInvalid('age', registerForm) }" />
+      <p *ngIf="isInvalid('age', registerForm)" class="text-red-500 text-xs">L'âge est requis et doit être au moins de 18 ans.</p>
+    </div>
+
+    <button type="submit" class="bg-green-500 text-white font-bold py-2 px-4 rounded w-full" [disabled]="registerForm.invalid">S'inscrire</button>
+  </form>
+
+  <!-- Bouton pour changer de mode -->
+  <div class="mt-4 text-center">
+    <button class="text-blue-500" (click)="toggleMode()">
+      {{ isLoginMode ? "Pas encore inscrit ? S'inscrire" : "Déjà inscrit ? Se connecter" }}
+    </button>
   </div>
+</div>
   

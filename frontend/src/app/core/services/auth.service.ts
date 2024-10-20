@@ -32,7 +32,16 @@ export class AuthService {
     login(email: string, password: string): Observable<any> {
         return this.apiService.post('auth/login', { email, password }).pipe(
             tap((response: any) => {
-                this.storeUser(response.token);
+                // stock the user
+            })
+        );
+    }
+
+    // Inscription via formulaire classique
+    register(user: any): Observable<any> {
+        return this.apiService.post('auth/register', user).pipe(
+            tap((response: any) => {
+                // stock the user
             })
         );
     }
