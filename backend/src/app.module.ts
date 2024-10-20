@@ -10,6 +10,7 @@ import { GainDeliveryModule } from './gain-deliveries/gain-delivery.module';
 import { UseCaseModule } from './use-cases/use-case.module';
 import { ParseIntMiddleware } from './middlewares/parse-int.middleware';
 import { LotteryGameModule } from './lottery-games/lottery-game.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { LotteryGameModule } from './lottery-games/lottery-game.module';
     ContestModule,
     LotteryGameModule,
     UseCaseModule,
+    AuthModule,
   ],
   providers: [PrismaService],
 })

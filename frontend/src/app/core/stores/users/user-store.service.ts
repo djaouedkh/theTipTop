@@ -16,8 +16,8 @@ export class UserStoreService {
     }
 
     // Action pour définir les informations de l'utilisateur
-    setUser(id: number, name: string, email: string, role: string): void {
-        this.store.dispatch(setUser({ id, name, email, role }));
+    setUser(id: number, name: string, email: string, role: string, token: string): void {
+        this.store.dispatch(setUser({ id, name, email, role, token }));
     }
 
     // Action pour réinitialiser l'utilisateur

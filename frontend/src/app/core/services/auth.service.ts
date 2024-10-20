@@ -1,87 +1,101 @@
-// core/services/auth.service.ts
-
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
+import { AuthResponseDto } from '../../../../../backend/src/auth/dtos/auth-response.dto';
+import { UserStoreService } from '../stores/users/user-store.service';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class AuthService {
-    private currentUserSubject: BehaviorSubject<any>;
-    public currentUser: Observable<any>;
+  private currentUserSubject: BehaviorSubject<any>;
+  public currentUser: Observable<any>;
 
-    constructor(private apiService: ApiService) {
-        this.currentUserSubject = new BehaviorSubject<any>(this.getStoredUser());
-        this.currentUser = this.currentUserSubject.asObservable();
-    }
+  constructor(
+    private apiService: ApiService,
+    private userStoreService: UserStoreService
+  ) {
+    this.currentUserSubject = new BehaviorSubject<any>(this.getStoredUser());
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
 
-    private getStoredUser(): any {
-        const userToken = localStorage.getItem('userToken');
-        return userToken ? jwtDecode(userToken) : null;
-    }
+  private getStoredUser(): any {
+    const userToken = localStorage.getItem('userToken');
+    return userToken ? jwtDecode(userToken) : null;
+  }
 
-    private storeUser(token: string): void {
-        localStorage.setItem('userToken', token);
-        this.currentUserSubject.next(jwtDecode(token));
-    }
+  private storeUser(token: string): void {
+    localStorage.setItem('userToken', token);
+    this.currentUserSubject.next(jwtDecode(token));
+  }
 
-    // Connexion via formulaire classique
-    login(email: string, password: string): Observable<any> {
-        return this.apiService.post('auth/login', { email, password }).pipe(
-            tap((response: any) => {
-                // stock the user
-            })
-        );
-    }
+  // Connexion via formulaire classique
+  login(email: string, password: string): Observable<AuthResponseDto> {
+    return this.apiService.post<AuthResponseDto>('auth/login', { email, password }).pipe(
+      tap((response: AuthResponseDto) => {
+        if (response.isSuccess && response.accessToken && response.user) {
+          this.storeUser(response.accessToken); // Stocker le token uniquement si succès
+          this.userStoreService.setUser(
+            response.user.id, 
+            response.user.firstname, 
+            response.user.email, 
+            response.user.role.name, 
+            response.accessToken
+          );
+        }
+      })
+    );
+  }
 
-    // Inscription via formulaire classique
-    register(user: any): Observable<any> {
-        return this.apiService.post('auth/register', user).pipe(
-            tap((response: any) => {
-                // stock the user
-            })
-        );
-    }
+  // Inscription via formulaire classique
+  register(user: any): Observable<AuthResponseDto> {
+    return this.apiService.post<AuthResponseDto>('auth/register', user).pipe(
+      tap((response: AuthResponseDto) => {
+        if (response.isSuccess && response.accessToken && response.user) {
+          this.storeUser(response.accessToken); // Stocker le token uniquement si succès
+          this.userStoreService.setUser(
+            response.user.id, 
+            response.user.firstname, 
+            response.user.email, 
+            response.user.role.name, 
+            response.accessToken
+          );
+        }
+      })
+    );
+  }
 
-    // Connexion via Google
-    loginWithGoogle(): Observable<any> {
-        return this.apiService.post('auth/google', {}).pipe(
-            tap((response: any) => {
-                // stock the user
-            })
-        );
-    }
+  // Déconnexion
+  logout(): void {
+    localStorage.removeItem('userToken');
+    this.currentUserSubject.next(null);
+    this.userStoreService.clearUser();
+  }
 
-    // Connexion via Facebook
-    loginWithFacebook(): Observable<any> {
-        return this.apiService.post('auth/facebook', {}).pipe(
-            tap((response: any) => {
-                // stock the user
-            })
-        );
-    }
+  // Récupération du token JWT
+  getToken(): string | null {
+    return localStorage.getItem('userToken');
+  }
 
-    // Déconnexion
-    logout(): void {
-        localStorage.removeItem('userToken');
-        this.currentUserSubject.next(null);
-    }
+  // Vérification de l'authentification de l'utilisateur
+  isAuthenticated(): boolean {
+    return !!this.getToken();
+  }
 
-    // Récupération du token JWT
-    getToken(): string | null {
-        return localStorage.getItem('userToken');
-    }
+  hasRole(role: string): boolean {
+    const user = this.currentUserSubject.value;
+    return user && user.role === role;
+  }
 
-    // Vérification de l'authentification de l'utilisateur
-    isAuthenticated(): boolean {
-        return !!this.getToken();
-    }
-
-    hasRole(role: string): boolean {
-        const user = this.currentUserSubject.value;
-        return user && user.role === role;
-    }
+  refreshToken(): Observable<AuthResponseDto> {
+    return this.apiService.post<AuthResponseDto>('auth/refresh', {}).pipe(
+      tap((response: AuthResponseDto) => {
+        if (response.isSuccess && response.accessToken) {
+          this.storeUser(response.accessToken); // Remplacer l'ancien token par le nouveau si succès
+        }
+      })
+    );
+  }
 }

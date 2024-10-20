@@ -8,7 +8,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { ParticipateComponent } from './pages/participate/participate.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { UserGainsComponent } from './pages/user-gains/user-gains.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ErrorComponent } from './pages/error/error.component';
@@ -20,6 +20,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { emailReducer } from './core/stores/emails/email.reducer';
 import { userReducer } from './core/stores/users/user.reducer';
 import { storageMetaReducer } from './core/stores/storage.metareducer';
+import { TokenInterceptor } from './core/middlewares/token.interceptor';
 
 // Définition des meta-reducers
 export const metaReducers: MetaReducer<any>[] = [storageMetaReducer];
@@ -56,6 +57,13 @@ export const metaReducers: MetaReducer<any>[] = [storageMetaReducer];
         LoginComponent,
         ErrorComponent,
         // autres composants
+    ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptor,
+            multi: true,
+        },
     ],
     bootstrap: [AppComponent]
 })

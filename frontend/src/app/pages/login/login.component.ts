@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
+import { AuthResponseDto } from '../../../../../backend/src/auth/dtos/auth-response.dto';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +11,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   registerForm: FormGroup;
   isLoginMode: boolean = true; // Mode par défaut : connexion
+  errorMessage: string | null = null; // Pour stocker les erreurs
 
   constructor(private fb: FormBuilder, private authService: AuthService) {}
 
@@ -36,59 +38,74 @@ export class LoginComponent implements OnInit {
   }
 
   // Vérifie si un champ est invalide et a été touché
-  // Vérifie si un champ est invalide, qu'il soit "touché" ou non
-isInvalid(controlName: string, form: FormGroup): boolean {
+  isInvalid(controlName: string, form: FormGroup): boolean {
     const control = form.get(controlName);
-    return control?.invalid ? true : false; // Plus besoin de vérifier si le champ est "touched"
+    return control?.invalid ? true : false;
   }
-  
 
-  // Inscription via formulaire classique
-// Inscription via formulaire classique
-register() {
-    if (this.registerForm.invalid) {
-        this.registerForm.markAllAsTouched(); // Marque tous les champs comme touchés
-        return;
-    }
-  
-    const { firstname, lastname, email, password, confirmPassword, gender, age } = this.registerForm.value;
-    if (password === confirmPassword) {
-      this.authService.register({ firstname, lastname, email, password, gender, age, roleId: 1 }).subscribe(
-        (response) => {
-          console.log('Inscription réussie', response);
-        },
-        (error) => {
-          console.error('Erreur lors de l\'inscription', error);
-        }
-      );
-    } else {
-      console.error('Les mots de passe ne correspondent pas');
-    }
-  }
-  
   // Connexion via formulaire classique
   login() {
     if (this.loginForm.invalid) {
-      // Marque tous les champs comme touchés pour forcer l'affichage des erreurs
       this.loginForm.markAllAsTouched();
       return;
     }
-  
+
     const { email, password } = this.loginForm.value;
-    this.authService.login(email, password).subscribe(
-      (response) => {
-        console.log('Connexion réussie', response);
+    this.authService.login(email, password).subscribe({
+      next: (response: AuthResponseDto) => {
+        if (response.isSuccess) {
+          console.log('Connexion réussie', response);
+          // Rediriger vers la page d'accueil ou une autre page sécurisée
+        } else {
+          this.errorMessage = response.message;  // Afficher le message d'erreur
+        }
       },
-      (error) => {
-        console.error('Erreur lors de la connexion', error);
+      error: () => {
+        this.errorMessage = 'Une erreur de serveur est survenue, veuillez réessayer.';
       }
-    );
+    });
   }
-  
-  
+
+  // Inscription via formulaire classique
+  register() {
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
+
+    const { firstname, lastname, email, password, confirmPassword, gender, age } = this.registerForm.value;
+    if (password === confirmPassword) {
+      this.authService.register({ firstname, lastname, email, password, gender, age, roleId: 1 }).subscribe({
+        next: (response: AuthResponseDto) => {
+          if (response.isSuccess) {
+            console.log('Inscription réussie', response);
+            // Rediriger vers la page d'accueil ou une autre page sécurisée
+          } else {
+            this.errorMessage = response.message;  // Afficher le message d'erreur
+          }
+        },
+        error: () => {
+          this.errorMessage = 'Une erreur de serveur est survenue, veuillez réessayer.';
+        }
+      });
+    } else {
+      this.errorMessage = 'Les mots de passe ne correspondent pas.';
+    }
+  }
 
   // Basculer entre le mode de connexion et d'inscription
   toggleMode() {
     this.isLoginMode = !this.isLoginMode;
+    this.errorMessage = null; // Réinitialiser le message d'erreur lors du changement de mode
+  }
+
+  // Connexion via Google
+  loginWithGoogle() {
+    console.log('Connexion via Google');
+  }
+
+  // Connexion via Facebook
+  loginWithFacebook() {
+    console.log('Connexion via Facebook');
   }
 }

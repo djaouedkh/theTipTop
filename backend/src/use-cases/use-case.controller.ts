@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { GainGetDto } from '../gains/dtos/gain-get.dto';
 import { ParticipateService } from './participate/participate.service';
 import { PlayToTheGameDto } from './participate/dtos/play-to-the-game.dto';
@@ -7,6 +7,7 @@ import { GlobalStatsDto } from './stats/dtos/global-stats.dto';
 import { AdvancedStatsDto } from './stats/dtos/advanced-stats.dto';
 import { Gender } from './stats/enums/gender.enum';
 import { AgeGroup } from './stats/enums/age-group.enum';
+import { AuthGuard } from '../security/guards/auth.guard';
 
 @Controller('')
 export class UseCaseController {
@@ -20,8 +21,9 @@ export class UseCaseController {
     async playToTheGame(@Param('code') code: string): Promise<PlayToTheGameDto> {
         return this.participateService.playToTheGame(code);
     }
-
+    
     // STATS
+    @UseGuards(AuthGuard)
     @Get('stats/count-participants')
     async getAllCountParticipants(): Promise<number> {
         return this.statsService.getAllCountParticipants();
