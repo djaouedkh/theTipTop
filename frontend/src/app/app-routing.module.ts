@@ -14,7 +14,7 @@ const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'participate', component: ParticipateComponent, canActivate: [AuthGuard] },
     { path: 'user-gains', component: UserGainsComponent, canActivate: [AuthGuard] },
-
+    { path: 'auth/callback', component: LoginComponent }, // Nouvelle route pour le callback OAuth
     { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canActivate: [AuthGuard, RoleGuard], data: { roles: ['Admin', 'Employee'] } },
     
     { path: '**', component: ErrorComponent }

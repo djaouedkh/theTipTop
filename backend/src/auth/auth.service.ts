@@ -8,6 +8,7 @@ import { plainToInstance } from 'class-transformer';
 import { UserCreateDto } from '../users/dtos/user-create.dto';
 import { UserLoginDto } from './dtos/user-login.dto';
 import { AuthResponseDto } from './dtos/auth-response.dto';
+import { UserLoginGoogleDto } from './external-auth/dtos/user-login-google.dto';
 
 @Injectable()
 export class AuthService {
@@ -49,6 +50,34 @@ export class AuthService {
         refreshToken: null,
         isSuccess: false,
         message: 'Mot de passe incorrect',
+      };
+    }
+
+    const user = plainToInstance(UserGetDto, userExist, { excludeExtraneousValues: true });
+    const tokens = this.generateTokens(user);
+
+    return {
+      user,
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      isSuccess: true,
+      message: 'Login successful',
+    };
+  }
+
+  // Connexion apres validation google avec génération de tokens
+  async loginPostGoogleValid(data: UserLoginGoogleDto): Promise<AuthResponseDto> {
+    const userExist = await this.prisma.user.findFirst({
+      where: { email: data.email },
+      include: { role: true },
+    });
+    if (!userExist) {
+      return {
+        user: null,
+        accessToken: null,
+        refreshToken: null,
+        isSuccess: false,
+        message: 'Mail non trouvé',
       };
     }
 

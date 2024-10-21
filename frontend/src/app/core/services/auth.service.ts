@@ -5,6 +5,7 @@ import { tap, map } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { AuthResponseDto } from '../../../../../backend/src/auth/dtos/auth-response.dto';
 import { UserStoreService } from '../stores/users/user-store.service';
+import { UserLoginGoogleDto } from '../../../../../backend/src/auth/external-auth/dtos/user-login-google.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,24 @@ export class AuthService {
   // Connexion via formulaire classique
   login(email: string, password: string): Observable<AuthResponseDto> {
     return this.apiService.post<AuthResponseDto>('auth/login', { email, password }).pipe(
+      tap((response: AuthResponseDto) => {
+        if (response.isSuccess && response.accessToken && response.user) {
+          this.storeUser(response.accessToken); // Stocker le token uniquement si succès
+          this.userStoreService.setUser(
+            response.user.id, 
+            response.user.firstname, 
+            response.user.email, 
+            response.user.role.name, 
+            response.accessToken
+          );
+        }
+      })
+    );
+  }
+
+  // Connexion via formulaire classique
+  loginPostGoogleAuth(data: UserLoginGoogleDto): Observable<AuthResponseDto> {
+    return this.apiService.post<AuthResponseDto>('auth/login-post-google-valid', data).pipe(
       tap((response: AuthResponseDto) => {
         if (response.isSuccess && response.accessToken && response.user) {
           this.storeUser(response.accessToken); // Stocker le token uniquement si succès
@@ -94,6 +113,20 @@ export class AuthService {
       tap((response: AuthResponseDto) => {
         if (response.isSuccess && response.accessToken) {
           this.storeUser(response.accessToken); // Remplacer l'ancien token par le nouveau si succès
+        }
+      })
+    );
+  }
+
+  exchangeCodeForToken(code: string): Observable<AuthResponseDto> {
+    console.log('B');
+    return this.apiService.post<AuthResponseDto>('auth/google/callback', { code }).pipe(
+      tap((response: AuthResponseDto) => {
+        console.log('C');
+        if (response.isSuccess && response.accessToken) {
+          console.log('D');
+          this.storeUser(response.accessToken);
+          console.log('response', response);
         }
       })
     );

@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { AuthResponseDto } from '../../../../../backend/src/auth/dtos/auth-response.dto';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { UserGetDto } from '../../../../../backend/src/users/dtos/user-get.dto';
+import { UserStoreService } from '../../core/stores/users/user-store.service';
+import { UserLoginGoogleDto } from '../../../../../backend/src/auth/external-auth/dtos/user-login-google.dto';
 
 @Component({
   selector: 'app-login',
@@ -16,12 +20,47 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private fb: FormBuilder, 
-    private authService: AuthService
+    private authService: AuthService,
+    private userStoreService: UserStoreService
   ) {}
 
   ngOnInit(): void {
     this.initForms();
+
+    this.route.queryParams.subscribe(params => {
+      if (params['isSuccess'] === 'true') {
+        const isGoogleRegister = params['isGoogleRegister'] === 'true';
+        const dataLogin: UserLoginGoogleDto = {
+          email: params['email'],
+        }
+  
+        if (isGoogleRegister) {
+          // Si l'utilisateur doit compléter l'inscription
+          this.isLoginMode = false; // Passer en mode inscription
+          this.registerForm.patchValue(dataLogin); // Pré-remplir l'email
+        } else {
+          // Connexion directe avec l'email récupéré
+          this.authService.loginPostGoogleAuth(dataLogin).subscribe({
+            next: (response: AuthResponseDto) => {
+              if (response.isSuccess) {
+                console.log('Connexion réussie', response);
+                // Rediriger vers la page d'accueil
+                this.router.navigate(['/']);
+              } else {
+                this.errorMessage = response.message;  // Afficher le message d'erreur
+              }
+            },
+            error: () => {
+              this.errorMessage = 'Une erreur est survenue lors de la connexion.';
+            }
+          });
+        }
+      } else if (params['isSuccess'] === 'false') {
+        this.errorMessage = 'Une erreur est survenue lors de l\'authentification Google.';
+      }
+    });
   }
 
   // Initialisation des formulaires de connexion et d'inscription
@@ -107,7 +146,17 @@ export class LoginComponent implements OnInit {
 
   // Connexion via Google
   loginWithGoogle() {
-    console.log('Connexion via Google');
+    console.log('1');
+    window.location.href = 'http://localhost:3000/api/auth/google'; // TODO: faire l'appel par auth.service
+  }
+
+  // Pré-remplir le formulaire d'inscription avec les données fournies par Google
+  prefillRegistrationForm(user: Partial<UserGetDto>) {
+    this.registerForm.patchValue({
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+    });
   }
 
   // Connexion via Facebook
