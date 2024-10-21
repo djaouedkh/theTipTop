@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TicketService } from '../../core/services/ticket.service';
 import { TicketGetDto, TicketIncludeDto, TicketSearchDto } from '../../../../../backend/src/tickets/dtos/ticket-get.dto';
+import { UserStoreService } from '../../core/stores/users/user-store.service';
+import { UserState } from '../../core/stores/users/user.reducer';
 
 @Component({
     selector: 'app-user-gains',
@@ -10,24 +12,32 @@ export class UserGainsComponent implements OnInit {
     userGains: TicketGetDto[] = [];
     errorMessage: string | null = null;
 
-    constructor(private ticketService: TicketService) {}
+    constructor(
+        private ticketService: TicketService,
+        private userStoreService: UserStoreService // Injecte ton service UserStore
+    ) {}
 
     ngOnInit(): void {
-        // Récupérer l'id de l'utilisateur connecté
-        const userId = 1; // TODO: Remplacer par l'id de l'utilisateur connecté
+        // Récupérer l'utilisateur connecté depuis le store
+        this.userStoreService.getUser().subscribe((user: UserState) => {
+            if (user && user.id) {
+                const userId = user.id; // Récupérer l'ID de l'utilisateur connecté
 
-        // Critères de recherche et options d'inclusion
-        const criteria: TicketSearchDto = { userId };
-        const includeOptions: TicketIncludeDto = { gain: true };
+                // Critères de recherche et options d'inclusion
+                const criteria: TicketSearchDto = { userId };
+                const includeOptions: TicketIncludeDto = { gain: true };
 
-        // Appeler le service pour récupérer les gains de l'utilisateur
-        this.ticketService.searches(criteria, includeOptions).subscribe({
-            next: (gains) => {
-                console.log(gains);
-                this.userGains = gains;
-            },
-            error: () => {
-                this.errorMessage = "Une erreur est survenue lors du chargement des gains.";
+                // Appeler le service pour récupérer les gains de l'utilisateur
+                this.ticketService.searches(criteria, includeOptions).subscribe({
+                    next: (gains) => {
+                        this.userGains = gains;
+                    },
+                    error: () => {
+                        this.errorMessage = "Une erreur est survenue lors du chargement des gains.";
+                    }
+                });
+            } else {
+                this.errorMessage = "Utilisateur non connecté.";
             }
         });
     }

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Observable, map } from 'rxjs';
+import { Observable, map, combineLatest } from 'rxjs';
 import { UserStoreService } from '../../stores/users/user-store.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,21 +10,36 @@ import { UserStoreService } from '../../stores/users/user-store.service';
 })
 export class HeaderComponent implements OnInit {
   isAuthenticated$: Observable<boolean>;
+  isAdmin$: Observable<boolean>;
+  isEmployee$: Observable<boolean>;
+  hasBackOfficeAccess$: Observable<boolean>; // Variable combinée
 
   constructor(
+    private router: Router,
     private authService: AuthService,
     private userStoreService: UserStoreService
   ) {}
 
   ngOnInit(): void {
-    // On observe l'état d'authentification de l'utilisateur dans le store
+    // On observe l'état d'authentification et le rôle de l'utilisateur
     this.isAuthenticated$ = this.userStoreService.getUser().pipe(
-      map(user => !!user.id) // Si l'ID de l'utilisateur est présent, l'utilisateur est connecté
+      map(user => !!user.id)
+    );
+    this.isAdmin$ = this.userStoreService.getUser().pipe(
+      map(user => user.role === 'Admin')
+    );
+    this.isEmployee$ = this.userStoreService.getUser().pipe(
+      map(user => user.role === 'Employee')
+    );
+
+    // Variable combinée pour gérer l'accès au BackOffice (Admin ou Employee)
+    this.hasBackOfficeAccess$ = combineLatest([this.isAdmin$, this.isEmployee$]).pipe(
+      map(([isAdmin, isEmployee]) => isAdmin || isEmployee)
     );
   }
 
   logout(): void {
     this.authService.logout();
-    // On redirige l'utilisateur vers la page de connexion
+    this.router.navigate(['/login']);
   }
 }

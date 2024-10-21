@@ -1,15 +1,37 @@
 <header class="bg-blue-900 p-4 text-white flex justify-between items-center">
     <div class="logo text-lg font-bold">
-        <a routerLink="/admin/dashboard">Admin Dashboard</a>
+      <p>BackOffice</p>
     </div>
     <nav>
-        <ul class="flex space-x-4">
-            <li><a routerLink="/admin/dashboard" class="hover:underline">Tableau de Bord</a></li>
-            <li><a routerLink="/admin/users" class="hover:underline">Gestion des gains d'un ticket d'user</a></li>
-            <li><a routerLink="/admin/lottery-game" class="hover:underline">Tirage au sort</a></li>
-            <li><a routerLink="/admin/stats" class="hover:underline">Statistiques</a></li>
-            <li><a routerLink="/admin/emails" class="hover:underline">Emails</a></li>
-            <li><button class="hover:underline" (click)="logout()">Déconnexion</button></li>
-        </ul>
+      <ul class="flex space-x-4">
+        <!-- Bouton visible pour Admin et Employee -->
+        <li><a routerLink="/admin/users" class="hover:underline">Gains Clients</a></li>
+  
+        <!-- Boutons visibles uniquement pour l'Admin -->
+        <li *ngIf="isAdmin"><a routerLink="/admin/dashboard" class="hover:underline">Tableau de Bord</a></li>
+        <li *ngIf="isAdmin"><a routerLink="/admin/lottery-game" class="hover:underline">Tirage au sort</a></li>
+        <li *ngIf="isAdmin"><a routerLink="/admin/stats" class="hover:underline">Statistiques</a></li>
+        <li *ngIf="isAdmin"><a routerLink="/admin/emails" class="hover:underline">Emails</a></li>
+        
+        <!-- Bouton pour retourner à la page utilisateur si Admin ou Employé -->
+        
+        
+        <li>
+          <button routerLink="" 
+            class="bg-gray-500 text-white px-4 py-2 ml-4 rounded hover:bg-gray-400">
+            Site
+          </button>
+        </li>
+        <!-- Déconnexion visible pour tous -->
+        <li>
+          <button
+            (click)="logout()"
+            class="bg-red-500 text-white px-4 py-2 ml-4 rounded hover:bg-red-400"
+          >
+            Déconnexion
+          </button>
+        </li>
+      </ul>
     </nav>
-</header>
+  </header>
+  

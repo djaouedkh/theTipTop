@@ -7,15 +7,25 @@
   
       <!-- Menu de Navigation -->
       <nav class="space-x-6">
-        <a routerLink="/home" class="hover:text-yellow-200">Accueil</a>
-        <a routerLink="/participate" class="hover:text-yellow-200">Participer</a>
-        <a routerLink="/user-gains" class="hover:text-yellow-200">Mes Gains</a>
+        <a routerLink="/home" class="hover:text-yellow-200">Jeu-Concours</a>
+        <a
+          *ngIf="isAuthenticated$ | async"
+          routerLink="/user-gains"
+          class="hover:text-yellow-200"
+        >
+          Mes Gains
+        </a>
+        <!-- Bouton de Participation -->
+        <button routerLink="/participate" class="bg-yellow-400 text-green-800 px-4 py-2 rounded hover:bg-yellow-300">
+          Participez au Jeu-Concours
+        </button>
+        <!-- Bouton pour accéder au BackOffice si Admin ou Employee -->
+        <button *ngIf="hasBackOfficeAccess$ | async" routerLink="/admin/" 
+          class="bg-gray-500 text-white px-4 py-2 ml-4 rounded hover:bg-gray-400">
+          BackOffice
+        </button>
       </nav>
   
-      <!-- Bouton de Participation -->
-      <button routerLink="/participate" class="bg-yellow-400 text-green-800 px-4 py-2 rounded hover:bg-yellow-300">
-        Participez
-      </button>
   
       <!-- Connexion/Déconnexion -->
       <button

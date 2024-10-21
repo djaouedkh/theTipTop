@@ -5,15 +5,17 @@ import { ParticipateComponent } from './pages/participate/participate.component'
 import { LoginComponent } from './pages/login/login.component';
 import { UserGainsComponent } from './pages/user-gains/user-gains.component';
 import { ErrorComponent } from './pages/error/error.component';
+import { AuthGuard } from './core/guards/auth.guard';
+import { RoleGuard } from './core/guards/role.guard';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     { path: 'home', component: HomeComponent },
-    { path: 'participate', component: ParticipateComponent },
-    { path: 'user-gains', component: UserGainsComponent },
+    { path: 'participate', component: ParticipateComponent, canActivate: [AuthGuard] },
+    { path: 'user-gains', component: UserGainsComponent, canActivate: [AuthGuard] },
 
-    { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
+    { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canActivate: [AuthGuard, RoleGuard], data: { roles: ['Admin', 'Employee'] } },
     
     { path: '**', component: ErrorComponent }
 ];

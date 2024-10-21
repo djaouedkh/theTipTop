@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { AuthResponseDto } from '../../../../../backend/src/auth/dtos/auth-response.dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,11 @@ export class LoginComponent implements OnInit {
   isLoginMode: boolean = true; // Mode par défaut : connexion
   errorMessage: string | null = null; // Pour stocker les erreurs
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private fb: FormBuilder, 
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.initForms();
@@ -55,7 +60,8 @@ export class LoginComponent implements OnInit {
       next: (response: AuthResponseDto) => {
         if (response.isSuccess) {
           console.log('Connexion réussie', response);
-          // Rediriger vers la page d'accueil ou une autre page sécurisée
+          // Rediriger vers la page d'accueil
+          this.router.navigate(['/']);
         } else {
           this.errorMessage = response.message;  // Afficher le message d'erreur
         }
@@ -79,7 +85,7 @@ export class LoginComponent implements OnInit {
         next: (response: AuthResponseDto) => {
           if (response.isSuccess) {
             console.log('Inscription réussie', response);
-            // Rediriger vers la page d'accueil ou une autre page sécurisée
+            this.router.navigate(['/']);
           } else {
             this.errorMessage = response.message;  // Afficher le message d'erreur
           }
