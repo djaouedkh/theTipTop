@@ -20,8 +20,32 @@ model User {
   role              Role               @relation(fields: [roleId], references: [id])
   tickets           Ticket[]
   lotteryGames      LotteryGame[]
-  
+  userEmails        UserEmail[]
+
   @@map("user")
+}
+
+model UserEmail {
+  id          Int      @id @default(autoincrement()) @map("id")
+  userId      Int      @map("user_id")
+  emailId     Int      @map("email_id")
+  user        User     @relation(fields: [userId], references: [id])
+  email       Email    @relation(fields: [emailId], references: [id])
+  userEmail   String   @map("user_email")
+
+  @@map("user_email")
+  @@unique([userId, emailId])
+}
+
+model Email {
+  id          Int          @id @default(autoincrement()) @map("id")
+  subject     String       @map("subject")
+  body        String       @map("body")
+  status      String       @map("status")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  userEmails  UserEmail[]
+
+  @@map("email")
 }
 
 
