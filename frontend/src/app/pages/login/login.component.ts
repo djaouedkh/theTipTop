@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.initForms();
 
+    // gère le retour de google authentification
     this.route.queryParams.subscribe(params => {
       if (params['isSuccess'] === 'true') {
         const isGoogleRegister = params['isGoogleRegister'] === 'true';
@@ -157,10 +158,5 @@ export class LoginComponent implements OnInit {
       lastname: user.lastname,
       email: user.email,
     });
-  }
-
-  // Connexion via Facebook
-  loginWithFacebook() {
-    console.log('Connexion via Facebook');
   }
 }
