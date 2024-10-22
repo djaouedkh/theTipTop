@@ -11,7 +11,6 @@ import { GainDeliveryUpdateDto } from './dtos/gain-delivery-update.dto';
 export class GainDeliveryService {
     constructor(
         private prisma: PrismaService,
-        private ticketService: TicketService,
     ) {}
 
     // Récupérer toutes les distributions
@@ -81,38 +80,5 @@ export class GainDeliveryService {
         });
 
         return plainToInstance(GainDeliveryGetDto, deleteData, { excludeExtraneousValues: true });
-    }
-
-    // FEATURES METIERS
-
-    // async getClaimedPrizes(): Promise<GainDeliveryGetDto[]> {
-    //     const claimedPrizes = await this.prisma.gainDelivery.findMany({
-    //         where: { isClaimed: true },
-    //         include: { prize: true, user: true }
-    //     });
-    
-    //     return plainToInstance(GainDeliveryGetDto, claimedPrizes, { excludeExtraneousValues: true });
-    // }
-
-    // async claimPrize(ticketCode: string, storeId?: number): Promise<void> {
-    //     const ticket = await this.prisma.ticket.findUnique({
-    //         where: { ref: ticketCode }
-    //     });
-    
-    //     if (!ticket || ticket.status) throw new Error('Ticket already claimed or not valid.');
-    
-    //     await this.prisma.gainDelivery.create({
-    //         data: {
-    //             prizeId: ticket.prizeId,
-    //             userId: ticket.userId,
-    //             storeId,
-    //             isClaimed: true,
-    //             dateClaimed: new Date()
-    //         }
-    //     });
-    
-    //     await this.ticketService.markTicketAsClaimed(ticketCode); // Marquer le ticket comme réclamé
-    // }
-    
-    
+    }    
 }

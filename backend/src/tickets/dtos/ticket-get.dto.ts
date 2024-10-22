@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import { ContestGetDto } from '../../contests/dtos/contest-get.dto';
 import { UserGetDto } from '../../users/dtos/user-get.dto';
 import { GainGetDto } from '../../gains/dtos/gain-get.dto';
+import { IsOptional } from 'class-validator';
 
 export class TicketGetDto {
     @Expose()
@@ -29,10 +30,12 @@ export class TicketGetDto {
     gain: GainGetDto;
 
     @Expose()
-    userId: number;
+    @IsOptional()
+    userId?: number;
     @Expose()
+    @IsOptional()
     @Type(() => UserGetDto)
-    user: UserGetDto;
+    user?: UserGetDto;
 }
 
 // SEARCH

@@ -21,10 +21,10 @@ export class RoleController {
         return this.service.create(data);
     }
 
-    @Put(':id')
-    async update(@Param('id') id: string, @Body() data: RoleUpdateDto): Promise<RoleGetDto> {
-        return this.service.update(Number(id), data);
-    }
+    // @Put(':id')
+    // async update(@Param('id') id: string, @Body() data: RoleUpdateDto): Promise<RoleGetDto> {
+    //     return this.service.update(Number(id), data);
+    // }
 
     @Delete(':id')
     async delete(@Param('id') id: string): Promise<RoleGetDto> {

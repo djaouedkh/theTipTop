@@ -25,13 +25,13 @@ export class RoleService {
         return plainToInstance(RoleGetDto, createdRole, { excludeExtraneousValues: true });
     }
 
-    async update(id: number, data: RoleUpdateDto): Promise<RoleGetDto> {
-        const updatedRole = await this.prisma.role.update({
-            where: { id },
-            data,
-        });
-        return plainToInstance(RoleGetDto, updatedRole, { excludeExtraneousValues: true });
-    }
+    // async update(id: number, data: RoleUpdateDto): Promise<RoleGetDto> {
+    //     const updatedRole = await this.prisma.role.update({
+    //         where: { id },
+    //         data,
+    //     });
+    //     return plainToInstance(RoleGetDto, updatedRole, { excludeExtraneousValues: true });
+    // }
 
     async delete(id: number): Promise<RoleGetDto> {
         const deletedRole = await this.prisma.role.delete({ where: { id } });

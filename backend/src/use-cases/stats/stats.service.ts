@@ -3,7 +3,6 @@ import { plainToInstance } from 'class-transformer';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { GlobalStatsDto } from './dtos/global-stats.dto';
-import { TicketService } from '../../tickets/ticket.service';
 import { AdvancedStatsDto, GenderCount } from './dtos/advanced-stats.dto';
 import { AgeGroup, AgeGroupCount } from './enums/age-group.enum';
 import { Gender } from './enums/gender.enum';
@@ -12,7 +11,6 @@ import { Gender } from './enums/gender.enum';
 export class StatsService {
     constructor(
         private prisma: PrismaService,
-        private ticketService: TicketService,
     ) {}
 
     async getAllStats(): Promise<GlobalStatsDto> {
