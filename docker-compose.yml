@@ -2,14 +2,14 @@ version: '3.8'
 
 services:
   backend:
-    image: ghcr.io/username/myapp-backend:${NODE_ENV} # Utilisation de NODE_ENV pour choisir la bonne image
+    image: ghcr.io/djaouedkh/myapp-backend:${NODE_ENV} # Utilisation de NODE_ENV pour choisir la bonne image
     environment:
       - NODE_ENV=${NODE_ENV} # Variable d'environnement passée au container
     ports:
       - "3000:3000"
 
   frontend:
-    image: ghcr.io/username/myapp-frontend:${NODE_ENV} # Utilisation de NODE_ENV pour choisir la bonne image
+    image: ghcr.io/djaouedkh/myapp-frontend:${NODE_ENV} # Utilisation de NODE_ENV pour choisir la bonne image
     environment:
       - NODE_ENV=${NODE_ENV} # Variable d'environnement passée au container
     ports:
