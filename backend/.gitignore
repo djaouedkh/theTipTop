@@ -9,3 +9,9 @@ dist
 
 # Environnement
 .env
+.env.dev
+.env.prod
+.env.staging
+
+# dockerfile
+Dockerfile
