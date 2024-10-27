@@ -2,9 +2,9 @@ pipeline {
     agent any // Utiliser n'importe quel agent disponible
 
     // Définition des variables d'environnement globales
-    environment {
-        NODE_ENV = (env.BRANCH_NAME == 'prod') ? 'prod' : 'staging'
-    }
+    // environment {
+    //     NODE_ENV = (env.BRANCH_NAME == 'prod') ? 'prod' : 'staging'
+    // }
 
     stages {
         // Étape pour afficher la valeur de BRANCH_NAME et NODE_ENV
@@ -15,8 +15,8 @@ pipeline {
                     echo "***************************************************ALLOOOOOOOOOOOOOOOOOOOOO***************************************************"
                     echo "***************************************************ALLOOOOOOOOOOOOOOOOOOOOO***************************************************"
                     echo "***************************************************ALLOOOOOOOOOOOOOOOOOOOOO***************************************************"
-                    echo "BRANCH_NAME is: ${env.BRANCH_NAME}"
-                    echo "NODE_ENV is: ${env.NODE_ENV}"
+                    // echo "BRANCH_NAME is: ${env.BRANCH_NAME}"
+                    // echo "NODE_ENV is: ${env.NODE_ENV}"
                 }
             }
         }
