@@ -7,6 +7,16 @@ pipeline {
     }
 
     stages {
+        // Étape pour afficher la valeur de BRANCH_NAME et NODE_ENV
+        stage('Log Branch and Environment') {
+            steps {
+                script {
+                    echo "BRANCH_NAME is: ${env.BRANCH_NAME}"
+                    echo "NODE_ENV is: ${env.NODE_ENV}"
+                }
+            }
+        }
+        
         // Récupération du code source depuis le dépôt
         stage('Checkout Code') {
             steps {
