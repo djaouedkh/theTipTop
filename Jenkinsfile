@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        NODE_ENV = (env.BRANCH_NAME == 'prod') ? 'prod' : 'staging'
-        TARGET_SERVER_IP = (env.BRANCH_NAME == 'prod') ? '77.37.86.76' : '<IP_KMV1>'
+        NODE_ENV = "${env.BRANCH_NAME == 'prod' ? 'prod' : 'staging'}"
+        TARGET_SERVER_IP = "${env.BRANCH_NAME == 'prod' ? '77.37.86.76' : '<IP_KMV1>'}"
     }
 
     options {
