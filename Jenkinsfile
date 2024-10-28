@@ -15,8 +15,8 @@ pipeline {
                     echo "***************************************************ALLOOOOOOOOOOOOOOOOOOOOO***************************************************"
                     echo "***************************************************ALLOOOOOOOOOOOOOOOOOOOOO***************************************************"
                     echo "***************************************************ALLOOOOOOOOOOOOOOOOOOOOO***************************************************"
-                    // echo "BRANCH_NAME is: ${env.BRANCH_NAME}"
-                    // echo "NODE_ENV is: ${env.NODE_ENV}"
+                    echo "BRANCH_NAME is: ${env.BRANCH_NAME}"
+                    echo "NODE_ENV is: ${env.NODE_ENV}"
                 }
             }
         }
