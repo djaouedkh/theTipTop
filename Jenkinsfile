@@ -39,16 +39,16 @@ pipeline {
         }
 
         stage('Run Tests') {
-            parallel (
-                "Backend Tests": {
+            stages {
+                stage('Backend Tests') {
                     steps {
                         dir('backend') {
                             sh 'npm install'
                             sh 'npm run test'
                         }
                     }
-                },
-                "Frontend Tests": {
+                }
+                stage('Frontend Tests') {
                     steps {
                         dir('frontend') {
                             sh 'npm install'
@@ -56,7 +56,7 @@ pipeline {
                         }
                     }
                 }
-            )
+            }
         }
 
         // stage('Build') {
