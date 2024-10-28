@@ -32,32 +32,32 @@ pipeline {
             }
         }
 
-        // stage('Checkout Code') {
-        //     steps {
-        //         checkout scm
-        //     }
-        // }
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
 
-        // stage('Run Tests') {
-        //     parallel {
-        //         stage('Backend Tests') {
-        //             steps {
-        //                 dir('backend') {
-        //                     sh 'npm install'
-        //                     sh 'npm run test'
-        //                 }
-        //             }
-        //         }
-        //         stage('Frontend Tests') {
-        //             steps {
-        //                 dir('frontend') {
-        //                     sh 'npm install'
-        //                     sh 'ng test --watch=false'
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Run Tests') {
+            parallel {
+                stage('Backend Tests') {
+                    steps {
+                        dir('backend') {
+                            sh 'npm install'
+                            sh 'npm run test'
+                        }
+                    }
+                }
+                stage('Frontend Tests') {
+                    steps {
+                        dir('frontend') {
+                            sh 'npm install'
+                            sh 'ng test --watch=false'
+                        }
+                    }
+                }
+            }
+        }
 
         // stage('Build') {
         //     parallel {
