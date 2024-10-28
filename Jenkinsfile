@@ -39,8 +39,8 @@ pipeline {
         }
 
         stage('Run Tests') {
-            parallel failFast: true, tasks: [
-                stage('Backend Tests') {
+            parallel (
+                "Backend Tests": {
                     steps {
                         dir('backend') {
                             sh 'npm install'
@@ -48,7 +48,7 @@ pipeline {
                         }
                     }
                 },
-                stage('Frontend Tests') {
+                "Frontend Tests": {
                     steps {
                         dir('frontend') {
                             sh 'npm install'
@@ -56,7 +56,7 @@ pipeline {
                         }
                     }
                 }
-            ]
+            )
         }
 
         // stage('Build') {
