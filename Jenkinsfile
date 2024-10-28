@@ -38,26 +38,26 @@ pipeline {
             }
         }
 
-        // stage('Run Tests') {
-        //     parallel failFast: true, tasks: [
-        //         stage('Backend Tests') {
-        //             steps {
-        //                 dir('backend') {
-        //                     sh 'npm install'
-        //                     sh 'npm run test'
-        //                 }
-        //             }
-        //         },
-        //         stage('Frontend Tests') {
-        //             steps {
-        //                 dir('frontend') {
-        //                     sh 'npm install'
-        //                     sh 'ng test --watch=false'
-        //                 }
-        //             }
-        //         }
-        //     ]
-        // }
+        stage('Run Tests') {
+            parallel failFast: true, tasks: [
+                stage('Backend Tests') {
+                    steps {
+                        dir('backend') {
+                            sh 'npm install'
+                            sh 'npm run test'
+                        }
+                    }
+                },
+                stage('Frontend Tests') {
+                    steps {
+                        dir('frontend') {
+                            sh 'npm install'
+                            sh 'ng test --watch=false'
+                        }
+                    }
+                }
+            ]
+        }
 
         // stage('Build') {
         //     parallel {
