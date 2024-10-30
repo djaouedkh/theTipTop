@@ -32,6 +32,12 @@ pipeline {
             }
         }
 
+        stage('Clean Workspace') {
+            steps {
+                deleteDir() // Supprime tout le contenu du répertoire de travail
+            }
+        }
+
         stage('Checkout Code') {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/prod']],
