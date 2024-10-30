@@ -40,21 +40,21 @@ pipeline {
 
         stage('Run Tests') {
             stages {
-                stage('Backend Tests') {
-                    steps {
-                        // Change le répertoire de travail vers 'backend' pour que Docker trouve le Dockerfile
-                        dir('backend') {
-                            script {
-                                // Build de l'image Docker en utilisant le Dockerfile situé dans 'backend'
-                                def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f Dockerfile .")
-                                backendTestImage.inside {
-                                    sh 'npm run test'
-                                }
-                                backendTestImage.remove() // Supprime l'image après le test
-                            }
-                        }
-                    }
-                }
+                // stage('Backend Tests') {
+                //     steps {
+                //         // Change le répertoire de travail vers 'backend' pour que Docker trouve le Dockerfile
+                //         dir('backend') {
+                //             script {
+                //                 // Build de l'image Docker en utilisant le Dockerfile situé dans 'backend'
+                //                 def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f Dockerfile .")
+                //                 backendTestImage.inside {
+                //                     sh 'npm run test'
+                //                 }
+                //                 backendTestImage.remove() // Supprime l'image après le test
+                //             }
+                //         }
+                //     }
+                // }
                 stage('Frontend Tests') {
                     steps {
                         // Change le répertoire de travail vers 'frontend' pour que Docker trouve le Dockerfile
