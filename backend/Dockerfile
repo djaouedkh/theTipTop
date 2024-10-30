@@ -4,11 +4,11 @@ FROM node:18-alpine
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Copier uniquement les fichiers nécessaires pour l’installation
+# Copier uniquement les fichiers package.json et package-lock.json
 COPY package*.json ./
 
-# Installer les dépendances
-RUN npm install
+# Installer les dépendances de production et de développement, car `jest` et d'autres sont dans devDependencies
+RUN npm install --include=dev
 
 # Copier le reste de l'application
 COPY . .
@@ -19,7 +19,6 @@ ENV NODE_ENV=${NODE_ENV}
 
 # Charger les variables du .env et les exporter en variables d'environnement
 RUN if [ -f .env.${NODE_ENV} ]; then \
-        # Charger les variables du .env.${NODE_ENV} dans les variables d'environnement
         export $(grep -v '^#' .env.${NODE_ENV} | xargs); \
     fi
 
