@@ -36,7 +36,7 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/prod']],
                     userRemoteConfigs: [[url: 'https://github.com/djaouedkh/theTipTop.git', credentialsId: 'github-token']],
-                    extensions: [[$class: 'CloneOption', shallow: true, depth: 1]]
+                    extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 120]]
                 ])
             }
         }
