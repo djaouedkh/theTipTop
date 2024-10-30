@@ -42,7 +42,7 @@ pipeline {
             stages {
                 stage('Backend Tests') {
                     steps {
-                        dir('back') {
+                        dir('backend') {
                             script {
                                 // Spécifie le chemin relatif vers le Dockerfile dans le répertoire backend
                                 def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f ./dockerfile .")
@@ -56,7 +56,7 @@ pipeline {
                 }
                 stage('Frontend Tests') {
                     steps {
-                        dir('front') {
+                        dir('frontend') {
                             script {
                                 // Spécifie le chemin relatif vers le Dockerfile dans le répertoire frontend
                                 def frontendTestImage = docker.build("myapp-frontend-test:${NODE_ENV}", "-f ./dockerfile .")
