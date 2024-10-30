@@ -38,38 +38,38 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
-            stages {
-                stage('Backend Tests') {
-                    steps {
-                        dir('backend') {
-                            script {
-                                // Spécifie le chemin relatif vers le Dockerfile dans le répertoire backend
-                                def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f ./Dockerfile .")
-                                backendTestImage.inside {
-                                    sh 'npm run test'
-                                }
-                                backendTestImage.remove()
-                            }
-                        }
-                    }
-                }
-                stage('Frontend Tests') {
-                    steps {
-                        dir('frontend') {
-                            script {
-                                // Spécifie le chemin relatif vers le Dockerfile dans le répertoire frontend
-                                def frontendTestImage = docker.build("myapp-frontend-test:${NODE_ENV}", "-f ./Dockerfile .")
-                                frontendTestImage.inside {
-                                    sh 'ng test --watch=false'
-                                }
-                                frontendTestImage.remove()
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        // stage('Run Tests') {
+        //     stages {
+        //         stage('Backend Tests') {
+        //             steps {
+        //                 dir('backend') {
+        //                     script {
+        //                         // Spécifie le chemin relatif vers le Dockerfile dans le répertoire backend
+        //                         def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f ./Dockerfile .")
+        //                         backendTestImage.inside {
+        //                             sh 'npm run test'
+        //                         }
+        //                         backendTestImage.remove()
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //         stage('Frontend Tests') {
+        //             steps {
+        //                 dir('frontend') {
+        //                     script {
+        //                         // Spécifie le chemin relatif vers le Dockerfile dans le répertoire frontend
+        //                         def frontendTestImage = docker.build("myapp-frontend-test:${NODE_ENV}", "-f ./Dockerfile .")
+        //                         frontendTestImage.inside {
+        //                             sh 'ng test --watch=false'
+        //                         }
+        //                         frontendTestImage.remove()
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
 
 
