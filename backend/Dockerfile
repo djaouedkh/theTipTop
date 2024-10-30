@@ -4,10 +4,17 @@ FROM node:18-alpine
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Copier uniquement les fichiers package.json et package-lock.json
+# Ajouter un utilisateur non root pour éviter les problèmes de permissions
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+# Copier uniquement les fichiers nécessaires pour l’installation
 COPY package*.json ./
 
-# Installer les dépendances de production et de développement
+# Configuration du cache npm local pour éviter les erreurs de permissions
+RUN npm config set cache /app/.npm-cache --global
+
+# Installer les dépendances
 RUN npm install --include=dev
 
 # Copier le reste de l'application
@@ -17,15 +24,10 @@ COPY . .
 ARG NODE_ENV
 ENV NODE_ENV=${NODE_ENV}
 
-# Charger les variables du .env et les exporter en variables d'environnement
-RUN if [ -f .env.${NODE_ENV} ]; then \
-        export $(grep -v '^#' .env.${NODE_ENV} | xargs); \
-    fi
-
 # Générer les types Prisma avant la compilation
 RUN npx prisma generate
 
-# Compiler l'application (les variables sont maintenant accessibles en tant que variables d'environnement)
+# Compiler l'application
 RUN npm run build
 
 # Exposer le port (à ajuster si nécessaire)
