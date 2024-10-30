@@ -6,15 +6,17 @@ WORKDIR /app
 
 # Ajouter un utilisateur non root pour éviter les problèmes de permissions
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-USER appuser
 
 # Copier uniquement les fichiers nécessaires pour l’installation
 COPY package*.json ./
 
+# Passer temporairement à l'utilisateur root pour installer les dépendances
+USER root
+
 # Configuration du cache npm local pour éviter les erreurs de permissions
 RUN npm config set cache /app/.npm-cache
 
-# Installer les dépendances
+# Installer les dépendances avec les permissions root
 RUN npm install --include=dev
 
 # Copier le reste de l'application
@@ -29,6 +31,9 @@ RUN npx prisma generate
 
 # Compiler l'application
 RUN npm run build
+
+# Revenir à l'utilisateur non root pour exécuter l'application
+USER appuser
 
 # Exposer le port (à ajuster si nécessaire)
 EXPOSE 3000
