@@ -7,7 +7,7 @@ WORKDIR /app
 # Copier uniquement les fichiers package.json et package-lock.json
 COPY package*.json ./
 
-# Installer les dépendances de production et de développement, car `jest` et d'autres sont dans devDependencies
+# Installer les dépendances de production et de développement
 RUN npm install --include=dev
 
 # Copier le reste de l'application

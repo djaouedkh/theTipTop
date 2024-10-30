@@ -53,10 +53,11 @@ pipeline {
                     steps {
                         dir('backend') {
                             script {
-                                // Spécifie le chemin relatif vers le Dockerfile dans le répertoire backend
+                                // Construire l'image pour les tests backend
                                 def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f ./Dockerfile .")
                                 backendTestImage.inside {
-                                    sh 'npm run test'
+                                    // Exécuter Jest via npx pour s'assurer qu'il est bien accessible
+                                    sh 'npx jest'
                                 }
                                 backendTestImage.remove()
                             }
