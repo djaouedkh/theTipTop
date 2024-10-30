@@ -38,14 +38,14 @@ pipeline {
             }
         }
 
-        stage('Checkout Code') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/prod']],
-                    userRemoteConfigs: [[url: 'https://github.com/djaouedkh/theTipTop.git', credentialsId: 'github-token']],
-                    extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 120]]
-                ])
-            }
-        }
+        // stage('Checkout Code') {
+        //     steps {
+        //         checkout([$class: 'GitSCM', branches: [[name: '*/prod']],
+        //             userRemoteConfigs: [[url: 'https://github.com/djaouedkh/theTipTop.git', credentialsId: 'github-token']],
+        //             extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 120]]
+        //         ])
+        //     }
+        // }
 
         stage('Verify Cloned Files') {
             steps {
