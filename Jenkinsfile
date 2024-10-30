@@ -38,14 +38,14 @@ pipeline {
             }
         }
 
-        // stage('Checkout Code') {
-        //     steps {
-        //         checkout([$class: 'GitSCM', branches: [[name: '*/prod']],
-        //             userRemoteConfigs: [[url: 'https://github.com/djaouedkh/theTipTop.git', credentialsId: 'github-token']],
-        //             extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 120]]
-        //         ])
-        //     }
-        // }
+        stage('Checkout Code') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/prod']],
+                    userRemoteConfigs: [[url: 'https://github.com/djaouedkh/theTipTop.git', credentialsId: 'github-token']],
+                    extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 120]]
+                ])
+            }
+        }
 
         stage('Verify Cloned Files') {
             steps {
@@ -55,38 +55,38 @@ pipeline {
         }
 
 
-        // stage('Run Tests') {
-        //     stages {
-        //         stage('Backend Tests') {
-        //             steps {
-        //                 dir('backend') {
-        //                     script {
-        //                         // Spécifie le chemin relatif vers le Dockerfile dans le répertoire backend
-        //                         def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f ./Dockerfile .")
-        //                         backendTestImage.inside {
-        //                             sh 'npm run test'
-        //                         }
-        //                         backendTestImage.remove()
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //         stage('Frontend Tests') {
-        //             steps {
-        //                 dir('frontend') {
-        //                     script {
-        //                         // Spécifie le chemin relatif vers le Dockerfile dans le répertoire frontend
-        //                         def frontendTestImage = docker.build("myapp-frontend-test:${NODE_ENV}", "-f ./Dockerfile .")
-        //                         frontendTestImage.inside {
-        //                             sh 'ng test --watch=false'
-        //                         }
-        //                         frontendTestImage.remove()
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Run Tests') {
+            stages {
+                stage('Backend Tests') {
+                    steps {
+                        dir('backend') {
+                            script {
+                                // Spécifie le chemin relatif vers le Dockerfile dans le répertoire backend
+                                def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f ./Dockerfile .")
+                                backendTestImage.inside {
+                                    sh 'npm run test'
+                                }
+                                backendTestImage.remove()
+                            }
+                        }
+                    }
+                }
+                // stage('Frontend Tests') {
+                //     steps {
+                //         dir('frontend') {
+                //             script {
+                //                 // Spécifie le chemin relatif vers le Dockerfile dans le répertoire frontend
+                //                 def frontendTestImage = docker.build("myapp-frontend-test:${NODE_ENV}", "-f ./Dockerfile .")
+                //                 frontendTestImage.inside {
+                //                     sh 'ng test --watch=false'
+                //                 }
+                //                 frontendTestImage.remove()
+                //             }
+                //         }
+                //     }
+                // }
+            }
+        }
 
 
 
