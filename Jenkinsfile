@@ -42,24 +42,30 @@ pipeline {
             stages {
                 stage('Backend Tests') {
                     steps {
-                        dir('backend') {
-                            sh 'npm install'
-                            sh 'npm run test'
+                        script {
+                            def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f backend/Dockerfile .")
+                            backendTestImage.inside {
+                                sh 'npm run test'
+                            }
+                            backendTestImage.remove()
                         }
                     }
                 }
                 stage('Frontend Tests') {
                     steps {
-                        dir('frontend') {
-                            sh 'npm install'
-                            sh 'ng test --watch=false'
+                        script {
+                            def frontendTestImage = docker.build("myapp-frontend-test:${NODE_ENV}", "-f frontend/Dockerfile .")
+                            frontendTestImage.inside {
+                                sh 'ng test --watch=false'
+                            }
+                            frontendTestImage.remove() // Supprime l'image de test après usage
                         }
                     }
                 }
             }
         }
 
-        // stage('Build') {
+        // stage('Build for Production') {
         //     parallel {
         //         stage('Build Backend') {
         //             steps {
