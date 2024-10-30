@@ -12,7 +12,7 @@ USER appuser
 COPY package*.json ./
 
 # Configuration du cache npm local pour éviter les erreurs de permissions
-RUN npm config set cache /app/.npm-cache --global
+RUN npm config set cache /app/.npm-cache
 
 # Installer les dépendances
 RUN npm install --include=dev
