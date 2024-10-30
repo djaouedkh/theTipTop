@@ -42,28 +42,37 @@ pipeline {
             stages {
                 stage('Backend Tests') {
                     steps {
-                        script {
-                            def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f backend/Dockerfile .")
-                            backendTestImage.inside {
-                                sh 'npm run test'
+                        // Change le répertoire de travail vers 'backend' pour que Docker trouve le Dockerfile
+                        dir('backend') {
+                            script {
+                                // Build de l'image Docker en utilisant le Dockerfile situé dans 'backend'
+                                def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f Dockerfile .")
+                                backendTestImage.inside {
+                                    sh 'npm run test'
+                                }
+                                backendTestImage.remove() // Supprime l'image après le test
                             }
-                            backendTestImage.remove()
                         }
                     }
                 }
                 stage('Frontend Tests') {
                     steps {
-                        script {
-                            def frontendTestImage = docker.build("myapp-frontend-test:${NODE_ENV}", "-f frontend/Dockerfile .")
-                            frontendTestImage.inside {
-                                sh 'ng test --watch=false'
+                        // Change le répertoire de travail vers 'frontend' pour que Docker trouve le Dockerfile
+                        dir('frontend') {
+                            script {
+                                // Build de l'image Docker en utilisant le Dockerfile situé dans 'frontend'
+                                def frontendTestImage = docker.build("myapp-frontend-test:${NODE_ENV}", "-f Dockerfile .")
+                                frontendTestImage.inside {
+                                    sh 'ng test --watch=false'
+                                }
+                                frontendTestImage.remove() // Supprime l'image après le test
                             }
-                            frontendTestImage.remove() // Supprime l'image de test après usage
                         }
                     }
                 }
             }
         }
+
 
         // stage('Build for Production') {
         //     parallel {
