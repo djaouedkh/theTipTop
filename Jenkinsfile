@@ -32,11 +32,11 @@ pipeline {
             }
         }
 
-        stage('Checkout Code') {
-            steps {
-                checkout scm
-            }
-        }
+        // stage('Checkout Code') {
+        //     steps {
+        //         checkout scm
+        //     }
+        // }
 
         // stage('Run Tests') {
         //     stages {
