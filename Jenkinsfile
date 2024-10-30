@@ -41,6 +41,13 @@ pipeline {
             }
         }
 
+        stage('Verify Cloned Files') {
+            steps {
+                // Vérifie le contenu du répertoire de travail pour s'assurer du clonage
+                sh 'ls -al'
+            }
+        }
+
 
         // stage('Run Tests') {
         //     stages {
