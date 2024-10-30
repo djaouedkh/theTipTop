@@ -45,7 +45,7 @@ pipeline {
                         dir('backend') {
                             script {
                                 // Spécifie le chemin relatif vers le Dockerfile dans le répertoire backend
-                                def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f ./dockerfile .")
+                                def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f ./Dockerfile .")
                                 backendTestImage.inside {
                                     sh 'npm run test'
                                 }
@@ -59,7 +59,7 @@ pipeline {
                         dir('frontend') {
                             script {
                                 // Spécifie le chemin relatif vers le Dockerfile dans le répertoire frontend
-                                def frontendTestImage = docker.build("myapp-frontend-test:${NODE_ENV}", "-f ./dockerfile .")
+                                def frontendTestImage = docker.build("myapp-frontend-test:${NODE_ENV}", "-f ./Dockerfile .")
                                 frontendTestImage.inside {
                                     sh 'ng test --watch=false'
                                 }
