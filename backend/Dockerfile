@@ -23,6 +23,9 @@ RUN if [ -f .env.${NODE_ENV} ]; then \
         export $(grep -v '^#' .env.${NODE_ENV} | xargs); \
     fi
 
+# Générer les types Prisma avant la compilation
+RUN npx prisma generate
+
 # Compiler l'application (les variables sont maintenant accessibles en tant que variables d'environnement)
 RUN npm run build
 
