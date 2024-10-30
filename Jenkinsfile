@@ -57,7 +57,7 @@ pipeline {
                                 def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f ./Dockerfile .")
                                 backendTestImage.inside {
                                     // Exécuter Jest via npx pour s'assurer qu'il est bien accessible
-                                    sh 'npx jest'
+                                    sh 'npm config set cache $(pwd)/.npm-cache --global && npx jest'
                                 }
                                 backendTestImage.remove()
                             }
