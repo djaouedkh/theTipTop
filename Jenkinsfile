@@ -40,38 +40,37 @@ pipeline {
 
         stage('Run Tests') {
             stages {
-                // stage('Backend Tests') {
-                //     steps {
-                //         // Change le répertoire de travail vers 'backend' pour que Docker trouve le Dockerfile
-                //         dir('backend') {
-                //             script {
-                //                 // Build de l'image Docker en utilisant le Dockerfile situé dans 'backend'
-                //                 def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f Dockerfile .")
-                //                 backendTestImage.inside {
-                //                     sh 'npm run test'
-                //                 }
-                //                 backendTestImage.remove() // Supprime l'image après le test
-                //             }
-                //         }
-                //     }
-                // }
+                stage('Backend Tests') {
+                    steps {
+                        dir('backend') {
+                            script {
+                                // Spécifie le chemin relatif vers le Dockerfile dans le répertoire backend
+                                def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "-f ./dockerfile .")
+                                backendTestImage.inside {
+                                    sh 'npm run test'
+                                }
+                                backendTestImage.remove()
+                            }
+                        }
+                    }
+                }
                 stage('Frontend Tests') {
                     steps {
-                        // Change le répertoire de travail vers 'frontend' pour que Docker trouve le Dockerfile
                         dir('frontend') {
                             script {
-                                // Build de l'image Docker en utilisant le Dockerfile situé dans 'frontend'
-                                def frontendTestImage = docker.build("myapp-frontend-test:${NODE_ENV}", "-f Dockerfile .")
+                                // Spécifie le chemin relatif vers le Dockerfile dans le répertoire frontend
+                                def frontendTestImage = docker.build("myapp-frontend-test:${NODE_ENV}", "-f ./dockerfile .")
                                 frontendTestImage.inside {
                                     sh 'ng test --watch=false'
                                 }
-                                frontendTestImage.remove() // Supprime l'image après le test
+                                frontendTestImage.remove()
                             }
                         }
                     }
                 }
             }
         }
+
 
 
         // stage('Build for Production') {
