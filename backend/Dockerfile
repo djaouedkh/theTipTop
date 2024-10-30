@@ -1,42 +1,35 @@
-# Utiliser une image Node.js légère
-FROM node:18-alpine
+# Étape 1: Image de base pour build et tests
+FROM node:18-alpine as builder
 
-# Définir le répertoire de travail
+# Répertoire de travail
 WORKDIR /app
 
-# Ajouter un utilisateur non root pour éviter les problèmes de permissions
+# Utilisateur non-root
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-
-# Copier uniquement les fichiers nécessaires pour l’installation
-COPY package*.json ./
-
-# Passer temporairement à l'utilisateur root pour installer les dépendances
-USER root
-
-# Configuration du cache npm local pour éviter les erreurs de permissions
-RUN npm config set cache /app/.npm-cache
-
-# Installer les dépendances avec les permissions root
-RUN npm install --include=dev
-
-# Copier le reste de l'application
-COPY . .
-
-# Charger les variables d'environnement dynamiquement en fonction de NODE_ENV sans copier .env
-ARG NODE_ENV
-ENV NODE_ENV=${NODE_ENV}
-
-# Générer les types Prisma avant la compilation
-RUN npx prisma generate
-
-# Compiler l'application
-RUN npm run build
-
-# Revenir à l'utilisateur non root pour exécuter l'application
 USER appuser
 
-# Exposer le port (à ajuster si nécessaire)
-EXPOSE 3000
+# Copier uniquement package.json
+COPY package*.json ./
 
-# Commande de démarrage de l'application
+# Installer les dépendances
+RUN npm config set cache /app/.npm-cache --global && npm install --include=dev
+
+# Copier le reste du code
+COPY . .
+
+# Générer Prisma
+RUN npx prisma generate
+
+# Étape 2: Test
+FROM builder as test
+ENV NODE_ENV=test
+RUN npm test  # Lancer Jest
+
+# Étape 3: Production
+FROM node:18-alpine
+WORKDIR /app
+COPY --from=builder /app ./
+USER appuser
+ENV NODE_ENV=production
+EXPOSE 3000
 CMD ["npm", "run", "start:prod"]
