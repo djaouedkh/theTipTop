@@ -1,11 +1,11 @@
 pipeline {
     agent any
 
-    environment {
-        NODE_ENV = "${env.BRANCH_NAME == 'prod' ? 'prod' : 'staging'}"
-        TARGET_SERVER_IP = "${env.BRANCH_NAME == 'prod' ? '77.37.86.76' : '<IP_KMV1>'}"
-        MY_SECRET = credentials('toto') // ID utilisé lors de la création du credential
-    }
+    // environment {
+    //     NODE_ENV = "${env.BRANCH_NAME == 'prod' ? 'prod' : 'staging'}"
+    //     TARGET_SERVER_IP = "${env.BRANCH_NAME == 'prod' ? '77.37.86.76' : '<IP_KMV1>'}"
+    //     MY_SECRET = credentials('toto') // ID utilisé lors de la création du credential
+    // }
 
     options {
         skipDefaultCheckout(true)
@@ -21,22 +21,27 @@ pipeline {
         //     }
         // }
 
-        // stage('Log Branch and Environment') {
-        //     steps {
-        //         script {
-        //             echo "***************************************************"
-        //             echo "Branch: ${env.BRANCH_NAME}"
-        //             echo "Environment: ${NODE_ENV}"
-        //             echo "Target Server IP: ${TARGET_SERVER_IP}"
-        //             echo "***************************************************"
-        //         }
-        //     }
-        // }
+        stage('Setup Environment') {
+            steps {
+                script {
+                    def envFileId = ''
+                    if (env.BRANCH_NAME == 'staging') {
+                        envFileId = 'env_staging_file' // ID du credential pour .env.staging
+                    } else if (env.BRANCH_NAME == 'prod') {
+                        envFileId = 'env_prod_file' // ID du credential pour .env.prod
+                    } else {
+                        error("No environment file found for the branch: ${env.BRANCH_NAME}")
+                    }
 
+                    withCredentials([file(credentialsId: envFileId, variable: 'ENV_FILE')]) {
+                        sh 'cp $ENV_FILE .env'
+                    }
+                }
+            }
+        }
         stage('Verify Environment Variables') {
             steps {
                 script {
-                    // Affiche uniquement des lignes spécifiques, par exemple
                     sh '''
                     if [ -f .env ]; then
                         echo ".env file found."
