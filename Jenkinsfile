@@ -21,21 +21,28 @@ pipeline {
         //     }
         // }
 
-        stage('Setup Environment') {
-            steps {
-                script {
-                    def envFileId = ''
-                    if (env.BRANCH_NAME == 'staging') {
-                        envFileId = 'env-staging' // ID du credential pour .env.staging
-                    } else if (env.BRANCH_NAME == 'prod') {
-                        envFileId = 'env-prod' // ID du credential pour .env.prod
-                    } else {
-                        error("No environment file found for the branch: ${env.BRANCH_NAME}")
-                    }
+        // stage('Setup Environment') {
+        //     steps {
+        //         script {
+        //             def envFileId = ''
+        //             if (env.BRANCH_NAME == 'staging') {
+        //                 envFileId = 'env-staging' // ID du credential pour .env.staging
+        //             } else if (env.BRANCH_NAME == 'prod') {
+        //                 envFileId = 'env-prod' // ID du credential pour .env.prod
+        //             } else {
+        //                 error("No environment file found for the branch: ${env.BRANCH_NAME}")
+        //             }
 
-                    withCredentials([file(credentialsId: envFileId, variable: 'ENV_FILE')]) {
-                        sh 'cp $ENV_FILE .env'
-                    }
+        //             withCredentials([file(credentialsId: envFileId, variable: 'ENV_FILE')]) {
+        //                 sh 'cp $ENV_FILE .env'
+        //             }
+        //         }
+        //     }
+        // }
+        stage('Log Environment Variables') {
+            steps {
+                withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+                    sh 'cp $ENV_FILE .env'
                 }
             }
         }
