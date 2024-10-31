@@ -19,6 +19,9 @@ RUN npm config set cache /app/.npm-cache --global && npm install --include=dev
 # Copier le reste de l'application
 COPY . .
 
+# Créer le dossier dist avec les bonnes permissions pour l'utilisateur non-root
+RUN mkdir /app/dist && chown -R appuser:appgroup /app/dist
+
 # Générer Prisma avant la compilation
 RUN npx prisma generate
 
