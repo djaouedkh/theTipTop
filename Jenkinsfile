@@ -12,37 +12,18 @@ pipeline {
     }
 
     stages {
-        // stage('Verify Branch') {
-        //     when {
-        //         expression { env.BRANCH_NAME == 'prod' || env.BRANCH_NAME == 'staging' }
-        //     }
-        //     steps {
-        //         echo "Triggering build for branch: ${env.BRANCH_NAME}"
-        //     }
-        // }
-
-        // stage('Setup Environment') {
-        //     steps {
-        //         script {
-        //             def envFileId = ''
-        //             if (env.BRANCH_NAME == 'staging') {
-        //                 envFileId = 'env-staging' // ID du credential pour .env.staging
-        //             } else if (env.BRANCH_NAME == 'prod') {
-        //                 envFileId = 'env-prod' // ID du credential pour .env.prod
-        //             } else {
-        //                 error("No environment file found for the branch: ${env.BRANCH_NAME}")
-        //             }
-
-        //             withCredentials([file(credentialsId: envFileId, variable: 'ENV_FILE')]) {
-        //                 sh 'cp $ENV_FILE .env'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Check Permissions') {
+    steps {
+        sh '''
+        whoami
+        ls -l .
+        '''
+    }
+}
         stage('Setup Environment') {
             steps {
                 withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
-                    sh 'cp $ENV_FILE .env'
+                    sh 'cp $ENV_FILE /var/lib/jenkins/workspace/p_Top_-_CICD_multi_branches_prod/.env'
                 }
             }
         }
