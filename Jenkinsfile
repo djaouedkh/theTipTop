@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     // Affichage des variables définies dans Jenkins
-                    echo "La valeur de MY_SECRET est : ${MY_SECRET}"
+                    echo "La valeur de******* MY_SECRET est : ${MY_SECRET}"
                     sh 'echo "La valeur de MY_SECRET est : $MY_SECRET"'
                 }
             }
