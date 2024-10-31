@@ -26,9 +26,9 @@ pipeline {
                 script {
                     def envFileId = ''
                     if (env.BRANCH_NAME == 'staging') {
-                        envFileId = 'env_staging_file' // ID du credential pour .env.staging
+                        envFileId = 'env-staging' // ID du credential pour .env.staging
                     } else if (env.BRANCH_NAME == 'prod') {
-                        envFileId = 'env_prod_file' // ID du credential pour .env.prod
+                        envFileId = 'env-prod' // ID du credential pour .env.prod
                     } else {
                         error("No environment file found for the branch: ${env.BRANCH_NAME}")
                     }
