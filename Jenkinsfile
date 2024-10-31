@@ -39,7 +39,7 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Log Environment Variables') {
+        stage('Setup Environment') {
             steps {
                 withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
                     sh 'cp $ENV_FILE .env'
@@ -49,6 +49,7 @@ pipeline {
         stage('Verify Environment Variables') {
             steps {
                 script {
+                    // Affiche uniquement des lignes spécifiques, par exemple
                     sh '''
                     if [ -f .env ]; then
                         echo ".env file found."
