@@ -35,8 +35,8 @@ pipeline {
 
         stage('Log Environment Variables') {
             steps {
-                script {
-                    echo "La longueur de MY_SECRET est : ${MY_SECRET.length()}"
+                withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+                    sh 'cp $ENV_FILE .env'
                 }
             }
         }
