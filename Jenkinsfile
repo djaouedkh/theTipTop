@@ -4,6 +4,7 @@ pipeline {
     environment {
         NODE_ENV = "${env.BRANCH_NAME == 'prod' ? 'prod' : 'staging'}"
         TARGET_SERVER_IP = "${env.BRANCH_NAME == 'prod' ? '77.37.86.76' : '<IP_KMV1>'}"
+        MY_SECRET = credentials('toto') // ID utilisé lors de la création du credential
     }
 
     options {
@@ -11,57 +12,66 @@ pipeline {
     }
 
     stages {
-        stage('Verify Branch') {
-            when {
-                expression { env.BRANCH_NAME == 'prod' || env.BRANCH_NAME == 'staging' }
-            }
-            steps {
-                echo "Triggering build for branch: ${env.BRANCH_NAME}"
-            }
-        }
+        // stage('Verify Branch') {
+        //     when {
+        //         expression { env.BRANCH_NAME == 'prod' || env.BRANCH_NAME == 'staging' }
+        //     }
+        //     steps {
+        //         echo "Triggering build for branch: ${env.BRANCH_NAME}"
+        //     }
+        // }
 
-        stage('Log Branch and Environment') {
+        // stage('Log Branch and Environment') {
+        //     steps {
+        //         script {
+        //             echo "***************************************************"
+        //             echo "Branch: ${env.BRANCH_NAME}"
+        //             echo "Environment: ${NODE_ENV}"
+        //             echo "Target Server IP: ${TARGET_SERVER_IP}"
+        //             echo "***************************************************"
+        //         }
+        //     }
+        // }
+
+        stage('Log Environment Variables') {
             steps {
                 script {
-                    echo "***************************************************"
-                    echo "Branch: ${env.BRANCH_NAME}"
-                    echo "Environment: ${NODE_ENV}"
-                    echo "Target Server IP: ${TARGET_SERVER_IP}"
-                    echo "***************************************************"
+                    // Affichage des variables définies dans Jenkins
+                    echo "La valeur de MY_SECRET est : ${MY_SECRET}"
                 }
             }
         }
 
-        stage('Clean Workspace') {
-            steps {
-                deleteDir() // Supprime tout le contenu du répertoire de travail
-            }
-        }
+        // stage('Clean Workspace') {
+        //     steps {
+        //         deleteDir() // Supprime tout le contenu du répertoire de travail
+        //     }
+        // }
 
-        stage('Checkout Code') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/prod']],
-                    userRemoteConfigs: [[url: 'https://github.com/djaouedkh/theTipTop.git', credentialsId: 'github-token']],
-                    extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 700]]
-                ])
-            }
-        }
+        // stage('Checkout Code') {
+        //     steps {
+        //         checkout([$class: 'GitSCM', branches: [[name: '*/prod']],
+        //             userRemoteConfigs: [[url: 'https://github.com/djaouedkh/theTipTop.git', credentialsId: 'github-token']],
+        //             extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 700]]
+        //         ])
+        //     }
+        // }
 
-        stage('Run Tests') {
-            stages {
-                stage('Backend Tests') {
-                    steps {
-                        dir('backend') {
-                            script {
-                                def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "--target test -f ./Dockerfile .")
-                                backendTestImage.inside {
-                                    sh 'npx jest'
-                                }
-                                backendTestImage.remove()
-                            }
-                        }
-                    }
-                }
+        // stage('Run Tests') {
+        //     stages {
+        //         stage('Backend Tests') {
+        //             steps {
+        //                 dir('backend') {
+        //                     script {
+        //                         def backendTestImage = docker.build("myapp-backend-test:${NODE_ENV}", "--target test -f ./Dockerfile .")
+        //                         backendTestImage.inside {
+        //                             sh 'npx jest'
+        //                         }
+        //                         backendTestImage.remove()
+        //                     }
+        //                 }
+        //             }
+        //         }
                 // stage('Frontend Tests') {
                 //     steps {
                 //         dir('frontend') {
@@ -76,8 +86,8 @@ pipeline {
                 //         }
                 //     }
                 // }
-            }
-        }
+        //     }
+        // }
 
 
 
