@@ -22,11 +22,14 @@ COPY . .
 # Créer le dossier dist avec les bonnes permissions pour l'utilisateur non-root
 RUN mkdir /app/dist && chown -R appuser:appgroup /app/dist
 
-# Générer Prisma avant la compilation
-RUN npx prisma generate
+# Changer de propriétaire pour tout le contenu avant la compilation
+RUN chown -R appuser:appgroup /app
 
 # Revenir à l'utilisateur non-root pour la suite
 USER appuser
+
+# Générer Prisma avant la compilation
+RUN npx prisma generate
 
 # Compiler l'application
 RUN npm run build
