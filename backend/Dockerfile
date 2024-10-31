@@ -13,8 +13,10 @@ USER root
 # Copier uniquement les fichiers nécessaires pour l’installation
 COPY package*.json ./
 
-# Configurer le cache npm local pour éviter les erreurs de permissions et installer les dépendances
-RUN npm config set cache /app/.npm-cache --global && npm install --include=dev
+# Configurer un cache npm temporaire pour éviter les problèmes de permissions
+RUN mkdir -p /tmp/.npm-cache && \
+    npm config set cache /tmp/.npm-cache --global && \
+    npm install --include=dev
 
 # Copier le reste de l'application
 COPY . .
@@ -37,6 +39,11 @@ RUN npm run build
 # Étape 2: Image de test (exécute les tests Jest)
 FROM builder AS test
 ENV NODE_ENV=test
+
+# Effacer le cache npm pour éviter les erreurs de permissions lors des tests
+RUN rm -rf /tmp/.npm-cache
+
+# Exécuter les tests
 RUN npm test
 
 # Étape 3: Image de production
