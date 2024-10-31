@@ -41,6 +41,9 @@ RUN npm run build
 FROM builder AS test
 ENV NODE_ENV=test
 
+# Assurez-vous que tous les fichiers de cache sont accessibles
+RUN sudo chown -R appuser:appgroup /app/.npm-cache
+
 # Exécuter les tests
 RUN npm test
 
