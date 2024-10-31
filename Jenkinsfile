@@ -36,9 +36,7 @@ pipeline {
         stage('Log Environment Variables') {
             steps {
                 script {
-                    // Affichage des variables définies dans Jenkins
-                    echo "La valeur de MY_SECRET est : ${MY_SECRET}"
-                    sh 'echo "La valeur de MY_SECRET est : $MY_SECRET"'
+                    echo "La longueur de MY_SECRET est : ${MY_SECRET.length()}"
                 }
             }
         }
