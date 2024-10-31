@@ -33,10 +33,19 @@ pipeline {
         //     }
         // }
 
-        stage('Log Environment Variables') {
+        stage('Verify Environment Variables') {
             steps {
-                withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
-                    sh 'cp $ENV_FILE .env'
+                script {
+                    // Affiche uniquement des lignes spécifiques, par exemple
+                    sh '''
+                    if [ -f .env ]; then
+                        echo ".env file found."
+                        grep "DATABASE_URL" .env || echo "DATABASE_URL not found in .env"
+                    else
+                        echo ".env file not found."
+                        exit 1
+                    fi
+                    '''
                 }
             }
         }
