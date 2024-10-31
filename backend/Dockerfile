@@ -10,13 +10,14 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 # Passer temporairement à l'utilisateur root pour installer les dépendances
 USER root
 
+# Configurer un cache npm temporaire dans le dossier de l'application
+RUN npm config set cache /app/.npm-cache --global
+
 # Copier uniquement les fichiers nécessaires pour l’installation
 COPY package*.json ./
 
-# Configurer un cache npm temporaire pour éviter les problèmes de permissions
-RUN mkdir -p /tmp/.npm-cache && \
-    npm config set cache /tmp/.npm-cache --global && \
-    npm install --include=dev
+# Installer les dépendances en tant que root (pour éviter des permissions issues)
+RUN npm install --include=dev
 
 # Copier le reste de l'application
 COPY . .
@@ -39,9 +40,6 @@ RUN npm run build
 # Étape 2: Image de test (exécute les tests Jest)
 FROM builder AS test
 ENV NODE_ENV=test
-
-# Effacer le cache npm pour éviter les erreurs de permissions lors des tests
-RUN rm -rf /tmp/.npm-cache
 
 # Exécuter les tests
 RUN npm test
