@@ -224,5 +224,16 @@ pipeline {
         //         }
         //     }
         // }
+
+        stage('Deploy Backend with Docker Compose') {
+            steps {
+                withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+                    sh '''
+                        echo "Démarrage du déploiement avec Docker Compose..."
+                        docker-compose -f docker-compose.yml --env-file $ENV_FILE up -d --build
+                    '''
+                }
+            }
+        }
     }
 }
