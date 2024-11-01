@@ -1,48 +1,48 @@
-pipeline {
-    agent any
+// pipeline {
+//     agent any
 
-    // environment {
-    //     NODE_ENV = "${env.BRANCH_NAME == 'prod' ? 'prod' : 'staging'}"
-    //     TARGET_SERVER_IP = "${env.BRANCH_NAME == 'prod' ? '77.37.86.76' : '<IP_KMV1>'}"
-    //     MY_SECRET = credentials('toto') // ID utilisé lors de la création du credential
-    // }
+//     // environment {
+//     //     NODE_ENV = "${env.BRANCH_NAME == 'prod' ? 'prod' : 'staging'}"
+//     //     TARGET_SERVER_IP = "${env.BRANCH_NAME == 'prod' ? '77.37.86.76' : '<IP_KMV1>'}"
+//     //     MY_SECRET = credentials('toto') // ID utilisé lors de la création du credential
+//     // }
 
-    options {
-        skipDefaultCheckout(true)
-    }
+//     options {
+//         skipDefaultCheckout(true)
+//     }
 
-    stages {
-        stage('Check Permissions') {
-    steps {
-        sh '''
-        whoami
-        ls -l .
-        '''
-    }
-}
-        stage('Setup Environment') {
-            steps {
-                withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
-                    sh 'cp $ENV_FILE /var/lib/jenkins/workspace/p_Top_-_CICD_multi_branches_prod/.env'
-                }
-            }
-        }
-        stage('Verify Environment Variables') {
-            steps {
-                script {
-                    // Affiche uniquement des lignes spécifiques, par exemple
-                    sh '''
-                    if [ -f .env ]; then
-                        echo ".env file found."
-                        grep "DATABASE_URL" .env || echo "DATABASE_URL not found in .env"
-                    else
-                        echo ".env file not found."
-                        exit 1
-                    fi
-                    '''
-                }
-            }
-        }
+//     stages {
+//         stage('Check Permissions') {
+//     steps {
+//         sh '''
+//         whoami
+//         ls -l .
+//         '''
+//     }
+// }
+//         stage('Setup Environment') {
+//             steps {
+//                 withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+//                     sh 'cp $ENV_FILE /var/lib/jenkins/workspace/p_Top_-_CICD_multi_branches_prod/.env'
+//                 }
+//             }
+//         }
+//         stage('Verify Environment Variables') {
+//             steps {
+//                 script {
+//                     // Affiche uniquement des lignes spécifiques, par exemple
+//                     sh '''
+//                     if [ -f .env ]; then
+//                         echo ".env file found."
+//                         grep "DATABASE_URL" .env || echo "DATABASE_URL not found in .env"
+//                     else
+//                         echo ".env file not found."
+//                         exit 1
+//                     fi
+//                     '''
+//                 }
+//             }
+//         }
 
         // stage('Clean Workspace') {
         //     steps {
@@ -153,5 +153,63 @@ pipeline {
         //         }
         //     }
         // }
+//     }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pipeline {
+    agent any
+    stages {
+        stage('Setup Environment') {
+            steps {
+                script {
+                    // Déterminer l'ID du credential en fonction de la branche
+                    def envFileId = ''
+                    if (env.BRANCH_NAME == 'staging') {
+                        envFileId = 'env-staging' // ID du credential pour .env.staging
+                    } else if (env.BRANCH_NAME == 'prod') {
+                        envFileId = 'env-prod' // ID du credential pour .env.prod
+                    } else {
+                        error("Aucun fichier d'environnement trouvé pour la branche : ${env.BRANCH_NAME}")
+                    }
+
+                    // Utiliser le credential pour copier le fichier .env
+                    withCredentials([file(credentialsId: envFileId, variable: 'ENV_FILE')]) {
+                        sh 'cp $ENV_FILE .env'
+                    }
+                }
+            }
+        }
+        stage('Verify Environment Variables') {
+            steps {
+                sh '''
+                if [ -f .env ]; then
+                    echo ".env file found."
+                    grep "DATABASE_URL" .env || echo "DATABASE_URL not found in .env"
+                else
+                    echo ".env file not found."
+                    exit 1
+                fi
+                '''
+            }
+        }
+        // Autres étapes du pipeline...
     }
 }
