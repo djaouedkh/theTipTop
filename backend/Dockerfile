@@ -1,5 +1,5 @@
-# Étape 1 : Construction de l'application
-FROM node:20 AS builder
+# Étape 1
+FROM node:20
 
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /backend
@@ -18,9 +18,6 @@ RUN npx prisma generate
 
 # Construire l'application
 RUN npm run build
-
-# Étape 2 : Image finale pour l'exécution
-FROM node:20
 
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /backend
