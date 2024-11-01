@@ -180,10 +180,9 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 script {
-                    // j'ai dans jenkins un credential de type file avec l'id 'env-prod', je le récupère pour l'utiliser lors du build
+                    // j'ai dans jenkins un credential de type file avec l'id 'env-prod', je le récupère pour le mettre dans une variable mais je le copie pas dans un .env car je n'ai pas les droits
                     withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
-                        // je dois mettre dans une variable d'environnement le contenu du fichier credential env-prod pour l'utiliser dans les étapes suivantes
-                        sh 'cp $ENV_FILE .env'
+                        sh 'echo $ENV_FILE'
                     }
                 }
             }
