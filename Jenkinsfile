@@ -180,21 +180,10 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 script {
-                    // Déterminer l'ID du credential en fonction de la branche
-                    def envFileId = ''
-                    if (env.BRANCH_NAME == 'staging') {
-                        envFileId = 'env-staging' // ID du credential pour .env.staging
-                    } else if (env.BRANCH_NAME == 'prod') {
-                        envFileId = 'env-prod' // ID du credential pour .env.prod
-                    } else {
-                        error("Aucun fichier d'environnement trouvé pour la branche : ${env.BRANCH_NAME}")
-                    }
-
-                    // Utiliser le credential pour écrire le contenu du fichier .env
-                    withCredentials([file(credentialsId: envFileId, variable: 'ENV_FILE')]) {
-                        sh '''
-                            cat $ENV_FILE > .env
-                        '''
+                    // j'ai dans jenkins un credential de type file avec l'id 'env-prod', je le récupère pour l'utiliser lors du build
+                    withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+                        // je dois mettre dans une variable d'environnement le contenu du fichier credential env-prod pour l'utiliser dans les étapes suivantes
+                        sh 'cp $ENV_FILE .env'
                     }
                 }
             }
