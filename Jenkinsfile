@@ -204,5 +204,35 @@ pipeline {
             }
         }
         // Autres étapes du pipeline...
+        // build le backend via son fichier Dockerfile en injectant dans l'environnement Docker le $ENV_FILE
+        stage('Build Docker Image Backend') {
+            steps {
+                withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+                    sh '''
+                        echo "Construction de l'image Docker avec les variables d'environnement..."
+                        docker build --env-file $ENV_FILE -t mon-backend:latest -f backend/Dockerfile backend/
+                    '''
+                }
+            }
+        }
+
+        // stage('Deploy Docker Image Backend with Docker Compose') {
+        //     steps {
+        //         withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+        //             sh '''
+        //                 echo "Déploiement avec Docker Compose..."
+        //                 docker-compose -f docker-compose.yml up -d
+        //             '''
+        //         }
+        //     }
+        // }
+        post {
+            success {
+                echo 'Le pipeline a été exécuté avec succès.'
+            }
+            failure {
+                echo 'Le pipeline a échoué.'
+            }
+        }
     }
 }
