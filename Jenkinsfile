@@ -177,13 +177,29 @@
 pipeline {
     agent any
     stages {
-        stage('Setup Environment') {
+        // stage('Retrieve Environment File') {
+        //     steps {
+        //         withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+        //             sh '''
+        //                 echo "Fichier d'environnement récupéré et prêt à être utilisé : $ENV_FILE"
+        //                 # Afficher le chemin pour confirmer qu'il est accessible (ne pas afficher le contenu)
+        //             '''
+        //         }
+        //     }
+        // }
+        stage('Retrieve Environment File') {
             steps {
-                script {
-                    // j'ai dans jenkins un credential de type file avec l'id 'env-prod', je le récupère pour le mettre dans une variable mais je le copie pas dans un .env car je n'ai pas les droits
-                    withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
-                        sh 'echo $ENV_FILE'
-                    }
+                withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+                    sh '''
+                        echo "Fichier d'environnement récupéré et prêt à être utilisé : $ENV_FILE"
+                        # Vérifier que le fichier n'est pas vide
+                        if [ -s $ENV_FILE ]; then
+                            echo "Le fichier d'environnement a du contenu."
+                        else
+                            echo "Le fichier d'environnement est vide ou inaccessible."
+                            exit 1
+                        fi
+                    '''
                 }
             }
         }
