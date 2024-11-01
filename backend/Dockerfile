@@ -39,16 +39,9 @@ COPY --from=builder /backend/src ./src
 # Installer les dépendances de développement pour Jest et autres outils nécessaires aux tests
 RUN npm install --only=dev
 
-# Vérifier le contenu pour s'assurer que tout est bien copié
-RUN ls -R /backend
-
-
-
-
-
 
 # Exposer le port utilisé par l'application
 EXPOSE 3000
 
 # Commande pour démarrer l'application
-CMD ["node", "dist/main"]
+CMD ["node", "dist/main", "run", "--port", "3000", "--host", "test"]
