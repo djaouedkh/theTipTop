@@ -209,8 +209,10 @@ pipeline {
                     sh '''
                         echo "Construction de l'image Docker avec les variables d'environnement..."
                         
-                        BUILD_ARGS=$(grep -v '^#' $ENV_FILE | sed 's/^/--build-arg /' | xargs)
+                        # Préparer les arguments de build pour Docker
+                        BUILD_ARGS=$(grep -v '^#' $ENV_FILE | sed 's/^/--build-arg /' | tr '\n' ' ')
                         
+                        # Construire l'image avec les arguments de build
                         docker build $BUILD_ARGS -t mon-backend:latest -f backend/Dockerfile backend/
                     '''
                 }
