@@ -30,6 +30,7 @@ COPY --from=builder /backend/dist ./dist
 COPY --from=builder /backend/node_modules ./node_modules
 COPY --from=builder /backend/package*.json ./
 COPY --from=builder /backend/prisma ./prisma
+COPY --from=builder /backend/src ./src  # Ajouter cette ligne pour copier le dossier src
 
 # Exposer le port utilisé par l'application
 EXPOSE 3000
