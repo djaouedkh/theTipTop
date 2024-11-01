@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { RoleService } from '../role.service';
 import { RoleCreateDto, RoleGetDto, RoleUpdateDto } from '../dtos/role.dto';
+import 'reflect-metadata';
 
 describe('RoleService - Unitary Test', () => {
     let service: RoleService;

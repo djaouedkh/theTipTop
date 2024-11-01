@@ -4,6 +4,7 @@ import { LotteryGameService } from '../lottery-game.service';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { LotteryGameGetDto } from '../dtos/lottery-game-get.dto';
 import { UserGetDto } from '../../users/dtos/user-get.dto';
+import 'reflect-metadata';
 
 describe('LotteryGame - Unitary Test', () => {
     let service: LotteryGameService;

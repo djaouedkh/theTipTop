@@ -5,6 +5,7 @@ import { ContestService } from '../contest.service';
 import { ContestSearchDto, ContestIncludeDto, ContestGetDto } from '../dtos/contest-get.dto';
 import { ContestCreateDto } from '../dtos/contest-create.dto';
 import { ContestUpdateDto } from '../dtos/contest-update.dto';
+import 'reflect-metadata';
 
 describe('Contest - Unitary Test', () => {
     let service: ContestService;

@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { StoreService } from '../store.service';
 import { StoreGetDto, StoreCreateDto, StoreUpdateDto } from '../dtos/store.dto';
+import 'reflect-metadata';
 
 describe('StoreService - Unitary Tests', () => {
   let service: StoreService;

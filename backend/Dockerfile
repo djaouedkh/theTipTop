@@ -32,14 +32,6 @@ COPY --from=builder /backend/package*.json ./
 COPY --from=builder /backend/prisma ./prisma
 COPY --from=builder /backend/src ./src
 
-
-
-
-
-# Installer les dépendances de développement pour Jest et autres outils nécessaires aux tests
-RUN npm install --only=dev
-
-
 # Exposer le port utilisé par l'application
 EXPOSE 3000
 

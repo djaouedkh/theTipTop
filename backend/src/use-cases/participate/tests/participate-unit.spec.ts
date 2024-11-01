@@ -7,6 +7,7 @@ import { GainGetDto } from '../../../gains/dtos/gain-get.dto';
 import { TicketGetDto } from '../../../tickets/dtos/ticket-get.dto';
 import { TicketService } from '../../../tickets/ticket.service';
 import { ParticipateService } from '../participate.service';
+import 'reflect-metadata';
 
 // Mock data for testing
 const mockContest: ContestGetDto = {

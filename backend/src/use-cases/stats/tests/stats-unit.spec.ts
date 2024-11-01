@@ -6,6 +6,7 @@ import { AdvancedStatsDto } from '../dtos/advanced-stats.dto';
 import { GlobalStatsDto } from '../dtos/global-stats.dto';
 import { AgeGroup } from '../enums/age-group.enum';
 import { Gender } from '../enums/gender.enum';
+import 'reflect-metadata';
 
 // Mock data
 const mockGlobalStats: GlobalStatsDto = {

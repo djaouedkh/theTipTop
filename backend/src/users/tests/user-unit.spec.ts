@@ -9,6 +9,7 @@ import { UserFilterDto } from '../dtos/user-filter.dto';
 import { plainToInstance } from 'class-transformer';
 import { AgeGroup } from '../../use-cases/stats/enums/age-group.enum';
 import { Gender } from '../../use-cases/stats/enums/gender.enum';
+import 'reflect-metadata';
 
 // Mock data
 const mockUser = {

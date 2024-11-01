@@ -4,6 +4,7 @@ import { GainService } from '../gain.service';
 import { GainCreateDto } from '../dtos/gain-create.dto';
 import { GainGetDto } from '../dtos/gain-get.dto';
 import { GainUpdateDto } from '../dtos/gain-update.dto';
+import 'reflect-metadata';
 
 describe('Gain - Unitary Test', () => {
     let service: GainService;

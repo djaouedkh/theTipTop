@@ -5,6 +5,7 @@ import { GainDeliveryService } from '../gain-delivery.service';
 import { GainDeliveryCreateDto } from '../dtos/gain-delivery-create.dto';
 import { GainDeliveryGetDto } from '../dtos/gain-delivery-get.dto';
 import { GainDeliveryUpdateDto } from '../dtos/gain-delivery-update.dto';
+import 'reflect-metadata';
 
 
 describe('GainDelivery - Unitary Test', () => {

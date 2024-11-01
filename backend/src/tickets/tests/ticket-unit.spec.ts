@@ -6,6 +6,7 @@ import { TicketGetDto } from '../dtos/ticket-get.dto';
 import { TicketCreateDto } from '../dtos/ticket-create.dto';
 import { TicketUpdateDto } from '../dtos/ticket-update.dto';
 import { GainService } from '../../gains/gain.service';
+import 'reflect-metadata';
 
 // Mock data for testing
 const mockTicket: TicketGetDto = {
