@@ -177,44 +177,48 @@
 pipeline {
     agent any
     stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Checkout Code') {
+            steps {
+                checkout([$class: 'GitSCM',
+                    branches: [[name: '*/' + env.BRANCH_NAME]], // Cloner la branche qui a déclenché le build
+                    userRemoteConfigs: [[url: 'https://github.com/djaouedkh/theTipTop.git', credentialsId: 'github-token']],
+                    extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 700]]
+                ])
+            }
+        }
+
         // stage('Retrieve Environment File') {
         //     steps {
         //         withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
         //             sh '''
         //                 echo "Fichier d'environnement récupéré et prêt à être utilisé : $ENV_FILE"
-        //                 # Afficher le chemin pour confirmer qu'il est accessible (ne pas afficher le contenu)
+        //                 # Vérifier que le fichier n'est pas vide
+        //                 if [ -s $ENV_FILE ]; then
+        //                     echo "Le fichier d'environnement a du contenu."
+        //                 else
+        //                     echo "Le fichier d'environnement est vide ou inaccessible."
+        //                     exit 1
+        //                 fi
         //             '''
         //         }
         //     }
         // }
-        stage('Retrieve Environment File') {
-            steps {
-                withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
-                    sh '''
-                        echo "Fichier d'environnement récupéré et prêt à être utilisé : $ENV_FILE"
-                        # Vérifier que le fichier n'est pas vide
-                        if [ -s $ENV_FILE ]; then
-                            echo "Le fichier d'environnement a du contenu."
-                        else
-                            echo "Le fichier d'environnement est vide ou inaccessible."
-                            exit 1
-                        fi
-                    '''
-                }
-            }
-        }
-        // Autres étapes du pipeline...
-        // build le backend via son fichier Dockerfile en injectant dans l'environnement Docker le $ENV_FILE
-        stage('Build Docker Image Backend') {
-            steps {
-                withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
-                    sh '''
-                        echo "Construction de l'image Docker avec les variables d'environnement..."
-                        docker build --env-file $ENV_FILE -t mon-backend:latest -f backend/Dockerfile backend/
-                    '''
-                }
-            }
-        }
+        
+        // stage('Build Docker Image Backend') {
+        //     steps {
+        //         withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+        //             sh '''
+        //                 echo "Construction de l'image Docker avec les variables d'environnement..."
+        //                 docker build --env-file $ENV_FILE -t mon-backend:latest -f backend/Dockerfile backend/
+        //             '''
+        //         }
+        //     }
+        // }
 
         // stage('Deploy Docker Image Backend with Docker Compose') {
         //     steps {
@@ -226,13 +230,13 @@ pipeline {
         //         }
         //     }
         // }
-        post {
-            success {
-                echo 'Le pipeline a été exécuté avec succès.'
-            }
-            failure {
-                echo 'Le pipeline a échoué.'
-            }
-        }
+        // post {
+        //     success {
+        //         echo 'Le pipeline a été exécuté avec succès.'
+        //     }
+        //     failure {
+        //         echo 'Le pipeline a échoué.'
+        //     }
+        // }
     }
 }
