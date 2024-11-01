@@ -204,12 +204,26 @@ pipeline {
             }
         }
         
+        // stage('Build Docker Image Backend') {
+        //     steps {
+        //         withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+        //             sh '''
+        //                 echo "Construction de l'image Docker avec les variables d'environnement..."
+        //                 docker build --env-file $ENV_FILE -t mon-backend:latest -f backend/Dockerfile backend/
+        //             '''
+        //         }
+        //     }
+        // }
         stage('Build Docker Image Backend') {
             steps {
                 withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
                     sh '''
                         echo "Construction de l'image Docker avec les variables d'environnement..."
-                        docker build --env-file $ENV_FILE -t mon-backend:latest -f backend/Dockerfile backend/
+                        
+                        ENV_ARGS=$(grep -v '^#' $ENV_FILE | xargs)
+                        
+                        # Construire l'image avec les arguments
+                        docker build $ENV_ARGS -t mon-backend:latest -f backend/Dockerfile backend/
                     '''
                 }
             }
