@@ -177,32 +177,32 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout Code') {
-            steps {
-                checkout([$class: 'GitSCM',
-                    branches: [[name: '*/' + env.BRANCH_NAME]], // Cloner la branche qui a déclenché le build
-                    userRemoteConfigs: [[url: 'https://github.com/djaouedkh/theTipTop.git', credentialsId: 'github-token']],
-                    extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 700]]
-                ])
-            }
-        }
-
-        // stage('Retrieve Environment File') {
+        // stage('Checkout Code') {
         //     steps {
-        //         withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
-        //             sh '''
-        //                 echo "Fichier d'environnement récupéré et prêt à être utilisé : $ENV_FILE"
-        //                 # Vérifier que le fichier n'est pas vide
-        //                 if [ -s $ENV_FILE ]; then
-        //                     echo "Le fichier d'environnement a du contenu."
-        //                 else
-        //                     echo "Le fichier d'environnement est vide ou inaccessible."
-        //                     exit 1
-        //                 fi
-        //             '''
-        //         }
+        //         checkout([$class: 'GitSCM',
+        //             branches: [[name: '*/' + env.BRANCH_NAME]], // Cloner la branche qui a déclenché le build
+        //             userRemoteConfigs: [[url: 'https://github.com/djaouedkh/theTipTop.git', credentialsId: 'github-token']],
+        //             extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 700]]
+        //         ])
         //     }
         // }
+
+        stage('Retrieve Environment File') {
+            steps {
+                withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+                    sh '''
+                        echo "Fichier d'environnement récupéré et prêt à être utilisé : $ENV_FILE"
+                        # Vérifier que le fichier n'est pas vide
+                        if [ -s $ENV_FILE ]; then
+                            echo "Le fichier d'environnement a du contenu."
+                        else
+                            echo "Le fichier d'environnement est vide ou inaccessible."
+                            exit 1
+                        fi
+                    '''
+                }
+            }
+        }
         
         // stage('Build Docker Image Backend') {
         //     steps {
