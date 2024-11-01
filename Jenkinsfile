@@ -190,15 +190,15 @@ pipeline {
                         error("Aucun fichier d'environnement trouvé pour la branche : ${env.BRANCH_NAME}")
                     }
 
-                    // Utiliser le credential pour copier le fichier .env
+                    // Utiliser le credential pour écrire le contenu du fichier .env
                     withCredentials([file(credentialsId: envFileId, variable: 'ENV_FILE')]) {
                         sh '''
-                            cp $ENV_FILE .env
-                            export $(grep -v '^#' .env | xargs)
+                            cat $ENV_FILE > .env
                         '''
                     }
                 }
             }
         }
+        // Autres étapes du pipeline...
     }
 }
