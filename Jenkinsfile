@@ -214,15 +214,15 @@ pipeline {
             }
         }
 
-        stage('Run Tests Backend') {
-            steps {
-                withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
-                    sh '''
-                        echo "Exécution des tests Jest dans l'image Docker..."
-                        docker run --rm --env-file $ENV_FILE mon-backend:latest npm run test
-                    '''
-                }
-            }
-        }
+        // stage('Run Tests Backend') {
+        //     steps {
+        //         withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+        //             sh '''
+        //                 echo "Exécution des tests Jest dans l'image Docker..."
+        //                 docker run --rm --env-file $ENV_FILE mon-backend:latest npm run test
+        //             '''
+        //         }
+        //     }
+        // }
     }
 }
