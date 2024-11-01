@@ -192,24 +192,13 @@ pipeline {
 
                     // Utiliser le credential pour copier le fichier .env
                     withCredentials([file(credentialsId: envFileId, variable: 'ENV_FILE')]) {
-                        sh 'cp $ENV_FILE .env'
+                        sh '''
+                            cp $ENV_FILE .env
+                            export $(grep -v '^#' .env | xargs)
+                        '''
                     }
                 }
             }
         }
-        // stage('Verify Environment Variables') {
-        //     steps {
-        //         sh '''
-        //         if [ -f .env ]; then
-        //             echo ".env file found."
-        //             grep "DATABASE_URL" .env || echo "DATABASE_URL not found in .env"
-        //         else
-        //             echo ".env file not found."
-        //             exit 1
-        //         fi
-        //         '''
-        //     }
-        // }
-        // Autres étapes du pipeline...
     }
 }
