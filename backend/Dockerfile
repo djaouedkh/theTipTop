@@ -1,23 +1,13 @@
 # Étape 1 : Construction de l'application
 FROM node:20 AS builder
 
-# Déclarer les arguments de build
-ARG DATABASE_URL
-ARG GOOGLE_CLIENT_ID
-ARG GOOGLE_CLIENT_SECRET
-
-# Définir les variables d'environnement pour l'exécution
-ENV DATABASE_URL=$DATABASE_URL
-ENV GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
-ENV GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
-
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /backend
 
 # Copier les fichiers package.json et package-lock.json
 COPY package*.json ./
 
-# Installer toutes les dépendances
+# Installer toutes les dépendancesau moment du build ?
 RUN npm install
 
 # Copier le reste des fichiers du backend
