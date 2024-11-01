@@ -192,60 +192,29 @@ pipeline {
                 withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
                     sh '''
                         echo "Fichier d'environnement récupéré et prêt à être utilisé : $ENV_FILE"
-                        # Vérifier que le fichier n'est pas vide
                         if [ -s $ENV_FILE ]; then
                             echo "Le fichier d'environnement a du contenu."
                         else
-                            echo "Le fichier d'environnement est vide ou inaccessible."
+                            echo "Le fichier est vide ou inaccessible."
                             exit 1
                         fi
                     '''
                 }
             }
         }
-        
-        // stage('Build Docker Image Backend') {
-        //     steps {
-        //         withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
-        //             sh '''
-        //                 echo "Construction de l'image Docker avec les variables d'environnement..."
-        //                 docker build --env-file $ENV_FILE -t mon-backend:latest -f backend/Dockerfile backend/
-        //             '''
-        //         }
-        //     }
-        // }
+
         stage('Build Docker Image Backend') {
             steps {
                 withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
                     sh '''
                         echo "Construction de l'image Docker avec les variables d'environnement..."
                         
-                        ENV_ARGS=$(grep -v '^#' $ENV_FILE | xargs)
+                        BUILD_ARGS=$(grep -v '^#' $ENV_FILE | sed 's/^/--build-arg /' | xargs)
                         
-                        # Construire l'image avec les arguments
-                        docker build $ENV_ARGS -t mon-backend:latest -f backend/Dockerfile backend/
+                        docker build $BUILD_ARGS -t mon-backend:latest -f backend/Dockerfile backend/
                     '''
                 }
             }
         }
-
-        // stage('Deploy Docker Image Backend with Docker Compose') {
-        //     steps {
-        //         withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
-        //             sh '''
-        //                 echo "Déploiement avec Docker Compose..."
-        //                 docker-compose -f docker-compose.yml up -d
-        //             '''
-        //         }
-        //     }
-        // }
-        // post {
-        //     success {
-        //         echo 'Le pipeline a été exécuté avec succès.'
-        //     }
-        //     failure {
-        //         echo 'Le pipeline a échoué.'
-        //     }
-        // }
     }
 }
