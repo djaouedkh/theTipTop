@@ -1,10 +1,9 @@
 // src/app/admin/pages/dashboard/dashboard.component.ts
 import { Component, OnInit } from '@angular/core';
-import { TicketGetDto, TicketSearchDto } from '../../../../../../backend/src/tickets/dtos/ticket-get.dto';
 import { Router } from '@angular/router';
-import { TicketService } from '../../../core/services/ticket.service';
-import { GlobalStatsDto } from '../../../../../../backend/src/use-cases/stats/dtos/global-stats.dto';
 import { StatsService } from '../../../core/services/use-cases/stats.service';
+import { TicketGetDto } from '../../../core/dtos/tickets/ticket-get.dto';
+import { GlobalStatsDto } from '../../../core/dtos/use-cases/stats/global-stats.dto';
 
 @Component({
     selector: 'app-dashboard',

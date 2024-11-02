@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
-import { GainGetDto, GainIncludeDto, GainSearchDto } from '../../../../../backend/src/gains/dtos/gain-get.dto';
-import { GainCreateDto } from '../../../../../backend/src/gains/dtos/gain-create.dto';
-import { GainUpdateDto } from '../../../../../backend/src/gains/dtos/gain-update.dto';
+import { GainCreateDto } from '../dtos/gains/gain-create.dto';
+import { GainGetDto, GainSearchDto, GainIncludeDto } from '../dtos/gains/gain-get.dto';
+import { GainUpdateDto } from '../dtos/gains/gain-update.dto';
 
 @Injectable({
     providedIn: 'root',

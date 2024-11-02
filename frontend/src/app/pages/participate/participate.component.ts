@@ -1,7 +1,7 @@
 // src/app/pages/participate/participate.component.ts
 import { Component } from '@angular/core';
 import { ParticipateService } from '../../core/services/use-cases/participate.service';
-import { PlayToTheGameDto } from '../../../../../backend/src/use-cases/participate/dtos/play-to-the-game.dto';
+import { PlayToTheGameDto } from '../../core/dtos/use-cases/participate/play-to-the-game.dto';
 
 @Component({
     selector: 'app-participate',

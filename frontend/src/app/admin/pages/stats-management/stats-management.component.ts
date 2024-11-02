@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { StatsService } from '../../../core/services/use-cases/stats.service';
-import { AdvancedStatsDto } from '../../../../../../backend/src/use-cases/stats/dtos/advanced-stats.dto';
-import { AgeGroup } from '../../../../../../backend/src/use-cases/stats/enums/age-group.enum';
-import { Gender } from '../../../../../../backend/src/use-cases/stats/enums/gender.enum';
+import { AdvancedStatsDto } from '../../../core/dtos/use-cases/stats/advanced-stats.dto';
+import { AgeGroup } from '../../../core/dtos/use-cases/stats/enums/age-group.enum';
+import { Gender } from '../../../core/dtos/use-cases/stats/enums/gender.enum';
 
 @Component({
   selector: 'app-stats-management',

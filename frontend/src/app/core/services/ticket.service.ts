@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
-import { TicketGetDto, TicketIncludeDto, TicketSearchDto } from '../../../../../backend/src/tickets/dtos/ticket-get.dto';
-import { TicketCreateDto } from '../../../../../backend/src/tickets/dtos/ticket-create.dto';
-import { TicketUpdateDto } from '../../../../../backend/src/tickets/dtos/ticket-update.dto';
+import { TicketCreateDto } from '../dtos/tickets/ticket-create.dto';
+import { TicketGetDto, TicketSearchDto, TicketIncludeDto } from '../dtos/tickets/ticket-get.dto';
+import { TicketUpdateDto } from '../dtos/tickets/ticket-update.dto';
 
 @Injectable({
     providedIn: 'root',

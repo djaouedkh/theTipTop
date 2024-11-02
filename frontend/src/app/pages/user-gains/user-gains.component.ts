@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TicketService } from '../../core/services/ticket.service';
-import { TicketGetDto, TicketIncludeDto, TicketSearchDto } from '../../../../../backend/src/tickets/dtos/ticket-get.dto';
 import { UserStoreService } from '../../core/stores/users/user-store.service';
 import { UserState } from '../../core/stores/users/user.reducer';
+import { TicketGetDto, TicketSearchDto, TicketIncludeDto } from '../../core/dtos/tickets/ticket-get.dto';
 
 @Component({
     selector: 'app-user-gains',

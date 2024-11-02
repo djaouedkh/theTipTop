@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { UserGetDto } from '../../../../../../../backend/src/users/dtos/user-get.dto';
 import { EmailStoreService } from '../../../../core/stores/emails/email-store.service';
+import { UserGetDto } from '../../../../core/dtos/users/user-get.dto';
 
 
 @Component({

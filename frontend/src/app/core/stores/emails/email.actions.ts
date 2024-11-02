@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store'; 
-import { UserGetDto } from '../../../../../../backend/src/users/dtos/user-get.dto';
+import { UserGetDto } from '../../dtos/users/user-get.dto';
 
 // Action pour définir les utilisateurs sélectionnés
 // 'createAction' est utilisé pour créer une action spécifique dans NgRx

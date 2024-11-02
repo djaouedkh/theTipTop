@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
-import { UserGetDto, UserIncludeDto, UserSearchDto } from '../../../../../backend/src/users/dtos/user-get.dto';
-import { UserCreateDto } from '../../../../../backend/src/users/dtos/user-create.dto';
-import { UpdateUserDto } from '../../../../../backend/src/users/dtos/user-update.dto';
-import { UserFilterDto } from '../../../../../backend/src/users/dtos/user-filter.dto';
+import { UserCreateDto } from '../dtos/users/user-create.dto';
+import { UserFilterDto } from '../dtos/users/user-filter.dto';
+import { UserGetDto, UserSearchDto, UserIncludeDto } from '../dtos/users/user-get.dto';
+import { UpdateUserDto } from '../dtos/users/user-update.dto';
 
 @Injectable({
     providedIn: 'root',

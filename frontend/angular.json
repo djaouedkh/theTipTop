@@ -74,12 +74,16 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "defaultConfiguration": "local",
           "configurations": {
             "production": {
               "buildTarget": "frontend-app:build:production"
             },
             "staging": {
               "buildTarget": "frontend-app:build:staging"
+            },
+            "local": {
+              "buildTarget": "frontend-app:build"
             }
           }
         },

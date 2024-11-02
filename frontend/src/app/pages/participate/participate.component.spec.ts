@@ -3,10 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ParticipateComponent } from './participate.component';
 import { ParticipateService } from '../../core/services/use-cases/participate.service';
 import { of } from 'rxjs';
-import { PlayToTheGameDto } from '../../../../../backend/src/use-cases/participate/dtos/play-to-the-game.dto';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
+import { PlayToTheGameDto } from '../../core/dtos/use-cases/participate/play-to-the-game.dto';
 
 class MockParticipateService {
   playToTheGame(code: string) {

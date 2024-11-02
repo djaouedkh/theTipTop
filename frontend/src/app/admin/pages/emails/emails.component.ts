@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../../core/services/user.service';
-import { AgeGroup } from '../../../../../../backend/src/use-cases/stats/enums/age-group.enum';
-import { Gender } from '../../../../../../backend/src/use-cases/stats/enums/gender.enum';
-import { UserGetDto } from '../../../../../../backend/src/users/dtos/user-get.dto';
-import { UserFilterDto } from '../../../../../../backend/src/users/dtos/user-filter.dto';
 import { EmailStoreService } from '../../../core/stores/emails/email-store.service';
+import { UserFilterDto } from '../../../core/dtos/users/user-filter.dto';
+import { UserGetDto } from '../../../core/dtos/users/user-get.dto';
+import { AgeGroup } from '../../../core/dtos/use-cases/stats/enums/age-group.enum';
+import { Gender } from '../../../core/dtos/use-cases/stats/enums/gender.enum';
 
 
 

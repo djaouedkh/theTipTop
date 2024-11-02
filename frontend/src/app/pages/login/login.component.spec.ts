@@ -7,8 +7,8 @@ import { AuthService } from '../../core/services/auth.service';
 import { UserStoreService } from '../../core/stores/users/user-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AuthResponseDto } from '../../../../../backend/src/auth/dtos/auth-response.dto';
-import { UserLoginGoogleDto } from '../../../../../backend/src/auth/external-auth/dtos/user-login-google.dto';
+import { AuthResponseDto } from '../../core/dtos/auth/auth-response.dto';
+import { UserLoginGoogleDto } from '../../core/dtos/auth/external-auth/user-login-google.dto';
 
 class MockAuthService {
   login() {

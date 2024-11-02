@@ -5,8 +5,8 @@ import { GainService } from '../../core/services/gain.service';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { GainGetDto } from '../../../../../backend/src/gains/dtos/gain-get.dto';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { GainGetDto } from '../../core/dtos/gains/gain-get.dto';
 
 // Déclaration de la suite de tests pour le HomeComponent
 describe('HomeComponent', () => {

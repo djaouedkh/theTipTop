@@ -2,10 +2,10 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Observable } from 'rxjs';
-import { GlobalStatsDto } from '../../../../../../backend/src/use-cases/stats/dtos/global-stats.dto';
-import { AdvancedStatsDto } from '../../../../../../backend/src/use-cases/stats/dtos/advanced-stats.dto';
-import { Gender } from '../../../../../../backend/src/use-cases/stats/enums/gender.enum';
-import { AgeGroup } from '../../../../../../backend/src/use-cases/stats/enums/age-group.enum';
+import { AdvancedStatsDto } from '../../dtos/use-cases/stats/advanced-stats.dto';
+import { AgeGroup } from '../../dtos/use-cases/stats/enums/age-group.enum';
+import { Gender } from '../../dtos/use-cases/stats/enums/gender.enum';
+import { GlobalStatsDto } from '../../dtos/use-cases/stats/global-stats.dto';
 
 @Injectable({
     providedIn: 'root',

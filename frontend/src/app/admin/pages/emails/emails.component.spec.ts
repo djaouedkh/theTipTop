@@ -6,8 +6,8 @@ import { EmailStoreService } from '../../../core/stores/emails/email-store.servi
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UserGetDto } from '../../../../../../backend/src/users/dtos/user-get.dto';
 import { FormsModule } from '@angular/forms';
+import { UserGetDto } from '../../../core/dtos/users/user-get.dto';
 
 class MockUserService {
   filter() {

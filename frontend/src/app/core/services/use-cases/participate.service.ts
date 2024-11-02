@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Observable } from 'rxjs';
-import { PlayToTheGameDto } from '../../../../../../backend/src/use-cases/participate/dtos/play-to-the-game.dto';
+import { PlayToTheGameDto } from '../../dtos/use-cases/participate/play-to-the-game.dto';
 
 @Injectable({
     providedIn: 'root',

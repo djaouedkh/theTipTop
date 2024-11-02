@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
-import { ContestGetDto, ContestIncludeDto, ContestSearchDto } from '../../../../../backend/src/contests/dtos/contest-get.dto';
-import { ContestCreateDto } from '../../../../../backend/src/contests/dtos/contest-create.dto';
-import { ContestUpdateDto } from '../../../../../backend/src/contests/dtos/contest-update.dto';
+import { ContestCreateDto } from '../dtos/contests/contest-create.dto';
+import { ContestGetDto, ContestSearchDto, ContestIncludeDto } from '../dtos/contests/contest-get.dto';
+import { ContestUpdateDto } from '../dtos/contests/contest-update.dto';
 
 @Injectable({
     providedIn: 'root',

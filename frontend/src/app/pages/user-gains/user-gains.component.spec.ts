@@ -4,10 +4,10 @@ import { UserGainsComponent } from './user-gains.component';
 import { TicketService } from '../../core/services/ticket.service';
 import { UserStoreService } from '../../core/stores/users/user-store.service';
 import { of, throwError } from 'rxjs';
-import { TicketGetDto } from '../../../../../backend/src/tickets/dtos/ticket-get.dto';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { StoreModule } from '@ngrx/store';
 import { userReducer } from '../../core/stores/users/user.reducer';
+import { TicketGetDto } from '../../core/dtos/tickets/ticket-get.dto';
 
 // Mock data
 const mockTickets: TicketGetDto[] = [

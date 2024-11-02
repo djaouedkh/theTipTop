@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LotteryGameComponent } from './lottery-game.component';
 import { LotteryGameService } from '../../../core/services/use-cases/lottery-game.service';
 import { of, throwError } from 'rxjs';
-import { LotteryGameGetDto } from '../../../../../../backend/src/lottery-games/dtos/lottery-game-get.dto';
+import { LotteryGameGetDto } from '../../../core/dtos/lottery-games/lottery-game-get.dto';
 
 class MockLotteryGameService {
   get() {

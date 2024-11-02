@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StatsManagementComponent } from './stats-management.component';
 import { StatsService } from '../../../core/services/use-cases/stats.service';
 import { of } from 'rxjs';
-import { AdvancedStatsDto } from '../../../../../../backend/src/use-cases/stats/dtos/advanced-stats.dto';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { AdvancedStatsDto } from '../../../core/dtos/use-cases/stats/advanced-stats.dto';
 
 class MockStatsService {
   getAllAdvancedStats() {

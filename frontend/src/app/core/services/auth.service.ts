@@ -3,9 +3,9 @@ import { ApiService } from './api.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
-import { AuthResponseDto } from '../../../../../backend/src/auth/dtos/auth-response.dto';
 import { UserStoreService } from '../stores/users/user-store.service';
-import { UserLoginGoogleDto } from '../../../../../backend/src/auth/external-auth/dtos/user-login-google.dto';
+import { AuthResponseDto } from '../dtos/auth/auth-response.dto';
+import { UserLoginGoogleDto } from '../dtos/auth/external-auth/user-login-google.dto';
 
 @Injectable({
   providedIn: 'root',

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
-import { AuthResponseDto } from '../../../../../backend/src/auth/dtos/auth-response.dto';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { UserGetDto } from '../../../../../backend/src/users/dtos/user-get.dto';
 import { UserStoreService } from '../../core/stores/users/user-store.service';
-import { UserLoginGoogleDto } from '../../../../../backend/src/auth/external-auth/dtos/user-login-google.dto';
+import { AuthResponseDto } from '../../core/dtos/auth/auth-response.dto';
+import { UserLoginGoogleDto } from '../../core/dtos/auth/external-auth/user-login-google.dto';
+import { UserGetDto } from '../../core/dtos/users/user-get.dto';
 
 @Component({
   selector: 'app-login',

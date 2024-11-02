@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
 import { StatsService } from '../../../core/services/use-cases/stats.service';
 import { of } from 'rxjs';
-import { GlobalStatsDto } from '../../../../../../backend/src/use-cases/stats/dtos/global-stats.dto';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { GlobalStatsDto } from '../../../core/dtos/use-cases/stats/global-stats.dto';
 
 class MockStatsService {
   getAllStats() {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LotteryGameService } from '../../../core/services/use-cases/lottery-game.service';
-import { LotteryGameGetDto } from '../../../../../../backend/src/lottery-games/dtos/lottery-game-get.dto';
+import { LotteryGameGetDto } from '../../../core/dtos/lottery-games/lottery-game-get.dto';
 
 @Component({
   selector: 'app-lottery-game',

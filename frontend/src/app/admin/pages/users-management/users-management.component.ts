@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../core/services/user.service';
 import { TicketService } from '../../../core/services/ticket.service';
 import { ContestService } from '../../../core/services/contest.service';
-import { UserGetDto } from '../../../../../../backend/src/users/dtos/user-get.dto';
-import { TicketGetDto, TicketIncludeDto, TicketSearchDto } from '../../../../../../backend/src/tickets/dtos/ticket-get.dto';
+import { TicketGetDto, TicketSearchDto, TicketIncludeDto } from '../../../core/dtos/tickets/ticket-get.dto';
+import { UserGetDto } from '../../../core/dtos/users/user-get.dto';
 
 @Component({
   selector: 'app-users-management',

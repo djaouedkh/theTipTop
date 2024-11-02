@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { setSelectedUsers, clearSelectedUsers } from './email.actions'; // Importe les actions pour mettre à jour l'état
-import { UserGetDto } from '../../../../../../backend/src/users/dtos/user-get.dto';
+import { UserGetDto } from '../../dtos/users/user-get.dto';
 
 // Interface pour définir la structure de l'état
 export interface EmailState {

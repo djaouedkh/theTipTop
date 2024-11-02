@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { setSelectedUsers, clearSelectedUsers } from './email.actions';
 import { EmailState } from './email.reducer';
-import { UserGetDto } from '../../../../../../backend/src/users/dtos/user-get.dto';
 import { Observable } from 'rxjs';
+import { UserGetDto } from '../../dtos/users/user-get.dto';
 
 @Injectable({
     providedIn: 'root',
