@@ -6,7 +6,8 @@ WORKDIR /frontend
 COPY package*.json ./
 
 # Augmenter le délai d'attente de npm et installer les dépendances
-RUN npm set timeout 60000 && npm install
+RUN npm config set fetch-timeout 60000 && npm config set fetch-retries 5 && npm install
+
 
 COPY . .
 
