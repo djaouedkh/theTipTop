@@ -209,28 +209,17 @@ pipeline {
             }
         }
 
-        stage('Deploy Backend with Docker Compose') {
+        stage('Deploy Services with Docker Compose') {
             steps {
                 withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
                     sh '''
-                        echo "Arrêt et suppression de l'ancien conteneur..."
+                        echo "Arrêt et suppression des anciens conteneurs..."
                         docker-compose -f docker-compose.yml --env-file $ENV_FILE down
 
                         echo "Démarrage du déploiement avec Docker Compose..."
                         docker-compose -f docker-compose.yml --env-file $ENV_FILE up -d --build
                     '''
                 }
-            }
-        }
-        stage('Deploy Frontend with Docker Compose') {
-            steps {
-                sh '''
-                    echo "Arrêt et suppression de l'ancien conteneur front-end..."
-                    docker-compose -f docker-compose.yml down
-
-                    echo "Démarrage du déploiement du front-end avec Docker Compose..."
-                    docker-compose -f docker-compose.yml up -d --build
-                '''
             }
         }
     }
