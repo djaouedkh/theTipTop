@@ -187,22 +187,6 @@ pipeline {
             }
         }
 
-        stage('Retrieve Environment File') {
-            steps {
-                withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
-                    sh '''
-                        echo "Fichier d'environnement récupéré et prêt à être utilisé : $ENV_FILE"
-                        if [ -s $ENV_FILE ]; then
-                            echo "Le fichier d'environnement a du contenu."
-                        else
-                            echo "Le fichier est vide ou inaccessible."
-                            exit 1
-                        fi
-                    '''
-                }
-            }
-        }
-
         stage('Build Docker Image Backend') {
             steps {
                 withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
@@ -213,17 +197,17 @@ pipeline {
                 }
             }
         }
-
-        // stage('Run Tests Backend') {
-        //     steps {
-        //         withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
-        //             sh '''
-        //                 echo "Exécution des tests Jest dans l'image Docker..."
-        //                 docker run --rm --env-file $ENV_FILE mon-backend:latest npm run test
-        //             '''
-        //         }
-        //     }
-        // }
+        stage('Build Docker Image Frontend') {
+            steps {
+                script {
+                    def buildCommand = env.BRANCH_NAME == 'prod' ? 'npm run build:prod' : (env.BRANCH_NAME == 'staging' ? 'npm run build:staging' : 'npm run build')
+                    sh """
+                        echo "Construction de l'image Docker pour le front-end..."
+                        docker build --build-arg BUILD_COMMAND="${buildCommand}" -t mon-frontend:latest -f frontend/Dockerfile frontend/
+                    """
+                }
+            }
+        }
 
         stage('Deploy Backend with Docker Compose') {
             steps {
@@ -236,6 +220,17 @@ pipeline {
                         docker-compose -f docker-compose.yml --env-file $ENV_FILE up -d --build
                     '''
                 }
+            }
+        }
+        stage('Deploy Frontend with Docker Compose') {
+            steps {
+                sh '''
+                    echo "Arrêt et suppression de l'ancien conteneur front-end..."
+                    docker-compose -f docker-compose.frontend.yml down
+
+                    echo "Démarrage du déploiement du front-end avec Docker Compose..."
+                    docker-compose -f docker-compose.frontend.yml up -d --build
+                '''
             }
         }
     }

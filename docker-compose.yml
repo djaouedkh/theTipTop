@@ -9,3 +9,10 @@ services:
       - "3000:3000"
     env_file:
       - $ENV_FILE
+
+  frontend:
+    image: mon-frontend:latest
+    container_name: frontend-container
+    restart: always
+    ports:
+      - "80:80"
