@@ -11,7 +11,7 @@ COPY . .
 
 ARG BUILD_COMMAND=build
 
-RUN npm run $BUILD_COMMAND
+RUN $BUILD_COMMAND
 
 # Serveur Nginx pour le déploiement
 FROM nginx:alpine
