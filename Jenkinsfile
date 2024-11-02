@@ -229,6 +229,9 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
                     sh '''
+                        echo "Arrêt et suppression de l'ancien conteneur..."
+                        docker-compose -f docker-compose.yml --env-file $ENV_FILE down
+
                         echo "Démarrage du déploiement avec Docker Compose..."
                         docker-compose -f docker-compose.yml --env-file $ENV_FILE up -d --build
                     '''
