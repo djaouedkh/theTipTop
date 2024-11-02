@@ -226,10 +226,10 @@ pipeline {
             steps {
                 sh '''
                     echo "Arrêt et suppression de l'ancien conteneur front-end..."
-                    docker-compose -f docker-compose.frontend.yml down
+                    docker-compose -f docker-compose.yml down
 
                     echo "Démarrage du déploiement du front-end avec Docker Compose..."
-                    docker-compose -f docker-compose.frontend.yml up -d --build
+                    docker-compose -f docker-compose.yml up -d --build
                 '''
             }
         }
