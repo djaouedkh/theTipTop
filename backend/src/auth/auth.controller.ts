@@ -85,7 +85,8 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const response = req.user as AuthGoogleResponseDto;
-    res.redirect(`http://localhost:4200/auth/callback?isSuccess=${response.isSuccess}&isGoogleRegister=${response.isGoogleRegister}&email=${response.email}`);
+    // res.redirect(`http://localhost:4200/auth/callback?isSuccess=${response.isSuccess}&isGoogleRegister=${response.isGoogleRegister}&email=${response.email}`);
+    res.redirect(`${process.env.FRONT_URL}/auth/callback?isSuccess=${response.isSuccess}&isGoogleRegister=${response.isGoogleRegister}&email=${response.email}`);
   }
 
 }
