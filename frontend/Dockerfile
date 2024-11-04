@@ -15,9 +15,12 @@ ARG BUILD_COMMAND=build
 
 RUN $BUILD_COMMAND
 
-# Serveur Nginx pour le déploiement
-FROM nginx:alpine
+# Utiliser un serveur léger comme `http-server`
+FROM node:18
+RUN npm install -g http-server
 
-COPY --from=build /frontend/dist/frontend-app/browser /usr/share/nginx/html
+WORKDIR /usr/src/app
+COPY --from=build /frontend/dist/frontend-app/browser .
 
 EXPOSE 80
+CMD ["http-server", "-p", "80"]
