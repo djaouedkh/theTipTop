@@ -16,17 +16,16 @@ services:
       - web
 
   frontend:
-    # image: mon-frontend:latest
     image: 77.37.86.76:5000/mon-frontend:latest
     container_name: frontend-container
     labels:
       - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`)"
       - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.routers.frontend.middlewares=strip-path"
     networks:
       - web
 
   backend:
-    # image: mon-backend:latest
     image: 77.37.86.76:5000/mon-backend:latest
     container_name: backend-container
     labels:
@@ -42,3 +41,9 @@ services:
 networks:
   web:
     external: true
+
+middlewares:
+  strip-path:
+    stripPrefix:
+      prefixes:
+        - "/api"
