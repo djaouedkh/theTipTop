@@ -21,7 +21,7 @@ services:
     labels:
       - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`)"
       - "traefik.http.routers.frontend.entrypoints=web"
-      - "traefik.http.routers.frontend.middlewares=strip-path"
+      - "traefik.http.routers.frontend.priority=1"
     networks:
       - web
 
@@ -31,6 +31,7 @@ services:
     labels:
       - "traefik.http.routers.backend.rule=Host(`icademie-djaoued-khatir.fr`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend.entrypoints=web"
+      - "traefik.http.routers.backend.priority=2"
     ports:
       - "3000:3000"
     networks:
@@ -41,9 +42,3 @@ services:
 networks:
   web:
     external: true
-
-middlewares:
-  strip-path:
-    stripPrefix:
-      prefixes:
-        - "/api"
