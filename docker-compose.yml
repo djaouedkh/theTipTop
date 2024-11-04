@@ -1,18 +1,43 @@
 version: '3.8'
 
 services:
-  backend:
-    image: mon-backend:latest
-    container_name: backend-container
-    restart: always
+  traefik:
+    image: traefik:v2.9
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=your-email@example.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
-      - "3000:3000"
-    env_file:
-      - $ENV_FILE
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
+    networks:
+      - web
 
   frontend:
     image: mon-frontend:latest
     container_name: frontend-container
-    restart: always
+    labels:
+      - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=myresolver"
+    networks:
+      - web
+
+  backend:
+    image: mon-backend:latest
+    container_name: backend-container
     ports:
-      - "8081:80"
+      - "3000:3000"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
