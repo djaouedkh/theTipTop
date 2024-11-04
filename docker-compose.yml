@@ -16,5 +16,3 @@ services:
     restart: always
     ports:
       - "8081:80"
-    volumes:
-      - /usr/share/nginx/html:/usr/share/nginx/html
