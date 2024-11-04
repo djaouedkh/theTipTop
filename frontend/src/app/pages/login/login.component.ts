@@ -7,6 +7,7 @@ import { UserStoreService } from '../../core/stores/users/user-store.service';
 import { AuthResponseDto } from '../../core/dtos/auth/auth-response.dto';
 import { UserLoginGoogleDto } from '../../core/dtos/auth/external-auth/user-login-google.dto';
 import { UserGetDto } from '../../core/dtos/users/user-get.dto';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -147,8 +148,7 @@ export class LoginComponent implements OnInit {
 
   // Connexion via Google
   loginWithGoogle() {
-    console.log('1');
-    window.location.href = 'http://localhost:3000/api/auth/google'; // TODO: faire l'appel par auth.service
+    this.authService.loginWithGoogle();
   }
 
   // Pré-remplir le formulaire d'inscription avec les données fournies par Google

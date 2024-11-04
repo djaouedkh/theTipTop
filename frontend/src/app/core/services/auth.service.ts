@@ -6,6 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 import { UserStoreService } from '../stores/users/user-store.service';
 import { AuthResponseDto } from '../dtos/auth/auth-response.dto';
 import { UserLoginGoogleDto } from '../dtos/auth/external-auth/user-login-google.dto';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +49,11 @@ export class AuthService {
         }
       })
     );
+  }
+
+  loginWithGoogle(): void {
+    // window.location.href = 'http://localhost:3000/api/auth/google';
+    window.location.href = `${environment.apiUrl}/auth/google`
   }
 
   // Connexion via formulaire classique
