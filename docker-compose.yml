@@ -28,16 +28,22 @@ services:
       - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`)"
       - "traefik.http.routers.frontend.entrypoints=websecure"
       - "traefik.http.routers.frontend.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.frontend-redirect.redirectscheme.scheme=https"
     networks:
       - web
 
   backend:
     image: mon-backend:latest
     container_name: backend-container
+    labels:
+      - "traefik.http.routers.backend.rule=Host(`api.icademie-djaoued-khatir.fr`)"
+      - "traefik.http.routers.backend.entrypoints=web"
     ports:
       - "3000:3000"
     networks:
       - web
+    env_file:
+      - $ENV_FILE
 
 networks:
   web:
