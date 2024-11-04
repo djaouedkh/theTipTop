@@ -187,37 +187,85 @@ pipeline {
             }
         }
 
+        // stage('Build Docker Image Backend') {
+        //     steps {
+        //         withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+        //             sh '''
+        //                 echo "Construction de l'image Docker..."
+        //                 docker build -t mon-backend:latest -f backend/Dockerfile backend/
+        //             '''
+        //         }
+        //     }
+        // }
+        // stage('Build Docker Image Frontend') {
+        //     steps {
+        //         script {
+        //             def buildCommand = env.BRANCH_NAME == 'prod' ? 'npm run build:prod' : (env.BRANCH_NAME == 'staging' ? 'npm run build:staging' : 'npm run build')
+        //             sh """
+        //                 echo "Construction de l'image Docker pour le front-end..."
+        //                 docker build --build-arg BUILD_COMMAND="${buildCommand}" -t mon-frontend:latest -f frontend/Dockerfile frontend/
+        //             """
+        //         }
+        //     }
+        // }
         stage('Build Docker Image Backend') {
             steps {
                 withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
                     sh '''
                         echo "Construction de l'image Docker..."
-                        docker build -t mon-backend:latest -f backend/Dockerfile backend/
+                        docker build -t 77.37.86.76:5000/mon-backend:latest -f backend/Dockerfile backend/
                     '''
                 }
             }
         }
+
         stage('Build Docker Image Frontend') {
             steps {
                 script {
                     def buildCommand = env.BRANCH_NAME == 'prod' ? 'npm run build:prod' : (env.BRANCH_NAME == 'staging' ? 'npm run build:staging' : 'npm run build')
                     sh """
                         echo "Construction de l'image Docker pour le front-end..."
-                        docker build --build-arg BUILD_COMMAND="${buildCommand}" -t mon-frontend:latest -f frontend/Dockerfile frontend/
+                        docker build --build-arg BUILD_COMMAND="${buildCommand}" -t 77.37.86.76:5000/mon-frontend:latest -f frontend/Dockerfile frontend/
                     """
                 }
             }
         }
+        stage('Push Docker Images') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-registry', passwordVariable: 'REGISTRY_PASS', usernameVariable: 'REGISTRY_USER')]) {
+                    sh '''
+                        echo "Connexion au Docker Registry..."
+                        echo $REGISTRY_PASS | docker login 77.37.86.76:5000 -u $REGISTRY_USER --password-stdin
+
+                        echo "Push des images vers le registry..."
+                        docker push 77.37.86.76:5000/mon-backend:latest
+                        docker push 77.37.86.76:5000/mon-frontend:latest
+                    '''
+                }
+            }
+        }
+
+
+
+
+
 
         stage('Deploy Services with Docker Compose') {
             steps {
                 withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
+                    // sh '''
+                    //     echo "Arrêt et suppression des anciens conteneurs..."
+                    //     docker-compose -f docker-compose.yml --env-file $ENV_FILE down
+
+                    //     echo "Démarrage du déploiement avec Docker Compose..."
+                    //     docker-compose -f docker-compose.yml --env-file $ENV_FILE up -d --build
+                    // '''
                     sh '''
                         echo "Arrêt et suppression des anciens conteneurs..."
                         docker-compose -f docker-compose.yml --env-file $ENV_FILE down
 
                         echo "Démarrage du déploiement avec Docker Compose..."
-                        docker-compose -f docker-compose.yml --env-file $ENV_FILE up -d --build
+                        docker-compose -f docker-compose.yml --env-file $ENV_FILE up -d
                     '''
                 }
             }
