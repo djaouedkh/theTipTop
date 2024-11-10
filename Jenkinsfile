@@ -234,7 +234,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker-registry', passwordVariable: 'REGISTRY_PASS', usernameVariable: 'REGISTRY_USER')]) {
                     sh '''
                         echo "Connexion au Docker Registry..."
-                        echo $REGISTRY_PASS | docker login https://77.37.86.76:5000 -u $REGISTRY_USER --password-stdin
+                        echo $REGISTRY_PASS | docker login http://77.37.86.76:5000 -u $REGISTRY_USER --password-stdin
 
                         echo "Push des images vers le registry..."
                         docker push 77.37.86.76:5000/mon-backend:latest
