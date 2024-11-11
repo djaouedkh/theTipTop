@@ -19,7 +19,7 @@ services:
     image: 77.37.86.76:5000/mon-frontend:latest
     container_name: frontend-container
     ports:
-      - "8080:80"
+      - "8085:80"
     networks:
       - web
 
