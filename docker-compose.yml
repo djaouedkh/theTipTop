@@ -20,11 +20,11 @@ services:
     container_name: frontend-container
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`)"  # Pour le domaine racine
+      - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`)"  # Capte tout sur le domaine
       - "traefik.http.routers.frontend.entrypoints=web"
-      - "traefik.http.middlewares.frontend-redirect.redirectregex.regex=^/.*"  # Capture toutes les requêtes
-      - "traefik.http.middlewares.frontend-redirect.redirectregex.replacement=/index.html"  # Redirige vers index.html
-      - "traefik.http.routers.frontend.middlewares=frontend-redirect"  # Applique la redirection pour toutes les routes
+      - "traefik.http.middlewares.frontend-rewrite.replacepathregex.regex=^/.*"  # Capture toutes les sous-routes
+      - "traefik.http.middlewares.frontend-rewrite.replacepathregex.replacement=/index.html"  # Redirige vers index.html
+      - "traefik.http.routers.frontend.middlewares=frontend-rewrite"  # Applique la redirection
     networks:
       - web
 
