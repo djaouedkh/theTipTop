@@ -19,8 +19,11 @@ services:
     image: 77.37.86.76:5000/mon-frontend:latest
     container_name: frontend-container
     labels:
-      - "traefik.http.middlewares.frontend-retry.replacepathregex.regex=^/(.*)"
-      - "traefik.http.middlewares.frontend-retry.replacepathregex.replacement=/index.html"
+      - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.middlewares.frontend-rewrite.replacepathregex.regex=^/.*"
+      - "traefik.http.middlewares.frontend-rewrite.replacepathregex.replacement=/index.html"
+      - "traefik.http.routers.frontend.middlewares=frontend-rewrite"
     networks:
       - web
 
