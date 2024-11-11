@@ -21,8 +21,8 @@ services:
     labels:
       - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`) && PathPrefix(`/`)"
       - "traefik.http.routers.frontend.entrypoints=web"
-      - "traefik.http.middlewares.replace-path.replacepath.path=/index.html"
-      - "traefik.http.routers.frontend.middlewares=replace-path"
+      - "traefik.http.middlewares.strip-prefix.stripprefix.prefixes=/"
+      - "traefik.http.routers.frontend.middlewares=strip-prefix"
     networks:
       - web
 
