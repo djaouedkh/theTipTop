@@ -21,10 +21,8 @@ services:
     labels:
       - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`)"
       - "traefik.http.routers.frontend.entrypoints=web"
-      - "traefik.http.middlewares.redirect-to-index.errors.status=404"
-      - "traefik.http.middlewares.redirect-to-index.errors.query=/index.html"
-      - "traefik.http.middlewares.redirect-to-index.errors.service=frontend@docker"
-      - "traefik.http.routers.frontend.middlewares=redirect-to-index"
+      - "traefik.http.routers.frontend.priority=1"
+      - "traefik.http.routers.frontend.middlewares=stripprefix"
     networks:
       - web
 
