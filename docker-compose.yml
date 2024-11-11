@@ -18,8 +18,9 @@ services:
   frontend:
     image: 77.37.86.76:5000/mon-frontend:latest
     container_name: frontend-container
-    ports:
-      - "8085:80"
+    labels:
+      - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`) && PathPrefix(`/`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
     networks:
       - web
 
