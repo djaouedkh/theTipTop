@@ -21,10 +21,11 @@ services:
     labels:
       - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`)"
       - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.middlewares.frontend-stripprefix.stripprefix.prefixes=/home,/login,/participate,/user-gains"
       - "traefik.http.middlewares.frontend-errors.errorpage.status=404"
       - "traefik.http.middlewares.frontend-errors.errorpage.backend=frontend"
       - "traefik.http.middlewares.frontend-errors.errorpage.query=/index.html"
-      - "traefik.http.routers.frontend.middlewares=frontend-errors"
+      - "traefik.http.routers.frontend.middlewares=frontend-errors,frontend-stripprefix"
     networks:
       - web
 
