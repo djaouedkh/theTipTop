@@ -1,37 +1,19 @@
 version: '3.8'
 
 services:
-  traefik:
-    image: traefik:v2.9
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--entrypoints.web.address=:80"
-      - "--log.level=DEBUG"
-    ports:
-      - "80:80"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    networks:
-      - web
-
   frontend:
     image: 77.37.86.76:5000/mon-frontend:latest
     container_name: frontend-container
-    labels:
-      - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`) && PathPrefix(`/`)"
-      - "traefik.http.routers.frontend.entrypoints=web"
-      - "traefik.http.middlewares.strip-prefix.stripprefix.prefixes=/"
-      - "traefik.http.routers.frontend.middlewares=strip-prefix"
+    environment:
+      - PORT=80
+    ports:
+      - "80:80"  # Redirige le port 80 du conteneur vers le port 80 du VPS
     networks:
       - web
 
   backend:
     image: 77.37.86.76:5000/mon-backend:latest
     container_name: backend-container
-    labels:
-      - "traefik.http.routers.backend.rule=Host(`icademie-djaoued-khatir.fr`) && PathPrefix(`/api`)"
-      - "traefik.http.routers.backend.entrypoints=web"
     ports:
       - "3000:3000"
     networks:
