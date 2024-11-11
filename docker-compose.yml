@@ -1,19 +1,39 @@
 version: '3.8'
 
 services:
+  traefik:
+    image: traefik:v2.9
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--log.level=DEBUG"
+    ports:
+      - "80:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - web
+
   frontend:
     image: 77.37.86.76:5000/mon-frontend:latest
     container_name: frontend-container
-    environment:
-      - PORT=80
-    ports:
-      - "80:80"  # Redirige le port 80 du conteneur vers le port 80 du VPS
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`)"  # Pour le domaine racine
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.middlewares.frontend-redirect.redirectregex.regex=^/.*"  # Capture toutes les requêtes
+      - "traefik.http.middlewares.frontend-redirect.redirectregex.replacement=/index.html"  # Redirige vers index.html
+      - "traefik.http.routers.frontend.middlewares=frontend-redirect"  # Applique la redirection pour toutes les routes
     networks:
       - web
 
   backend:
     image: 77.37.86.76:5000/mon-backend:latest
     container_name: backend-container
+    labels:
+      - "traefik.http.routers.backend.rule=Host(`icademie-djaoued-khatir.fr`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.entrypoints=web"
     ports:
       - "3000:3000"
     networks:
