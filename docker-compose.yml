@@ -19,12 +19,8 @@ services:
     image: 77.37.86.76:5000/mon-frontend:latest
     container_name: frontend-container
     labels:
-      - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`)"
+      - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`) && PathPrefix(`/`)"
       - "traefik.http.routers.frontend.entrypoints=web"
-      - "traefik.http.middlewares.frontend-catchall.errors.status=404"
-      - "traefik.http.middlewares.frontend-catchall.errors.service=frontend@docker"
-      - "traefik.http.middlewares.frontend-catchall.errors.query=/index.html"
-      - "traefik.http.routers.frontend.middlewares=frontend-catchall"
     networks:
       - web
 
