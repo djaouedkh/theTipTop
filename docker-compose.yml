@@ -22,6 +22,7 @@ services:
       - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`)"
       - "traefik.http.routers.frontend.entrypoints=web"
       - "traefik.http.middlewares.frontend-catchall.errors.status=404"
+      - "traefik.http.middlewares.frontend-catchall.errors.service=frontend@docker"
       - "traefik.http.middlewares.frontend-catchall.errors.query=/index.html"
       - "traefik.http.routers.frontend.middlewares=frontend-catchall"
     networks:
