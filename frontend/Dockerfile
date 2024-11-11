@@ -23,4 +23,4 @@ WORKDIR /usr/src/app
 COPY --from=build /frontend/dist/frontend-app/browser .
 
 EXPOSE 80
-CMD ["http-server", "-p", "80", "-s"]
+CMD ["http-server", "-p", "80", "--spa"]
