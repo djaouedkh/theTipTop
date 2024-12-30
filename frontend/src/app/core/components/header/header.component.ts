@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Observable, map, combineLatest } from 'rxjs';
 import { UserStoreService } from '../../stores/users/user-store.service';
@@ -12,7 +12,9 @@ export class HeaderComponent implements OnInit {
   isAuthenticated$: Observable<boolean>;
   isAdmin$: Observable<boolean>;
   isEmployee$: Observable<boolean>;
-  hasBackOfficeAccess$: Observable<boolean>; // Variable combinée
+  hasBackOfficeAccess$: Observable<boolean>;
+
+  mobileMenuOpen = false; // État du menu mobile
 
   constructor(
     private router: Router,
@@ -21,7 +23,6 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // On observe l'état d'authentification et le rôle de l'utilisateur
     this.isAuthenticated$ = this.userStoreService.getUser().pipe(
       map(user => !!user.id)
     );
@@ -31,11 +32,28 @@ export class HeaderComponent implements OnInit {
     this.isEmployee$ = this.userStoreService.getUser().pipe(
       map(user => user.role === 'Employee')
     );
-
-    // Variable combinée pour gérer l'accès au BackOffice (Admin ou Employee)
     this.hasBackOfficeAccess$ = combineLatest([this.isAdmin$, this.isEmployee$]).pipe(
       map(([isAdmin, isEmployee]) => isAdmin || isEmployee)
     );
+  }
+
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+  }
+
+  // Écoute des clics globaux pour fermer le menu si le clic est à l'extérieur
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+
+    // Si le clic est en dehors du menu ou du bouton hamburger, fermer le menu
+    if (!target.closest('.menu-button') && !target.closest('.mobile-menu')) {
+      this.closeMobileMenu();
+    }
   }
 
   logout(): void {

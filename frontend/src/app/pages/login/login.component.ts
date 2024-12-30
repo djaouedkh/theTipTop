@@ -122,7 +122,7 @@ export class LoginComponent implements OnInit {
 
     const { firstname, lastname, email, password, confirmPassword, gender, age } = this.registerForm.value;
     if (password === confirmPassword) {
-      this.authService.register({ firstname, lastname, email, password, gender, age, roleId: 1 }).subscribe({
+      this.authService.register({ firstname, lastname, email, password, gender, age, roleId: 3 }).subscribe({
         next: (response: AuthResponseDto) => {
           if (response.isSuccess) {
             console.log('Inscription réussie', response);

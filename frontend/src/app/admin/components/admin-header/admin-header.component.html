@@ -1,37 +1,147 @@
-<header class="bg-blue-900 p-4 text-white flex justify-between items-center">
+<header class="bg-blue-900 p-4 text-white">
+  <div class="container mx-auto flex justify-between items-center">
+    <!-- Logo -->
     <div class="logo text-lg font-bold">
       <p>BackOffice</p>
     </div>
-    <nav>
-      <ul class="flex space-x-4">
-        <!-- Bouton visible pour Admin et Employee -->
-        <li><a routerLink="/admin/users" class="hover:underline">Gains Clients</a></li>
-  
-        <!-- Boutons visibles uniquement pour l'Admin -->
-        <li *ngIf="isAdmin"><a routerLink="/admin/dashboard" class="hover:underline">Tableau de Bord</a></li>
-        <li *ngIf="isAdmin"><a routerLink="/admin/lottery-game" class="hover:underline">Tirage au sort</a></li>
-        <li *ngIf="isAdmin"><a routerLink="/admin/stats" class="hover:underline">Statistiques</a></li>
-        <li *ngIf="isAdmin"><a routerLink="/admin/emails" class="hover:underline">Emails</a></li>
-        
-        <!-- Bouton pour retourner à la page utilisateur si Admin ou Employé -->
-        
-        
-        <li>
-          <button routerLink="" 
-            class="bg-gray-500 text-white px-4 py-2 ml-4 rounded hover:bg-gray-400">
-            Site
-          </button>
-        </li>
-        <!-- Déconnexion visible pour tous -->
-        <li>
-          <button
-            (click)="logout()"
-            class="bg-red-500 text-white px-4 py-2 ml-4 rounded hover:bg-red-400"
-          >
-            Déconnexion
-          </button>
-        </li>
-      </ul>
+
+    <!-- Bouton Hamburger pour Mobile -->
+    <button
+      class="block lg:hidden text-white focus:outline-none menu-button"
+      (click)="toggleMobileMenu()"
+      aria-label="Menu"
+    >
+      <svg
+        class="w-6 h-6"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"
+        />
+      </svg>
+    </button>
+
+    <!-- Menu Desktop -->
+    <nav class="hidden lg:flex space-x-6 items-center">
+      <a
+        routerLink="/admin/users"
+        class="hover:underline"
+        [routerLinkActive]="['font-semibold']"
+      >
+        Gains Clients
+      </a>
+      <a
+        *ngIf="isAdmin"
+        routerLink="/admin/dashboard"
+        class="hover:underline"
+        [routerLinkActive]="['font-semibold']"
+      >
+        Tableau de Bord
+      </a>
+      <a
+        *ngIf="isAdmin"
+        routerLink="/admin/lottery-game"
+        class="hover:underline"
+        [routerLinkActive]="['font-semibold']"
+      >
+        Tirage au Sort
+      </a>
+      <a
+        *ngIf="isAdmin"
+        routerLink="/admin/stats"
+        class="hover:underline"
+        [routerLinkActive]="['font-semibold']"
+      >
+        Statistiques
+      </a>
+      <a
+        *ngIf="isAdmin"
+        routerLink="/admin/emails"
+        class="hover:underline"
+        [routerLinkActive]="['font-semibold']"
+      >
+        Emails
+      </a>
+      <button
+        routerLink="/"
+        class="bg-gray-500 text-white px-4 py-2 ml-4 rounded hover:bg-gray-400"
+      >
+        Site
+      </button>
+      <button
+        (click)="logout()"
+        class="bg-red-500 text-white px-4 py-2 ml-4 rounded hover:bg-red-400"
+      >
+        Déconnexion
+      </button>
     </nav>
-  </header>
-  
+  </div>
+
+  <!-- Menu Mobile -->
+  <div
+    class="lg:hidden absolute top-16 right-0 w-64 bg-blue-800 text-white rounded-lg shadow-lg transform origin-top-right transition-transform duration-300 mobile-menu"
+    [class.scale-y-100]="mobileMenuOpen"
+    [class.scale-y-0]="!mobileMenuOpen"
+  >
+    <div class="p-4 space-y-4 text-right">
+      <a
+        routerLink="/admin/users"
+        class="block text-lg hover:underline transition-colors duration-300"
+        [routerLinkActive]="['font-semibold']"
+      >
+        Gains Clients
+      </a>
+      <a
+        *ngIf="isAdmin"
+        routerLink="/admin/dashboard"
+        class="block text-lg hover:underline transition-colors duration-300"
+        [routerLinkActive]="['font-semibold']"
+      >
+        Tableau de Bord
+      </a>
+      <a
+        *ngIf="isAdmin"
+        routerLink="/admin/lottery-game"
+        class="block text-lg hover:underline transition-colors duration-300"
+        [routerLinkActive]="['font-semibold']"
+      >
+        Tirage au Sort
+      </a>
+      <a
+        *ngIf="isAdmin"
+        routerLink="/admin/stats"
+        class="block text-lg hover:underline transition-colors duration-300"
+        [routerLinkActive]="['font-semibold']"
+      >
+        Statistiques
+      </a>
+      <a
+        *ngIf="isAdmin"
+        routerLink="/admin/emails"
+        class="block text-lg hover:underline transition-colors duration-300"
+        [routerLinkActive]="['font-semibold']"
+      >
+        Emails
+      </a>
+      <a
+        routerLink="/"
+        class="block text-lg hover:underline transition-colors duration-300"
+        [routerLinkActive]="['font-semibold']"
+      >
+        Site
+      </a>
+      <a
+        (click)="logout()"
+        class="block text-lg text-red-500 hover:bg-red-400 transition-colors duration-300"
+      >
+        Déconnexion
+      </a>
+    </div>
+  </div>
+</header>

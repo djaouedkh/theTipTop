@@ -1,48 +1,123 @@
 <header class="bg-green-500 text-white p-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <!-- Logo -->
-      <a routerLink="/" class="text-xl font-bold flex items-center">
-        Thé Tip Top
+  <div class="container mx-auto flex justify-between items-center">
+    <!-- Logo -->
+    <a routerLink="/" class="text-xl font-bold flex items-center">
+      Thé Tip Top
+    </a>
+
+    <!-- Bouton Hamburger pour Mobile -->
+    <button
+      class="block lg:hidden text-white focus:outline-none menu-button"
+      (click)="toggleMobileMenu()"
+      aria-label="Menu"
+    >
+      <svg
+        class="w-6 h-6"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"
+        />
+      </svg>
+    </button>
+
+    <!-- Menu Desktop -->
+    <nav class="hidden lg:flex space-x-6 items-center">
+      <a
+        routerLink="/home"
+        class="hover:text-yellow-200 focus:text-yellow-400 focus:outline-none"
+        [routerLinkActive]="['text-yellow-400']"
+      >
+        Jeu-Concours
       </a>
-  
-      <!-- Menu de Navigation -->
-      <nav class="space-x-6">
-        <a routerLink="/home" class="hover:text-yellow-200">Jeu-Concours</a>
-        <a
-          *ngIf="isAuthenticated$ | async"
-          routerLink="/user-gains"
-          class="hover:text-yellow-200"
-        >
-          Mes Gains
-        </a>
-        <!-- Bouton de Participation -->
-        <button routerLink="/participate" class="bg-yellow-400 text-green-800 px-4 py-2 rounded hover:bg-yellow-300">
-          Participez au Jeu-Concours
-        </button>
-        <!-- Bouton pour accéder au BackOffice si Admin ou Employee -->
-        <button *ngIf="hasBackOfficeAccess$ | async" routerLink="/admin/" 
-          class="bg-gray-500 text-white px-4 py-2 ml-4 rounded hover:bg-gray-400">
-          BackOffice
-        </button>
-      </nav>
-  
-  
-      <!-- Connexion/Déconnexion -->
+      <a
+        *ngIf="isAuthenticated$ | async"
+        routerLink="/user-gains"
+        class="hover:text-yellow-200 focus:text-yellow-400 focus:outline-none"
+        [routerLinkActive]="['text-yellow-400']"
+      >
+        Mes Gains
+      </a>
       <button
-        *ngIf="!(isAuthenticated$ | async); else loggedIn"
+        routerLink="/participate"
+        class="bg-yellow-400 text-green-800 px-4 py-2 rounded hover:bg-yellow-300"
+      >
+        Participez au Jeu-Concours
+      </button>
+      <button
+        *ngIf="hasBackOfficeAccess$ | async"
+        routerLink="/admin/"
+        class="bg-gray-500 text-white px-4 py-2 ml-4 rounded hover:bg-gray-400"
+      >
+        BackOffice
+      </button>
+      <!-- Bouton Déconnexion Desktop -->
+      <button
+        *ngIf="isAuthenticated$ | async"
+        (click)="logout()"
+        class="bg-red-500 text-white px-4 py-2 ml-4 rounded hover:bg-red-400"
+      >
+        Déconnexion
+      </button>
+    </nav>
+  </div>
+
+  <!-- Menu Mobile -->
+  <div
+    class="lg:hidden absolute top-16 right-0 w-64 bg-green-600 text-white rounded-lg shadow-lg transform origin-top-right transition-transform duration-300 mobile-menu"
+    [class.scale-y-100]="mobileMenuOpen"
+    [class.scale-y-0]="!mobileMenuOpen"
+  >
+    <div class="p-4 space-y-4 text-right">
+      <a
+        routerLink="/home"
+        class="block text-lg hover:text-yellow-200 focus:text-yellow-400 focus:outline-none transition-colors duration-300"
+        [routerLinkActive]="['text-yellow-400', 'font-semibold']"
+      >
+        Jeu-Concours
+      </a>
+      <a
+        *ngIf="isAuthenticated$ | async"
+        routerLink="/user-gains"
+        class="block text-lg hover:text-yellow-200 focus:text-yellow-400 focus:outline-none transition-colors duration-300"
+        [routerLinkActive]="['text-yellow-400', 'font-semibold']"
+      >
+        Mes Gains
+      </a>
+      <a
+        routerLink="/participate"
+        class="block text-lg hover:text-yellow-200 focus:text-yellow-400 focus:outline-none transition-colors duration-300"
+      >
+        Participez au Jeu-Concours
+      </a>
+      <a
+        *ngIf="hasBackOfficeAccess$ | async"
+        routerLink="/admin/"
+        class="block text-lg hover:text-yellow-200 focus:text-yellow-400 focus:outline-none transition-colors duration-300"
+      >
+        BackOffice
+      </a>
+      <a
+        *ngIf="!(isAuthenticated$ | async); else mobileLoggedIn"
         routerLink="/login"
-        class="bg-blue-500 text-white px-4 py-2 ml-4 rounded hover:bg-blue-400"
+        class="block text-lg hover:text-yellow-200 focus:text-yellow-400 focus:outline-none transition-colors duration-300"
       >
         Connexion
-      </button>
-      <ng-template #loggedIn>
-        <button
+      </a>
+      <ng-template #mobileLoggedIn>
+        <a
           (click)="logout()"
-          class="bg-red-500 text-white px-4 py-2 ml-4 rounded hover:bg-red-400"
+          class="block text-lg text-right hover:text-red-400 focus:outline-none transition-colors duration-300"
         >
           Déconnexion
-        </button>
+        </a>
       </ng-template>
     </div>
-  </header>
-  
+  </div>
+</header>

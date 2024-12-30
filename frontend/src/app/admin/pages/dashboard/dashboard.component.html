@@ -1,28 +1,28 @@
 <div class="dashboard-container mx-auto p-6 max-w-4xl">
-    <h1 class="text-4xl font-bold mb-6">Dashboard Administrateur</h1>
+    <h1 class="text-4xl font-bold mb-6 text-center sm:text-left">Dashboard Administrateur</h1>
 
-    <div class="stats-overview grid grid-cols-2 gap-4 text-center">
-        <div class="p-4 bg-blue-200 rounded-lg">
+    <div class="stats-overview grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
+        <div class="p-4 bg-blue-200 rounded-lg shadow">
             <h2 class="text-xl font-semibold">Tickets Total</h2>
             <p class="text-2xl">{{ stats.totalTickets }}</p>
         </div>
-        <div class="p-4 bg-green-200 rounded-lg">
+        <div class="p-4 bg-green-200 rounded-lg shadow">
             <h2 class="text-xl font-semibold">Tickets Utilisés</h2>
             <p class="text-2xl">{{ stats.ticketsPlayed }}</p>
         </div>
-        <div class="p-4 bg-yellow-200 rounded-lg">
+        <div class="p-4 bg-yellow-200 rounded-lg shadow">
             <h2 class="text-xl font-semibold">Tickets Restants</h2>
             <p class="text-2xl">{{ stats.ticketsNotPlayed }}</p>
         </div>
-        <div class="p-4 bg-purple-200 rounded-lg">
+        <div class="p-4 bg-purple-200 rounded-lg shadow">
             <h2 class="text-xl font-semibold">Participants Total</h2>
             <p class="text-2xl">{{ stats.totalParticipants }}</p>
         </div>
-        <div class="p-4 bg-red-200 rounded-lg">
+        <div class="p-4 bg-red-200 rounded-lg shadow">
             <h2 class="text-xl font-semibold">Gains Réclamés</h2>
             <p class="text-2xl">{{ stats.claimedGains }}</p>
         </div>
-        <div class="p-4 bg-indigo-200 rounded-lg">
+        <div class="p-4 bg-indigo-200 rounded-lg shadow">
             <h2 class="text-xl font-semibold">Gains Non Réclamés</h2>
             <p class="text-2xl">{{ stats.unclaimedGains }}</p>
         </div>
