@@ -16,7 +16,7 @@ services:
       - web
 
   frontend:
-    image: 77.37.86.76:5000/mon-frontend:latest
+    image: 185.97.146.217:5000/mon-frontend:latest
     container_name: frontend-container
     labels:
       - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`) && PathPrefix(`/`)"
@@ -25,7 +25,7 @@ services:
       - web
 
   backend:
-    image: 77.37.86.76:5000/mon-backend:latest
+    image: 185.97.146.217:5000/mon-backend:latest
     container_name: backend-container
     labels:
       - "traefik.http.routers.backend.rule=Host(`icademie-djaoued-khatir.fr`) && PathPrefix(`/api`)"

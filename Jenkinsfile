@@ -3,7 +3,7 @@
 
 //     // environment {
 //     //     NODE_ENV = "${env.BRANCH_NAME == 'prod' ? 'prod' : 'staging'}"
-//     //     TARGET_SERVER_IP = "${env.BRANCH_NAME == 'prod' ? '77.37.86.76' : '<IP_KMV1>'}"
+//     //     TARGET_SERVER_IP = "${env.BRANCH_NAME == 'prod' ? '185.97.146.217' : '<IP_KMV1>'}"
 //     //     MY_SECRET = credentials('toto') // ID utilisé lors de la création du credential
 //     // }
 
@@ -192,7 +192,7 @@ pipeline {
                 withCredentials([file(credentialsId: 'env-prod', variable: 'ENV_FILE')]) {
                     sh '''
                         echo "Construction de l'image Docker..."
-                        docker build -t 77.37.86.76:5000/mon-backend:latest -f backend/Dockerfile backend/
+                        docker build -t 185.97.146.217:5000/mon-backend:latest -f backend/Dockerfile backend/
                     '''
                 }
             }
@@ -203,7 +203,7 @@ pipeline {
                     def buildCommand = env.BRANCH_NAME == 'prod' ? 'npm run build:prod' : (env.BRANCH_NAME == 'staging' ? 'npm run build:staging' : 'npm run build')
                     sh """
                         echo "Construction de l'image Docker pour le front-end..."
-                        docker build --build-arg BUILD_COMMAND="${buildCommand}" -t 77.37.86.76:5000/mon-frontend:latest -f frontend/Dockerfile frontend/
+                        docker build --build-arg BUILD_COMMAND="${buildCommand}" -t 185.97.146.217:5000/mon-frontend:latest -f frontend/Dockerfile frontend/
                     """
                 }
             }
@@ -213,11 +213,11 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker-registry', passwordVariable: 'REGISTRY_PASS', usernameVariable: 'REGISTRY_USER')]) {
                     sh '''
                         echo "Connexion au Docker Registry..."
-                        echo $REGISTRY_PASS | docker login http://77.37.86.76:5000 -u $REGISTRY_USER --password-stdin
+                        echo $REGISTRY_PASS | docker login http://185.97.146.217:5000 -u $REGISTRY_USER --password-stdin
 
                         echo "Push des images vers le registry..."
-                        docker push 77.37.86.76:5000/mon-backend:latest
-                        docker push 77.37.86.76:5000/mon-frontend:latest
+                        docker push 185.97.146.217:5000/mon-backend:latest
+                        docker push 185.97.146.217:5000/mon-frontend:latest
                     '''
                 }
             }
