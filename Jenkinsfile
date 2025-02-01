@@ -1,9 +1,17 @@
 pipeline {
     agent any
+
     stages {
-        stage('TOTO') {
+        stage('Clone repo') {
             steps {
-                echo 'toto'
+                echo 'clone'
+                sh 'rm -fr testAppClone'
+                sh 'git clone https://github.com/djaouedkh/theTipTop.git'
+            }
+        }
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
             }
         }
     }
