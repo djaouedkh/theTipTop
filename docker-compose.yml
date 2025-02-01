@@ -9,7 +9,7 @@ services:
       - "--entrypoints.web.address=:80"
       - "--log.level=DEBUG"
     ports:
-      - "8080:80"   # Écoute sur 8080 côté hôte et redirige vers 80 dans le conteneur
+      - "8888:80"   # Écoute sur 8080 côté hôte et redirige vers 80 dans le conteneur
       - "443:443" 
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
