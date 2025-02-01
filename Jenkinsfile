@@ -4,6 +4,8 @@ pipeline {
         stage('Hello') {
             steps {
                 echo 'Hello World env.BRANCH_NAME'
+                // faire un echo et afficher le nom de la branche
+                echo env.BRANCH_NAME
             }
         }
 
