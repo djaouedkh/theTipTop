@@ -181,7 +181,7 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM',
                     // branches: [[name: '*/' + env.BRANCH_NAME]], // Cloner la branche qui a déclenché le build
-                    branches: [[name: '*/' + env.BRANCH_NAME]], // Cloner la branche qui a déclenché le build
+                    branches: [[name: 'refs/heads/prod']], // Cloner la branche qui a déclenché le build
                     userRemoteConfigs: [[url: 'https://github.com/djaouedkh/theTipTop.git', credentialsId: 'github-token']],
                     extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false, timeout: 700]]
                 ])
