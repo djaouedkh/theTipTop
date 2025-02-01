@@ -13,7 +13,9 @@ pipeline {
         }
         stage('Hello') {
             steps {
-                echo 'Hello World'
+                echo 'Hello World env.BRANCH_NAME'
+                // faire un echo et afficher le nom de la branche
+                echo env.BRANCH_NAME
             }
         }
         stage('Clean up') {
