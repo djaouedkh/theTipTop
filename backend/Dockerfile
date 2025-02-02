@@ -32,8 +32,12 @@ COPY --from=builder /backend/package*.json ./
 COPY --from=builder /backend/prisma ./prisma
 COPY --from=builder /backend/src ./src
 
+# Copie du script d'entrée
+COPY entrypoint.sh ./
+RUN chmod +x ./entrypoint.sh
+
 # Exposer le port utilisé par l'application
 EXPOSE 3000
 
 # Commande pour démarrer l'application
-CMD ["node", "dist/src/main"]
+CMD ["node", "dist/src/main", "./entrypoint.sh"]
