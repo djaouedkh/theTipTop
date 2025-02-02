@@ -40,4 +40,5 @@ RUN chmod +x ./entrypoint.sh
 EXPOSE 3000
 
 # Commande pour démarrer l'application
-CMD ["node", "dist/src/main", "./entrypoint.sh"]
+# CMD ["node", "dist/src/main"]
+CMD ["./entrypoint.sh"]
