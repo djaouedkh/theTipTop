@@ -17,10 +17,12 @@ RUN $BUILD_COMMAND
 
 # Utiliser un serveur léger comme `http-server`
 FROM node:18
-RUN npm install -g http-server
+# RUN npm install -g http-server
+RUN npm install -g serve
 
 WORKDIR /usr/src/app
 COPY --from=build /frontend/dist/frontend-app/browser .
 
 EXPOSE 80
-CMD ["http-server", "-p", "80"]
+# CMD ["http-server", "-p", "80"]
+CMD ["serve", "-s", ".", "-p", "80"]
