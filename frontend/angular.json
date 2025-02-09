@@ -60,6 +60,16 @@
               "outputHashing": "all",
               "optimization": true
             },
+            "preProd": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.pre-prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all"
+            },
             "staging": {
               "fileReplacements": [
                 {

@@ -1,3 +1,76 @@
+# version: '3.8'
+
+# services:
+#   traefik:
+#     image: traefik:v2.9
+#     command:
+#       - "--api.insecure=true"
+#       - "--providers.docker=true"
+#       - "--entrypoints.web.address=:80"
+#       - "--log.level=DEBUG"
+#     ports:
+#       - "8888:80"   # Écoute sur 8080 côté hôte et redirige vers 80 dans le conteneur
+#       - "443:443" 
+#     volumes:
+#       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+#     networks:
+#       - web
+
+#   frontend:
+#     image: 185.97.146.217:5000/mon-frontend:latest
+#     container_name: frontend-container
+#     labels:
+#       - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`) && PathPrefix(`/`)"
+#       - "traefik.http.routers.frontend.entrypoints=web"
+#     networks:
+#       - web
+
+#   backend:
+#     image: 185.97.146.217:5000/mon-backend:latest
+#     container_name: backend-container
+#     labels:
+#       - "traefik.http.routers.backend.rule=Host(`icademie-djaoued-khatir.fr`) && PathPrefix(`/api`)"
+#       - "traefik.http.routers.backend.entrypoints=web"
+#     ports:
+#       - "3000:3000"
+#     networks:
+#       - web
+#     env_file:
+#       - $ENV_FILE
+
+# networks:
+#   web:
+#     external: true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 version: '3.8'
 
 services:
@@ -9,7 +82,7 @@ services:
       - "--entrypoints.web.address=:80"
       - "--log.level=DEBUG"
     ports:
-      - "8888:80"   # Écoute sur 8080 côté hôte et redirige vers 80 dans le conteneur
+      - "8888:80"   # Traefik écoute sur 8888 côté hôte et redirige vers 80 dans le conteneur
       - "443:443" 
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
@@ -17,19 +90,19 @@ services:
       - web
 
   frontend:
-    image: 185.97.146.217:5000/mon-frontend:latest
-    container_name: frontend-container
+    image: ${FRONTEND_IMAGE}
+    container_name: frontend-container-${ENV_SUFFIX}
     labels:
-      - "traefik.http.routers.frontend.rule=Host(`icademie-djaoued-khatir.fr`) && PathPrefix(`/`)"
+      - "traefik.http.routers.frontend.rule=Host(`${FRONT_DOMAIN}`) && PathPrefix(`/`)"
       - "traefik.http.routers.frontend.entrypoints=web"
     networks:
       - web
 
   backend:
-    image: 185.97.146.217:5000/mon-backend:latest
-    container_name: backend-container
+    image: ${BACKEND_IMAGE}
+    container_name: backend-container-${ENV_SUFFIX}
     labels:
-      - "traefik.http.routers.backend.rule=Host(`icademie-djaoued-khatir.fr`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.rule=Host(`${FRONT_DOMAIN}`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend.entrypoints=web"
     ports:
       - "3000:3000"

@@ -5,10 +5,10 @@
     "ng": "ng",
     "start": "ng serve",
     "start:prod": "ng serve --configuration=production",
-    "start:staging": "ng serve --configuration=staging",
+    "start:pre-prod": "ng serve --configuration=preProd",
     "build": "ng build",
     "build:prod": "ng build --configuration=production",
-    "build:staging": "ng build --configuration=staging",
+    "build:pre-prod": "ng build --configuration=preProd",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

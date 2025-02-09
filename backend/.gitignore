@@ -11,4 +11,4 @@ dist
 .env
 .env.dev
 .env.prod
-.env.staging
+.env.pre-prod
