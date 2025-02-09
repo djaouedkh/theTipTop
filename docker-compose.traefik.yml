@@ -9,7 +9,7 @@ services:
       - "--entrypoints.web.address=:80"
       - "--log.level=DEBUG"
     ports:
-      - "8888:80"   # Traefik écoute sur le port 80 dans le conteneur, mappé sur 8888 sur l'hôte
+      - "8888:80"
       - "443:443"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
