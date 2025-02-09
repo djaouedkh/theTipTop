@@ -1,21 +1,98 @@
+# version: '3.8'
+
+# services:
+#   traefik:
+#     image: traefik:v2.9
+#     command:
+#       - "--api.insecure=true"
+#       - "--providers.docker=true"
+#       - "--entrypoints.web.address=:80"
+#       - "--log.level=DEBUG"
+#     ports:
+#       - "8888:80"   # Traefik écoute sur 8888 côté hôte et redirige vers 80 dans le conteneur
+#       - "443:443" 
+#     volumes:
+#       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+#     networks:
+#       - web
+
+#   frontend:
+#     image: ${FRONTEND_IMAGE}
+#     container_name: frontend-container-${ENV_SUFFIX}
+#     labels:
+#       - "traefik.http.routers.frontend.rule=Host(`${FRONT_DOMAIN}`) && PathPrefix(`/`)"
+#       - "traefik.http.routers.frontend.entrypoints=web"
+#     networks:
+#       - web
+
+#   backend:
+#     image: ${BACKEND_IMAGE}
+#     container_name: backend-container-${ENV_SUFFIX}
+#     labels:
+#       - "traefik.http.routers.backend.rule=Host(`${FRONT_DOMAIN}`) && PathPrefix(`/api`)"
+#       - "traefik.http.routers.backend.entrypoints=web"
+#     ports:
+#       - "3000:3000"
+#     networks:
+#       - web
+#     env_file:
+#       - $ENV_FILE
+
+# networks:
+#   web:
+#     external: true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 version: '3.8'
 
 services:
-  traefik:
-    image: traefik:v2.9
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--entrypoints.web.address=:80"
-      - "--log.level=DEBUG"
-    ports:
-      - "8888:80"   # Traefik écoute sur 8888 côté hôte et redirige vers 80 dans le conteneur
-      - "443:443" 
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    networks:
-      - web
-
   frontend:
     image: ${FRONTEND_IMAGE}
     container_name: frontend-container-${ENV_SUFFIX}
@@ -31,8 +108,9 @@ services:
     labels:
       - "traefik.http.routers.backend.rule=Host(`${FRONT_DOMAIN}`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend.entrypoints=web"
-    ports:
-      - "3000:3000"
+    # Supprimez le mapping de port pour éviter que prod et preprod tentent de lier le même port sur l'hôte
+    # ports:
+    #   - "3000:3000"
     networks:
       - web
     env_file:
