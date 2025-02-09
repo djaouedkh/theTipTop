@@ -57,6 +57,13 @@
       >
         BackOffice
       </button>
+      <a
+        *ngIf="!(isAuthenticated$ | async)"
+        routerLink="/login"
+        class="block text-lg hover:text-yellow-200 focus:text-yellow-400 focus:outline-none transition-colors duration-300"
+      >
+        Connexion
+      </a>
       <!-- Bouton Déconnexion Desktop -->
       <button
         *ngIf="isAuthenticated$ | async"
