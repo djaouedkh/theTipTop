@@ -96,18 +96,24 @@ services:
   frontend:
     image: ${FRONTEND_IMAGE}
     container_name: frontend-container-${ENV_SUFFIX}
+    # labels:
+    #   - "traefik.http.routers.frontend.rule=Host(`${FRONT_DOMAIN}`) && PathPrefix(`/`)"
+    #   - "traefik.http.routers.frontend.entrypoints=web"
     labels:
-      - "traefik.http.routers.frontend.rule=Host(`${FRONT_DOMAIN}`) && PathPrefix(`/`)"
-      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.routers.frontend-${ENV_SUFFIX}.rule=Host(`${FRONT_DOMAIN}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.frontend-${ENV_SUFFIX}.entrypoints=web"
     networks:
       - web
 
   backend:
     image: ${BACKEND_IMAGE}
     container_name: backend-container-${ENV_SUFFIX}
+    # labels:
+    #   - "traefik.http.routers.backend.rule=Host(`${FRONT_DOMAIN}`) && PathPrefix(`/api`)"
+    #   - "traefik.http.routers.backend.entrypoints=web"
     labels:
-      - "traefik.http.routers.backend.rule=Host(`${FRONT_DOMAIN}`) && PathPrefix(`/api`)"
-      - "traefik.http.routers.backend.entrypoints=web"
+      - "traefik.http.routers.backend-${ENV_SUFFIX}.rule=Host(`${FRONT_DOMAIN}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend-${ENV_SUFFIX}.entrypoints=web"
     # Supprimez le mapping de port pour éviter que prod et preprod tentent de lier le même port sur l'hôte
     # ports:
     #   - "3000:3000"
