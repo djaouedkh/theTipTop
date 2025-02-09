@@ -180,12 +180,36 @@ pipeline {
             }
         }
         
+        // stage('Deploy Services with Docker Compose') {
+        //     steps {
+        //         script {
+        //             // Choix du credential pour le déploiement
+        //             def envDeployCredentialId = (env.BRANCH_NAME == 'prod') ? 'env-prod' : 'env-pre-prod'
+        //             // Définir la variable FRONT_DOMAIN qui sera utilisée par Traefik
+        //             env.FRONT_DOMAIN = (env.BRANCH_NAME == 'prod') ? "icademie-djaoued-khatir.fr" : "preprod.icademie-djaoued-khatir.fr"
+                    
+        //             withCredentials([file(credentialsId: envDeployCredentialId, variable: 'ENV_FILE')]) {
+        //                 sh """
+        //                     echo "Déploiement des services pour ${ENV_SUFFIX}..."
+        //                     export ENV_SUFFIX=${ENV_SUFFIX}
+        //                     export FRONT_DOMAIN=${FRONT_DOMAIN}
+        //                     export BACKEND_IMAGE=185.97.146.217:5000/mon-backend-${ENV_SUFFIX}:latest
+        //                     export FRONTEND_IMAGE=185.97.146.217:5000/mon-frontend-${ENV_SUFFIX}:latest
+
+        //                     echo "Arrêt des anciens conteneurs..."
+        //                     docker-compose -f docker-compose.yml --env-file \$ENV_FILE down
+
+        //                     echo "Démarrage du déploiement avec Docker Compose..."
+        //                     docker-compose -f docker-compose.yml --env-file \$ENV_FILE up -d
+        //                 """
+        //             }
+        //         }
+        //     }
+        // }
         stage('Deploy Services with Docker Compose') {
             steps {
                 script {
-                    // Choix du credential pour le déploiement
                     def envDeployCredentialId = (env.BRANCH_NAME == 'prod') ? 'env-prod' : 'env-pre-prod'
-                    // Définir la variable FRONT_DOMAIN qui sera utilisée par Traefik
                     env.FRONT_DOMAIN = (env.BRANCH_NAME == 'prod') ? "icademie-djaoued-khatir.fr" : "preprod.icademie-djaoued-khatir.fr"
                     
                     withCredentials([file(credentialsId: envDeployCredentialId, variable: 'ENV_FILE')]) {
@@ -196,15 +220,16 @@ pipeline {
                             export BACKEND_IMAGE=185.97.146.217:5000/mon-backend-${ENV_SUFFIX}:latest
                             export FRONTEND_IMAGE=185.97.146.217:5000/mon-frontend-${ENV_SUFFIX}:latest
 
-                            echo "Arrêt des anciens conteneurs..."
-                            docker-compose -f docker-compose.yml --env-file \$ENV_FILE down
+                            echo "Arrêt des anciens conteneurs pour le projet ${ENV_SUFFIX}..."
+                            docker-compose -p ${ENV_SUFFIX} -f docker-compose.yml --env-file \$ENV_FILE down
 
-                            echo "Démarrage du déploiement avec Docker Compose..."
-                            docker-compose -f docker-compose.yml --env-file \$ENV_FILE up -d
+                            echo "Démarrage du déploiement avec Docker Compose pour le projet ${ENV_SUFFIX}..."
+                            docker-compose -p ${ENV_SUFFIX} -f docker-compose.yml --env-file \$ENV_FILE up -d
                         """
                     }
                 }
             }
         }
+
     }
 }
