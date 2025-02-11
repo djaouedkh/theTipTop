@@ -1,12 +1,12 @@
 // Importation des modules nécessaires pour les tests
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
-import { GainService } from '../../core/services/gain.service';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { GainGetDto } from '../../core/dtos/gains/gain-get.dto';
+import { GainGetDto } from '../../../core/dtos/gains/gain-get.dto';
+import { GainService } from '../../../core/services/gain.service';
 
 // Déclaration de la suite de tests pour le HomeComponent
 describe('HomeComponent', () => {

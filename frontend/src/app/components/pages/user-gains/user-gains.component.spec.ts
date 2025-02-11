@@ -1,13 +1,13 @@
 // user-gains.component.spec.ts (unit tests)
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserGainsComponent } from './user-gains.component';
-import { TicketService } from '../../core/services/ticket.service';
-import { UserStoreService } from '../../core/stores/users/user-store.service';
 import { of, throwError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { StoreModule } from '@ngrx/store';
-import { userReducer } from '../../core/stores/users/user.reducer';
-import { TicketGetDto } from '../../core/dtos/tickets/ticket-get.dto';
+import { TicketGetDto } from '../../../core/dtos/tickets/ticket-get.dto';
+import { TicketService } from '../../../core/services/ticket.service';
+import { UserStoreService } from '../../../core/stores/users/user-store.service';
+import { userReducer } from '../../../core/stores/users/user.reducer';
 
 // Mock data
 const mockTickets: TicketGetDto[] = [

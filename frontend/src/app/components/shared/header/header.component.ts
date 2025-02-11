@@ -1,8 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
 import { Observable, map, combineLatest } from 'rxjs';
-import { UserStoreService } from '../../stores/users/user-store.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
+import { UserStoreService } from '../../../core/stores/users/user-store.service';
 
 @Component({
   selector: 'app-header',

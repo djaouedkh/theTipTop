@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GainService } from '../../core/services/gain.service';
-import { GainGetDto } from '../../core/dtos/gains/gain-get.dto';
+import { GainGetDto } from '../../../core/dtos/gains/gain-get.dto';
+import { GainService } from '../../../core/services/gain.service';
 
 @Component({
     selector: 'app-home',

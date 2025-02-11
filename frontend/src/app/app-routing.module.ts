@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { ParticipateComponent } from './pages/participate/participate.component';
-import { LoginComponent } from './pages/login/login.component';
-import { UserGainsComponent } from './pages/user-gains/user-gains.component';
-import { ErrorComponent } from './pages/error/error.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
+import { ErrorComponent } from './components/pages/error/error.component';
+import { HomeComponent } from './components/pages/home/home.component';
+import { LoginComponent } from './components/pages/login/login.component';
+import { ParticipateComponent } from './components/pages/participate/participate.component';
+import { UserGainsComponent } from './components/pages/user-gains/user-gains.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },

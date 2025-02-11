@@ -2,16 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './core/components/header/header.component';
-import { FooterComponent } from './core/components/footer/footer.component';
-import { HomeComponent } from './pages/home/home.component';
-import { ParticipateComponent } from './pages/participate/participate.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { UserGainsComponent } from './pages/user-gains/user-gains.component';
-import { LoginComponent } from './pages/login/login.component';
-import { ErrorComponent } from './pages/error/error.component';
 import { AdminModule } from './admin/admin.module';
 
 import { StoreModule, MetaReducer } from '@ngrx/store';
@@ -21,6 +14,13 @@ import { emailReducer } from './core/stores/emails/email.reducer';
 import { userReducer } from './core/stores/users/user.reducer';
 import { storageMetaReducer } from './core/stores/storage.metareducer';
 import { TokenInterceptor } from './core/middlewares/token.interceptor';
+import { ErrorComponent } from './components/pages/error/error.component';
+import { HomeComponent } from './components/pages/home/home.component';
+import { LoginComponent } from './components/pages/login/login.component';
+import { ParticipateComponent } from './components/pages/participate/participate.component';
+import { UserGainsComponent } from './components/pages/user-gains/user-gains.component';
+import { FooterComponent } from './components/shared/footer/footer.component';
+import { HeaderComponent } from './components/shared/header/header.component';
 
 // Définition des meta-reducers
 export const metaReducers: MetaReducer<any>[] = [storageMetaReducer];

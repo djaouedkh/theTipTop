@@ -3,12 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 import { LoginComponent } from './login.component';
-import { AuthService } from '../../core/services/auth.service';
-import { UserStoreService } from '../../core/stores/users/user-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AuthResponseDto } from '../../core/dtos/auth/auth-response.dto';
-import { UserLoginGoogleDto } from '../../core/dtos/auth/external-auth/user-login-google.dto';
+import { AuthResponseDto } from '../../../core/dtos/auth/auth-response.dto';
+import { UserLoginGoogleDto } from '../../../core/dtos/auth/external-auth/user-login-google.dto';
+import { AuthService } from '../../../core/services/auth.service';
+import { UserStoreService } from '../../../core/stores/users/user-store.service';
 
 class MockAuthService {
   login() {
