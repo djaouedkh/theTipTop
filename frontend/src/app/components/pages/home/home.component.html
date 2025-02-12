@@ -1,37 +1,45 @@
-<div class="home-container mx-auto p-4 sm:p-6 lg:p-8 max-w-full sm:max-w-4xl lg:max-w-4xl min-h-screen flex flex-col items-center justify-center">
-    <!-- Titre principal -->
-    <header class="text-center mb-6 lg:mb-8">
-        <h1 class="text-3xl sm:text-4xl lg:text-4xl font-bold mb-4">
+<main class="min-h-screen relative flex flex-col bg-cover bg-center" style="background-image: url('https://source.unsplash.com/1600x900/?tea,leaves');">
+    <!-- Superposition de dégradé pour adoucir l'image de fond -->
+    <div class="absolute inset-0 bg-gradient-to-br from-green-50 via-amber-100 to-green-50 opacity-80"></div>
+    
+    <!-- Section Héro (Header) -->
+    <header class="relative z-10 flex flex-col items-center justify-center flex-1 px-6 py-10 text-center">
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-green-900 drop-shadow-xl mb-6">
             {{ title }}
         </h1>
-        <p class="text-base sm:text-lg lg:text-lg text-gray-700">
-            {{ description }}
+        <p class="text-xl sm:text-2xl lg:text-2xl text-gray-700 max-w-3xl mx-auto mb-8">
+            {{ description }}<br>
+            Découvrez l'univers apaisant du thé, laissez-vous envelopper par ses senteurs délicates et vivez une expérience inoubliable.
         </p>
-    </header>
-
-    <!-- Section des gains -->
-    <section class="gains-section mb-6 lg:mb-8 w-full">
-        <h2 class="text-xl sm:text-2xl lg:text-2xl font-semibold mb-4 text-center">
-            Les Prix à Gagner :
-        </h2>
-        <ul class="list-disc ml-6 sm:ml-8 text-gray-600">
-            <li
-                *ngFor="let gain of gains"
-                class="text-sm sm:text-base lg:text-base"
+        <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+            <button
+                (click)="onParticipate()"
+                class="px-8 py-4 bg-green-600 text-white font-bold rounded-full shadow-xl hover:bg-green-700 transform hover:scale-105 transition duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-green-300"
             >
-                <strong>{{ gain.name }}</strong> - Valeur :
-                <span class="font-medium">{{ gain.price | currency: 'EUR' }}</span>
-            </li>
-        </ul>
+                Participez Maintenant !
+            </button>
+            <a href="#learn-more"
+                class="px-8 py-4 bg-white text-green-600 font-bold rounded-full shadow-xl hover:bg-green-100 transition duration-300 ease-in-out">
+                En savoir plus
+            </a>
+        </div>
+    </header>
+    
+    <!-- Section "Les Prix à Gagner" -->
+    <section class="relative z-10 w-full py-10 px-6" style="background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(240,240,240,0.85)), url('https://source.unsplash.com/1600x900/?tea,ceremony'); background-size: cover; background-position: center;">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-semibold text-green-800 mb-6 drop-shadow">
+                Les Prix à Gagner
+            </h2>
+            <p class="mb-4 text-gray-600">
+                Chaque participation vous offre une chance de remporter des lots exclusifs, soigneusement sélectionnés pour enrichir votre expérience du thé et apporter une touche d'élégance à votre quotidien. Explorez nos offres et laissez-vous surprendre par la qualité et l'originalité de nos récompenses.
+            </p>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <li *ngFor="let gain of gains" class="p-4 border rounded-lg shadow hover:shadow-xl transition-shadow duration-300 bg-white bg-opacity-80">
+                    <h3 class="text-xl font-bold text-green-700">{{ gain.name }}</h3>
+                    <p class="text-gray-600 mt-2">Valeur : <span class="font-medium">{{ gain.price | currency: 'EUR' }}</span></p>
+                </li>
+            </ul>
+        </div>
     </section>
-
-    <!-- Bouton Participer -->
-    <div class="text-center">
-        <button
-            (click)="onParticipate()"
-            class="px-6 py-3 sm:px-8 sm:py-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300"
-        >
-            Participez Maintenant !
-        </button>
-    </div>
-</div>
+</main>
