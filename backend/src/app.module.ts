@@ -11,6 +11,7 @@ import { UseCaseModule } from './use-cases/use-case.module';
 import { ParseIntMiddleware } from './middlewares/parse-int.middleware';
 import { LotteryGameModule } from './lottery-games/lottery-game.module';
 import { AuthModule } from './auth/auth.module';
+import { EmailModule } from './emails/email.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AuthModule } from './auth/auth.module';
     LotteryGameModule,
     UseCaseModule,
     AuthModule,
+    EmailModule,
   ],
   providers: [PrismaService],
 })

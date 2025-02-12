@@ -8,5 +8,6 @@ export class EmailSendDto {
   export class EmailResponseDto {
     success: boolean;
     message: string;
+    previewUrls?: string[];
 }
   
