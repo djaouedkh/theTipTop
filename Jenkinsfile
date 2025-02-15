@@ -30,9 +30,12 @@ pipeline {
 stage('Run Frontend Tests') {
     steps {
         echo "Lancement des tests frontend en mode headless..."
-        sh "docker run --rm -v ${WORKSPACE}/frontend:/app -w /app node:20 sh -c 'npm ci && npm run test:headless'"
+        sh """
+           docker run --rm -v ${WORKSPACE}/frontend:/app -w /app node:20-buster sh -c 'apt-get update && apt-get install -y chromium && export CHROME_BIN=/usr/bin/chromium && npm ci && npx ng test --watch=false --browsers=ChromeHeadless --no-progress -- --no-sandbox'
+        """
     }
 }
+
 
         stage('Build Docker Image Backend') {
             steps {
