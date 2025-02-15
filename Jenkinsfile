@@ -27,6 +27,12 @@ pipeline {
             }
         }
 
+        stage('Run Frontend Tests') {
+            steps {
+                echo "Lancement des tests frontend en mode headless..."
+                sh "docker run --rm -v ${WORKSPACE}/frontend:/app -w /app circleci/node:18-browsers sh -c 'npm ci && npx ng test --watch=false --browsers=ChromeHeadless --no-progress'"
+            }
+        }
 
         stage('Build Docker Image Backend') {
             steps {
