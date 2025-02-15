@@ -30,7 +30,7 @@ pipeline {
 stage('Run Frontend Tests') {
     steps {
         echo "Lancement des tests frontend en mode headless..."
-        sh "cd frontend && npm ci && npm run test:headless"
+        sh "docker run --rm -v ${WORKSPACE}/frontend:/app -w /app node:20 sh -c 'npm ci && npm run test:headless'"
     }
 }
 
