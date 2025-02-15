@@ -29,14 +29,8 @@ pipeline {
 
 stage('Run Frontend Tests') {
     steps {
-        echo "Lancement des tests frontend en mode headless..."
-        sh """
-           docker run --rm -v ${WORKSPACE}/frontend:/app -w /app node:20-buster sh -c '
-           apt-get update && apt-get install -y chromium &&
-           export CHROME_BIN=/usr/bin/chromium &&
-           npm ci &&
-           npm run test:ci'
-        """
+        echo "Lancement des tests frontend..."
+        sh "docker run --rm -v ${WORKSPACE}/frontend:/app -w /app cypress/included:14.0.3 sh -c 'npm ci && npm run test:ci'"
     }
 }
 
