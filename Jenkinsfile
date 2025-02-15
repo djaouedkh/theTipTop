@@ -18,14 +18,24 @@ pipeline {
             }
         }
 
-        stage('Run Backend Tests') {
-            steps {
-                echo "Lancement des tests backend..."
-                // Exécute les tests dans un conteneur Node (ici version 20)
-                sh "docker run --rm -v ${WORKSPACE}/backend:/app -w /app node:20 sh -c 'npm ci && npm run test'"
+        // stage('Run Backend Tests') {
+        //     steps {
+        //         echo "Lancement des tests backend..."
+        //         // Exécute les tests dans un conteneur Node (ici version 20)
+        //         sh "docker run --rm -v ${WORKSPACE}/backend:/app -w /app node:20 sh -c 'npm ci && npm run test'"
 
-            }
-        }
+        //     }
+        // }
+stage('Run Backend Tests') {
+    steps {
+        echo "Lancement des tests backend..."
+        sh '''
+            cd backend
+            npm ci
+            npm run test
+        '''
+    }
+}
 
 stage('Run Frontend Tests') {
     steps {
