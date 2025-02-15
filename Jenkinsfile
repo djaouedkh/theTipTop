@@ -30,14 +30,13 @@ pipeline {
 stage('Run Frontend Tests') {
     steps {
         echo "Lancement des tests frontend..."
-        sh """
-           docker run --rm -v ${WORKSPACE}/frontend:/app -w /app \
-           mcr.microsoft.com/playwright:v1.42.0-focal sh -c \
-           'npm ci && npm run test:ci'
-        """
+        sh '''
+            cd frontend
+            npm ci
+            npm run test:ci
+        '''
     }
 }
-
 
         stage('Build Docker Image Backend') {
             steps {

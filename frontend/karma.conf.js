@@ -23,9 +23,15 @@ module.exports = function (config) {
     restartOnFileChange: true,
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
-        base: 'ChromeHeadless',
-        flags: ['--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage']
+        base: "ChromeHeadless",
+        flags: [
+          "--headless",
+          "--disable-gpu",
+          "--disable-dev-shm-usage",
+          "--no-sandbox",
+          "--remote-debugging-port=9222"
+        ]
       }
-    }
+    },
   });
 };
