@@ -29,9 +29,9 @@ pipeline {
 
         stage('Run Frontend Tests') {
             steps {
-                echo "Lancement des tests frontend en mode headless..."
+                echo "Lancement des tests frontend en mode headless avec cypress/included..."
                 sh """
-                docker run --rm -v ${WORKSPACE}/frontend:/app -w /app cypress/browsers:node18.16.0-chrome112-ff113 sh -c 'npm ci && npx ng test --watch=false --browsers=ChromeHeadless --no-progress'
+                docker run --rm -v ${WORKSPACE}/frontend:/app -w /app cypress/included:latest sh -c 'npm ci && npx ng test --watch=false --browsers=ChromeHeadless --no-progress'
                 """
             }
         }
