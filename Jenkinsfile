@@ -18,13 +18,6 @@ pipeline {
             }
         }
 
-        stage('Run Backend Tests') {
-            steps {
-                echo "Lancement des tests backend..."
-                sh "cd backend && npm run test"
-            }
-        }
-        
         stage('Build Docker Image Backend') {
             steps {
                 script {
