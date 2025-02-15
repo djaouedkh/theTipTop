@@ -17,7 +17,7 @@ pipeline {
                 sh "docker-compose -f docker-compose.traefik.yml up -d"
             }
         }
-
+s
         stage('Build Docker Image Backend') {
             steps {
                 script {
