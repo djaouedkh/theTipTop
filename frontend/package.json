@@ -10,7 +10,8 @@
     "build:prod": "ng build --configuration=production",
     "build:pre-prod": "ng build --configuration=preProd",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:headless": "ng test --watch=false --browsers=ChromeHeadless --no-progress -- --no-sandbox"
   },
   "private": true,
   "dependencies": {

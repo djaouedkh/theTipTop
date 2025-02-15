@@ -27,14 +27,12 @@ pipeline {
             }
         }
 
-        stage('Run Frontend Tests') {
-            steps {
-                echo "Lancement des tests frontend en mode headless avec cypress/included:14.0.3..."
-                sh '''
-                docker run --rm -v ${WORKSPACE}/frontend:/app -w /app cypress/included:14.0.3 --entrypoint sh -c "npm ci && npx ng test --watch=false --browsers=ChromeHeadless --no-progress -- --no-sandbox"
-                '''
-            }
-        }
+stage('Run Frontend Tests') {
+    steps {
+        echo "Lancement des tests frontend en mode headless..."
+        sh "cd frontend && npm ci && npm run test:headless"
+    }
+}
 
         stage('Build Docker Image Backend') {
             steps {
