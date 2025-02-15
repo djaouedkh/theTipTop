@@ -21,9 +21,11 @@ pipeline {
         stage('Run Backend Tests') {
             steps {
                 echo "Lancement des tests backend..."
-                sh "cd backend && npm run test"
+                // Exécute les tests dans un conteneur Node (ici version 20)
+                sh "docker run --rm -v ${WORKSPACE}/backend:/app -w /app node:20 npm run test"
             }
         }
+
 
         stage('Build Docker Image Backend') {
             steps {
