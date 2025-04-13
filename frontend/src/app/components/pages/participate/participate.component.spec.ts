@@ -45,6 +45,6 @@ describe('ParticipateComponent', () => {
     component.onSubmit();
 
     // Assert
-    expect(playToTheGameSpy).toHaveBeenCalledWith(ticketCode);
+    expect(playToTheGameSpy).toHaveBeenCalledWith(ticketCode, 14);
   });
 });
