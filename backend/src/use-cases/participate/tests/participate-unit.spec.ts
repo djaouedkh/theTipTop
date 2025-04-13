@@ -76,7 +76,7 @@ describe('ParticipateService - Unit Tests', () => {
     jest.spyOn(ticketService, 'getByCriteria').mockResolvedValue(null);
 
     // Act
-    const result = await service.playToTheGame('INVALID_CODE');
+    const result = await service.playToTheGame('INVALID_CODE', 14);
 
     // Assert
     expect(result.isWinner).toBe(false);
@@ -88,7 +88,7 @@ describe('ParticipateService - Unit Tests', () => {
     jest.spyOn(contestService, 'isValid').mockResolvedValue(false);
 
     // Act
-    const result = await service.playToTheGame('TICKET123');
+    const result = await service.playToTheGame('TICKET123', 14);
 
     // Assert
     expect(result.isWinner).toBe(false);
@@ -101,7 +101,7 @@ describe('ParticipateService - Unit Tests', () => {
     jest.spyOn(ticketService, 'update').mockResolvedValue({ ...mockTicket, userId: 1 });
 
     // Act
-    const result = await service.playToTheGame('TICKET123');
+    const result = await service.playToTheGame('TICKET123', 14);
 
     // Assert
     expect(result.isWinner).toBe(true);
