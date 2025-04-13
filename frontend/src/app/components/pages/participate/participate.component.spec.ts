@@ -8,7 +8,7 @@ import { PlayToTheGameDto } from '../../../core/dtos/use-cases/participate/play-
 import { ParticipateService } from '../../../core/services/use-cases/participate.service';
 
 class MockParticipateService {
-  playToTheGame(code: string) {
+  playToTheGame(code: string, userId: number) {
     return of({ isWinner: true, gain: null } as PlayToTheGameDto);
   }
 }
