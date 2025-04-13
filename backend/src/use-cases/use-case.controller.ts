@@ -17,9 +17,12 @@ export class UseCaseController {
     ) {}
 
     // PARTICIPATE
-    @Get('participate/:code')
-    async playToTheGame(@Param('code') code: string): Promise<PlayToTheGameDto> {
-        return this.participateService.playToTheGame(code);
+    @Get('participate/:code/by-user-id/:userId')
+    async playToTheGame(
+        @Param('code') code: string,
+        @Param('userId') userId: number
+    ): Promise<PlayToTheGameDto> {
+        return this.participateService.playToTheGame(code, userId);
     }
     
     // STATS

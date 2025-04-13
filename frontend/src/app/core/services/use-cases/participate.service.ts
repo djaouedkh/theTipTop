@@ -9,7 +9,7 @@ import { PlayToTheGameDto } from '../../dtos/use-cases/participate/play-to-the-g
 export class ParticipateService {
     constructor(private apiService: ApiService) {}
 
-    playToTheGame(code: string): Observable<PlayToTheGameDto> { 
-        return this.apiService.get<PlayToTheGameDto>(`participate/${code}`);
+    playToTheGame(code: string, userId: number): Observable<PlayToTheGameDto> { 
+        return this.apiService.get<PlayToTheGameDto>(`participate/${code}/by-user-id/${userId}`);
     }
 }

@@ -15,7 +15,7 @@
     <label class="block text-gray-700 text-sm font-bold mb-2">Filtrer par genre :</label>
     <select class="border p-2 w-full" [(ngModel)]="selectedFilters.gender">
       <option value="" selected [value]="null">Tout</option>
-      <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
+      <option *ngFor="let gender of genders" [value]="gender">{{ gender === 'male' ? 'Homme' : 'Femme' }}</option>
     </select>
   </div>
 
