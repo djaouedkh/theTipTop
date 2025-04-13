@@ -15,21 +15,25 @@ export class ParticipateService {
         private contestService: ContestService
     ) {}
 
-    async playToTheGame(code: string): Promise<PlayToTheGameDto> {
+    async playToTheGame(code: string, userId: number): Promise<PlayToTheGameDto> {
         const ticket = await this.ticketService.getByCriteria(
             { code, isDelivered: false },
             { gain: true, contest: true }
         );
         if (!ticket) return { isWinner: false}
+        if (ticket.userId) return { isWinner: false }; // already associated to a user
 
         // check is expired contest
         const isValidContest = await this.contestService.isValid(ticket.contest);
         if (!isValidContest) return { isWinner: false };
 
         // associate ticket to user
-        await this.ticketService.update(ticket.id, {
-            userId: 1, // TODO: get user from store
-        });    
+        await this.ticketService.update(
+            ticket.id, 
+            {
+                userId:  Number(userId),
+            }
+        );    
 
         // gain win
         const gainWin = plainToInstance(GainGetDto, ticket.gain, { excludeExtraneousValues: true });

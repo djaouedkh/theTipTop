@@ -13,6 +13,11 @@ export class LotteryGameController {
         return winner ? winner : { message: "Aucun gagnant pour le moment" };
     }
 
+    @Get('/is-lottery-won-by-user-id/:userId')
+    async isLotteryWonByUserId(userId: number): Promise<boolean> {
+        return this.service.isLotteryWonByUserId(userId);
+    }
+
     @Post('/play')
     async drawWinner(): Promise<LotteryGameGetDto> {
         return this.service.play();

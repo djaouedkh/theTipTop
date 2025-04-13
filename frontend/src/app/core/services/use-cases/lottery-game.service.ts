@@ -15,6 +15,10 @@ export class LotteryGameService {
         return this.apiService.get<LotteryGameGetDto>(`${this.baseUrl}/get`);
     }
 
+    isLotteryWonByUserId(userId: number): Observable<boolean> {
+        return this.apiService.get<boolean>(`${this.baseUrl}/is-lottery-won-by-user-id/${userId}`);
+    }
+
     play(): Observable<LotteryGameGetDto> {
         return this.apiService.post<LotteryGameGetDto>(`${this.baseUrl}/play`, {});
     }
