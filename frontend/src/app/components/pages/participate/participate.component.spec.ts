@@ -1,14 +1,15 @@
-// src/app/pages/participate/participate.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ParticipateComponent } from './participate.component';
-import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { PlayToTheGameDto } from '../../../core/dtos/use-cases/participate/play-to-the-game.dto';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
+
+import { ParticipateComponent } from './participate.component';
 import { ParticipateService } from '../../../core/services/use-cases/participate.service';
+import { of } from 'rxjs';
+import { PlayToTheGameDto } from '../../../core/dtos/use-cases/participate/play-to-the-game.dto';
 
 class MockParticipateService {
-  playToTheGame(code: string) {
+  playToTheGame(code: string, userId: number) {
     return of({ isWinner: true, gain: null } as PlayToTheGameDto);
   }
 }
@@ -16,7 +17,12 @@ class MockParticipateService {
 describe('ParticipateComponent', () => {
   let component: ParticipateComponent;
   let fixture: ComponentFixture<ParticipateComponent>;
+  let store: MockStore;
   let participateService: ParticipateService;
+
+  const initialState = { 
+    userState: { id: 14, name: 'Test', email: 'test@example.com', role: 'user', token: 'abc' } 
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,8 +30,11 @@ describe('ParticipateComponent', () => {
       imports: [FormsModule, HttpClientTestingModule],
       providers: [
         { provide: ParticipateService, useClass: MockParticipateService },
+        provideMockStore({ initialState }),
       ],
     }).compileComponents();
+
+    store = TestBed.inject(MockStore);
   });
 
   beforeEach(() => {
@@ -45,6 +54,6 @@ describe('ParticipateComponent', () => {
     component.onSubmit();
 
     // Assert
-    expect(playToTheGameSpy).toHaveBeenCalledWith(ticketCode);
+    expect(playToTheGameSpy).toHaveBeenCalledWith(ticketCode, 14);
   });
 });
