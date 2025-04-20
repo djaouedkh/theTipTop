@@ -1,20 +1,50 @@
-<footer class="bg-green-100 py-4">
-    <div class="container mx-auto text-center space-y-2">
-        <!-- Texte de Copyright -->
-        <p>&copy; {{ currentYear }} Thé Tip Top. Tous droits réservés.</p>
-    
-        <!-- Réseaux Sociaux -->
-        <!-- <div class="social-links flex justify-center space-x-4">
-            <a href="https://www.facebook.com/thetiptop" target="_blank" rel="noopener" class="hover:text-yellow-200">
-                <img src="assets/icons/facebook.svg" alt="Facebook" class="h-6 w-6">
-            </a>
-            <a href="https://www.instagram.com/thetiptop" target="_blank" rel="noopener" class="hover:text-yellow-200">
-                <img src="assets/icons/instagram.svg" alt="Instagram" class="h-6 w-6">
-            </a>
-            <a href="https://www.twitter.com/thetiptop" target="_blank" rel="noopener" class="hover:text-yellow-200">
-                <img src="assets/icons/twitter.svg" alt="Twitter" class="h-6 w-6">
-            </a>
-        </div> -->
-        <img src="assets/logo.png" alt="logo" class="h-20">
+<footer class="bg-black text-white py-8">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- À propos -->
+        <div>
+            <h3 class="font-bold mb-2">La société</h3>
+            <ul class="space-y-1">
+                <li><a routerLink="/about" class="hover:underline">À propos</a></li>
+                <li><a routerLink="/contact" class="hover:underline">Contact</a></li>
+                <li><a routerLink="/faq" class="hover:underline">FAQ</a></li>
+            </ul>
+        </div>
+
+        <!-- Support -->
+        <div>
+            <h3 class="font-bold mb-2">Support</h3>
+            <ul class="space-y-1">
+                <li><a routerLink="/terms" class="hover:underline">CGU</a></li>
+                <li><a routerLink="/privacy" class="hover:underline">Confidentialité</a></li>
+            </ul>
+        </div>
+
+        <!-- Suivez-nous -->
+        <div>
+            <h3 class="font-bold mb-2">Suivez-nous</h3>
+            <div class="flex space-x-4">
+                <!-- Remplacez par vos liens réels et icônes -->
+                <a href="#" aria-label="Facebook" class="hover:text-yellow-200"><i class="fab fa-facebook fa-lg"></i></a>
+                <a href="#" aria-label="Instagram" class="hover:text-yellow-200"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="#" aria-label="Twitter" class="hover:text-yellow-200"><i class="fab fa-twitter fa-lg"></i></a>
+            </div>
+        </div>
+
+        <!-- Newsletter -->
+        <div>
+            <h3 class="font-bold mb-2">Newsletter</h3>
+            <p class="text-sm mb-2">Inscrivez-vous pour recevoir nos nouveautés et offres exclusives.</p>
+            <form class="flex">
+                <input type="email" placeholder="Votre email"
+                        class="w-full p-2 rounded-l bg-white text-black" required>
+                <button type="submit" class="bg-yellow-400 text-green-800 p-2 rounded-r hover:bg-yellow-300">
+                Ok
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="mt-8 text-center text-sm">
+        &copy; {{ currentYear }} Thé Tip Top. Tous droits réservés.
     </div>
 </footer>
