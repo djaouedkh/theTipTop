@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +26,25 @@ import { HeaderComponent } from './components/shared/header/header.component';
 // Définition des meta-reducers
 export const metaReducers: MetaReducer<any>[] = [storageMetaReducer];
 
+const cookieConfig: NgcCookieConsentConfig = {
+    cookie: {},
+    palette: {
+        popup:   { background: '#000' },
+        button:  { background: '#f1d600', text: '#000' }
+    },
+    theme: 'edgeless',
+    position: 'bottom',
+    type: 'opt-in',
+    content: {
+        message: 'Nous utilisons des cookies pour améliorer votre expérience.',
+        dismiss: 'Accepter',
+        deny: 'Refuser',
+        link: 'En savoir plus',
+        href: '/privacy-policy'
+    }
+};
+
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -34,6 +54,7 @@ export const metaReducers: MetaReducer<any>[] = [storageMetaReducer];
         ReactiveFormsModule,
         HttpClientModule,
         AdminModule,
+        NgcCookieConsentModule.forRoot(cookieConfig),
 
         StoreModule.forRoot(
             {

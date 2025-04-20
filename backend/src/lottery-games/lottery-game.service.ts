@@ -76,7 +76,7 @@ export class LotteryGameService {
         const winnerIndex = Math.floor(Math.random() * participants.length);
         return participants[winnerIndex].id;
     }
-
+    
     async isLotteryWonByUserId(userId: number): Promise<boolean> {
         const lotteryGame = await this.get();
         return lotteryGame.userId === userId;

@@ -1,4 +1,3 @@
-// src/app/pages/participate/participate.component.ts
 import { Component } from '@angular/core';
 import { PlayToTheGameDto } from '../../../core/dtos/use-cases/participate/play-to-the-game.dto';
 import { ParticipateService } from '../../../core/services/use-cases/participate.service';
