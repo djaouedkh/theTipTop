@@ -30,7 +30,7 @@ import { Component } from '@angular/core';
                 <h2 class="font-semibold text-green-700">Notre Mission</h2>
                 <p class="text-gray-600">
                   Partager la magie du thé à travers des concours exclusifs, des événements et des
-                  contenus inspirants.
+                  contenus inspirants..
                 </p>
               </div>
             </li>
