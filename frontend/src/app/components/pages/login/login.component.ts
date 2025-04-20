@@ -1,56 +1,48 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthResponseDto } from '../../../core/dtos/auth/auth-response.dto';
 import { UserLoginGoogleDto } from '../../../core/dtos/auth/external-auth/user-login-google.dto';
-import { UserGetDto } from '../../../core/dtos/users/user-get.dto';
 import { AuthService } from '../../../core/services/auth.service';
-import { UserStoreService } from '../../../core/stores/users/user-store.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
-  registerForm: FormGroup;
-  isLoginMode: boolean = true; // Mode par défaut : connexion
-  errorMessage: string | null = null; // Pour stocker les erreurs
+  loginForm!: FormGroup;
+  registerForm!: FormGroup;
+  isLoginMode = true;
+  errorMessage: string | null = null;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private authService: AuthService,
-    private userStoreService: UserStoreService
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.initForms();
 
-    // gère le retour de google authentification
+    // Gestion du callback Google
     this.route.queryParams.subscribe(params => {
       if (params['isSuccess'] === 'true') {
         const isGoogleRegister = params['isGoogleRegister'] === 'true';
-        const dataLogin: UserLoginGoogleDto = {
-          email: params['email'],
-        }
-  
+        const dataLogin: UserLoginGoogleDto = { email: params['email'] };
+
         if (isGoogleRegister) {
-          // Si l'utilisateur doit compléter l'inscription
-          this.isLoginMode = false; // Passer en mode inscription
-          this.registerForm.patchValue(dataLogin); // Pré-remplir l'email
+          // Google indique qu'il faut finaliser l'inscription
+          this.isLoginMode = false;
+          this.registerForm.patchValue(dataLogin);
         } else {
-          // Connexion directe avec l'email récupéré
+          // Connexion directe
           this.authService.loginPostGoogleAuth(dataLogin).subscribe({
             next: (response: AuthResponseDto) => {
               if (response.isSuccess) {
-                console.log('Connexion réussie', response);
-                // Rediriger vers la page d'accueil
                 this.router.navigate(['/']);
               } else {
-                this.errorMessage = response.message;  // Afficher le message d'erreur
+                this.errorMessage = response.message;
               }
             },
             error: () => {
@@ -64,46 +56,41 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // Initialisation des formulaires de connexion et d'inscription
-  initForms() {
+  private initForms(): void {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]], // Email valide requis
-      password: ['', [Validators.required, Validators.minLength(6)]], // Mdp avec min 6 caractères
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
 
     this.registerForm = this.fb.group({
-      firstname: ['', [Validators.required, Validators.minLength(2)]], // Prénom min 2 caractères
-      lastname: ['', [Validators.required, Validators.minLength(2)]],  // Nom min 2 caractères
-      email: ['', [Validators.required, Validators.email]],  // Email valide requis
-      password: ['', [Validators.required, Validators.minLength(6)]],  // Mdp avec min 6 caractères
-      confirmPassword: ['', [Validators.required]], // Confirmation du mdp
-      gender: ['', Validators.required], // Genre requis
-      age: ['', [Validators.required, Validators.min(18)]], // Âge min 18 ans
+      firstname: ['', [Validators.required, Validators.minLength(2)]],
+      lastname: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required],
+      gender: ['', Validators.required],
+      age: ['', [Validators.required, Validators.min(18)]],
     });
   }
 
-  // Vérifie si un champ est invalide et a été touché
+  // Affiche l'erreur seulement si le champ est invalide ET que l'utilisateur y a déjà interagi
   isInvalid(controlName: string, form: FormGroup): boolean {
     const control = form.get(controlName);
-    return control?.invalid ? true : false;
+    return !!(control && control.invalid && (control.touched || control.dirty));
   }
 
-  // Connexion via formulaire classique
-  login() {
+  login(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
     }
-
     const { email, password } = this.loginForm.value;
     this.authService.login(email, password).subscribe({
       next: (response: AuthResponseDto) => {
         if (response.isSuccess) {
-          console.log('Connexion réussie', response);
-          // Rediriger vers la page d'accueil
           this.router.navigate(['/']);
         } else {
-          this.errorMessage = response.message;  // Afficher le message d'erreur
+          this.errorMessage = response.message;
         }
       },
       error: () => {
@@ -112,50 +99,42 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // Inscription via formulaire classique
-  register() {
+  register(): void {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
       return;
     }
-
     const { firstname, lastname, email, password, confirmPassword, gender, age } = this.registerForm.value;
-    if (password === confirmPassword) {
-      this.authService.register({ firstname, lastname, email, password, gender, age, roleId: 3 }).subscribe({
+    if (password !== confirmPassword) {
+      this.errorMessage = 'Les mots de passe ne correspondent pas.';
+      return;
+    }
+    this.authService.register({ firstname, lastname, email, password, gender, age, roleId: 3 })
+      .subscribe({
         next: (response: AuthResponseDto) => {
           if (response.isSuccess) {
-            console.log('Inscription réussie', response);
             this.router.navigate(['/']);
           } else {
-            this.errorMessage = response.message;  // Afficher le message d'erreur
+            this.errorMessage = response.message;
           }
         },
         error: () => {
           this.errorMessage = 'Une erreur de serveur est survenue, veuillez réessayer.';
         }
       });
-    } else {
-      this.errorMessage = 'Les mots de passe ne correspondent pas.';
-    }
   }
 
-  // Basculer entre le mode de connexion et d'inscription
-  toggleMode() {
-    this.isLoginMode = !this.isLoginMode;
-    this.errorMessage = null; // Réinitialiser le message d'erreur lors du changement de mode
-  }
-
-  // Connexion via Google
-  loginWithGoogle() {
+  loginWithGoogle(): void {
     this.authService.loginWithGoogle();
   }
 
-  // Pré-remplir le formulaire d'inscription avec les données fournies par Google
-  prefillRegistrationForm(user: Partial<UserGetDto>) {
-    this.registerForm.patchValue({
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-    });
+  toggleMode(): void {
+    this.isLoginMode = !this.isLoginMode;
+    this.errorMessage = null;
+
+    // Reset des formulaires pour réinitialiser touched/dirty
+    this.loginForm.reset();
+    this.registerForm.reset();
+    this.initForms();
   }
 }

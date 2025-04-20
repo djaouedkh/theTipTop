@@ -22,6 +22,11 @@ import { ParticipateComponent } from './components/pages/participate/participate
 import { UserGainsComponent } from './components/pages/user-gains/user-gains.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { HeaderComponent } from './components/shared/header/header.component';
+import { AboutComponent } from './components/pages/footer-pages/about.component';
+import { ContactComponent } from './components/pages/footer-pages/contact.component';
+import { FaqComponent } from './components/pages/footer-pages/faq.component';
+import { PrivacyComponent } from './components/pages/footer-pages/privacy.component';
+import { TermsComponent } from './components/pages/footer-pages/terms.component';
 
 // Définition des meta-reducers
 export const metaReducers: MetaReducer<any>[] = [storageMetaReducer];
@@ -77,7 +82,11 @@ const cookieConfig: NgcCookieConsentConfig = {
         UserGainsComponent,
         LoginComponent,
         ErrorComponent,
-        // autres composants
+        AboutComponent,
+        ContactComponent,
+        TermsComponent,
+        PrivacyComponent,
+        FaqComponent
     ],
     providers: [
         {
