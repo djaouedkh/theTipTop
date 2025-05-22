@@ -123,8 +123,18 @@ export class AuthService {
       },
       include: { role: true },
     });
+    console.log('newUser', newUser);
     const user = plainToInstance(UserGetDto, newUser, { excludeExtraneousValues: true });
+    console.log('user', user);
     const tokens = this.generateTokens(user);
+    console.log('tokens', tokens);
+    return {
+      user: null,
+      accessToken: null,
+      refreshToken: null,
+      isSuccess: false,
+      message: 'Mail déjà utilisé',
+    };
 
     return {
       user,
