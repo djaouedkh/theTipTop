@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Headers, Res, Req, HttpCode, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, Headers, Res, Req, HttpCode, UseGuards, HttpException, InternalServerErrorException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserGetDto } from '../users/dtos/user-get.dto';
 import { Response, Request } from 'express';
@@ -49,13 +49,19 @@ export class AuthController {
     @Body() registerData: UserCreateDto,
     @Res({ passthrough: true }) res: Response
   ): Promise<AuthResponseDto> {
-    const response = await this.authService.register(registerData);
-
-    if (response.isSuccess) {
-      res.cookie('refreshToken', response.refreshToken, { httpOnly: true, secure: false });
+    try {
+      const response = await this.authService.register(registerData);
+      if (response.isSuccess) {
+        res.cookie('refreshToken', response.refreshToken, { httpOnly: true, secure: false });
+      }
+      return response;
+    } catch (e) {
+      console.error('✋ Controller register error:', e);
+      if (e instanceof HttpException) throw e;
+      throw new InternalServerErrorException(e.message);
     }
 
-    return response;
+
   }
 
   @Post('refresh')
