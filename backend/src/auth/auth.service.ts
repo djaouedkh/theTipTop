@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, ConflictException, BadRequestException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../users/user.service';
 import { UserGetDto } from '../users/dtos/user-get.dto';
@@ -9,6 +9,7 @@ import { UserCreateDto } from '../users/dtos/user-create.dto';
 import { UserLoginDto } from './dtos/user-login.dto';
 import { AuthResponseDto } from './dtos/auth-response.dto';
 import { UserLoginGoogleDto } from './external-auth/dtos/user-login-google.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -107,32 +108,40 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
-    const newUser = await this.prisma.user.create({
-      data: {
-        firstname: data.firstname,
-        lastname: data.lastname,
-        email: data.email,
-        password: hashedPassword,
-        gender: data.gender,
-        age: data.age,
-        role: {
-          connect: {
-              id: data.roleId,
+    try {
+      const newUser = await this.prisma.user.create({
+        data: {
+          firstname: data.firstname,
+          lastname: data.lastname,
+          email: data.email,
+          password: hashedPassword,
+          gender: data.gender,
+          age: data.age,
+          role: {
+            connect: {
+                id: data.roleId,
+            },
           },
         },
-      },
-      include: { role: true },
-    });
-    const user = plainToInstance(UserGetDto, newUser, { excludeExtraneousValues: true });
-    const tokens = this.generateTokens(user);
-
-    return {
-      user,
-      accessToken: tokens.accessToken,
-      refreshToken: tokens.refreshToken,
-      isSuccess: true,
-      message: 'Registration successful',
-    };
+        include: { role: true },
+      });
+      const user = plainToInstance(UserGetDto, newUser, { excludeExtraneousValues: true });
+      const tokens = this.generateTokens(user);
+  
+      return {
+        user,
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        isSuccess: true,
+        message: 'Registration successful',
+      };
+    } catch (e) {
+      console.error('🔥 register failed:', e);
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        throw new BadRequestException(e.message);
+      }
+      throw new InternalServerErrorException(e.message);
+    }
   }
 
   // Vérifier si le token est valide
